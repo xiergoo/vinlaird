@@ -3,8 +3,6 @@
  * 分页类
  *
  */
-
-
 defined('InShopNC') or exit('Access Invalid!');
 class Page{
 	/**

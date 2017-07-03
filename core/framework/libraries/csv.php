@@ -1,9 +1,6 @@
 <?php
 /**
- * 邮件类
- *
- * 邮件操作类，目前只支持smtp服务的邮件发送
- *
+ * 导出CSV文件
  */
 defined('InShopNC') or exit('Access Invalid!');
 final class Csv{

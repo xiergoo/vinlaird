@@ -8,8 +8,8 @@ defined('InShopNC') or exit('Access Invalid!');
 class Sms {
     /*
      * 发送手机短信
-     * @param unknown $mobile 手机号
-     * @param unknown $content 短信内容
+     * @param string $mobile 手机号
+     * @param string $content 短信内容
     */
     public function send($mobile,$content) {
 		$mobile_host_type=C('mobile_host_type');

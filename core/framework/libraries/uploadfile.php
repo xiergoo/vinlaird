@@ -3,8 +3,6 @@
  * 文件上传类
  *
  */
-
-
 defined('InShopNC') or exit('Access Invalid!');
 class UploadFile{
 	/**

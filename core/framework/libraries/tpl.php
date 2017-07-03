@@ -1,11 +1,6 @@
 <?php
 /**
- * 模板驱动  
- *
- * 模板驱动，商城模板引擎
- *
- *
- * @package    tpl
+ * 模板驱动 
  * 
  */
 defined('InShopNC') or exit('Access Invalid!');

@@ -1,7 +1,6 @@
 <?php
 /**
- * 缓存文件 
-
+ * FTP上传
  */
 defined('InShopNC') or exit('Access Invalid!');
 
