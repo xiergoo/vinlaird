@@ -2,9 +2,6 @@
 /**
  * 运行框架  
  *
- *
- *
- * 二次开发修正授权运营版
  */
 
 defined('InShopNC') or exit('Access Invalid!');
@@ -14,38 +11,18 @@ if (file_exists(BASE_PATH.sprintf('/config/config%s.ini.php',Environmental))){
 }
 global $config;
 
-//默认平台店铺id
-define('DEFAULT_PLATFORM_STORE_ID', $config['default_store_id']);
-
 define('URL_MODEL',$config['url_model']);
-$auto_site_url = strtolower('http://'.$_SERVER['HTTP_HOST'].implode('/',$tmp_array));
 define(SUBDOMAIN_SUFFIX, $config['subdomain_suffix']);
 define('BASE_SITE_URL', $config['base_site_url']);
-define('SHOP_SITE_URL', $config['shop_site_url']);
-define('CMS_SITE_URL', $config['cms_site_url']);
-define('CIRCLE_SITE_URL', $config['circle_site_url']);
-define('MICROSHOP_SITE_URL', $config['microshop_site_url']);
 define('ADMIN_SITE_URL', $config['admin_site_url']);
-define('MOBILE_SITE_URL', $config['mobile_site_url']);
-define('WAP_SITE_URL', $config['wap_site_url']);
 define('UPLOAD_SITE_URL',$config['upload_site_url']);
 define('RESOURCE_SITE_URL',$config['resource_site_url']);
-define('DELIVERY_SITE_URL',$config['delivery_site_url']);
-define('CHAT_SITE_URL', $config['chat_site_url']);
-define('NODE_SITE_URL', $config['node_site_url']);
 define('UPLOAD_SITE_URL_HTTPS', $config['upload_site_url']);
+define('RESOURCE_SITE_URL_HTTPS',$config['resource_site_url']);
 
 define('BASE_DATA_PATH',BASE_ROOT_PATH.'/data');
 define('BASE_UPLOAD_PATH',BASE_DATA_PATH.'/upload');
 define('BASE_RESOURCE_PATH',BASE_DATA_PATH.'/resource');
-define('ATTACH_GOODS_CLASS','shop/goods_class');
-
-define('RESOURCE_SITE_URL_HTTPS',$config['resource_site_url']);
-define('UPLOAD_SITE_URL_HTTPS', $config['upload_site_url']);
-define('LOGIN_SITE_URL',$config['member_site_url']);
-define('MEMBER_SITE_URL', $config['member_site_url']);
-define('CHAT_SITE_URL', $config['chat_site_url']);
-define('NODE_SITE_URL', $config['node_site_url']);
 
 define('CHARSET',$config['db'][1]['dbcharset']);
 define('DBDRIVER',$config['dbdriver']);
@@ -84,17 +61,11 @@ require_once(BASE_CORE_PATH.'/framework/libraries/queue.php');
 require_once(BASE_CORE_PATH.'/framework/function/core.php');
 require_once(BASE_CORE_PATH.'/framework/core/base.php');
 
-require_once(BASE_CORE_PATH.'/framework/function/goods.php');
-
 if(function_exists('spl_autoload_register')) {
 	spl_autoload_register(array('Base', 'autoload'));
 } else {
 	function __autoload($class) {
 		return Base::autoload($class);
 	}
-}
-//保存邀请者的加密id信息
-if(isset($_GET['ivt_id']) && $_GET['ivt_id']){
-	setNc2Cookie('uid', $_GET['ivt_id']);
 }
 ?>
