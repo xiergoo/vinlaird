@@ -14,7 +14,6 @@ class indexControl extends SystemControl{
 		Language::read('index');
 	}
 	public function indexOp(){
-        echo 'bb';die;
 		//输出管理员信息
 		Tpl::output('admin_info',$this->getAdminInfo());
 		//输出菜单
@@ -22,7 +21,6 @@ class indexControl extends SystemControl{
 		Tpl::output('top_nav',$top_nav);
 		Tpl::output('left_nav',$left_nav);
 		Tpl::output('map_nav',$map_nav);
-        echo 'bb';die;
 		Tpl::showpage('index','index_layout');
 	}
 
