@@ -10,7 +10,6 @@ defined('InShopNC') or exit('Access Invalid!');
 class settingControl extends SystemControl{
 	private $links = array(
 		array('url'=>'act=setting&op=base','lang'=>'web_set'),
-		array('url'=>'act=setting&op=dump','lang'=>'dis_dump'),
 	);
 	public function __construct(){
 		parent::__construct();
@@ -144,33 +143,7 @@ class settingControl extends SystemControl{
 		Tpl::showpage('setting.base');
 	}
 
-	/**
-	 * 防灌水设置
-	 */
-	public function dumpOp(){
-		$model_setting = Model('setting');
-		if (chksubmit()){
-			$update_array = array();
-			$update_array['guest_comment'] = $_POST['guest_comment'];
-			$update_array['captcha_status_login'] = $_POST['captcha_status_login'];
-			$update_array['captcha_status_register'] = $_POST['captcha_status_register'];
-			$update_array['captcha_status_goodsqa'] = $_POST['captcha_status_goodsqa'];
-			$result = $model_setting->updateSetting($update_array);
-			if ($result === true){
-				$this->log(L('nc_edit,dis_dump'),1);
-				showMessage(L('nc_common_save_succ'));
-			}else {
-				$this->log(L('nc_edit,dis_dump'),0);
-				showMessage(L('nc_common_save_fail'));
-			}
-		}
-		$list_setting = $model_setting->getListSetting();
-		Tpl::output('list_setting',$list_setting);
-		Tpl::output('top_link',$this->sublink($this->links,'dump'));
-		Tpl::showpage('setting.dump');
-	}
-
-	/**
+    /**
 	 * SEO与rewrite设置
 	 */
 	public function seoOp(){
