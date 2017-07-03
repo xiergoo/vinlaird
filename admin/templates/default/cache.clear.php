@@ -24,78 +24,8 @@
                       <li class="left w18pre">
                         <label>
                           <input type="checkbox" name="cache[]" value="setting" >
-                          &nbsp;<?php echo $lang['cache_cls_seting'];?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" value="goodsclass" >
-                          &nbsp;<?php echo $lang['cache_cls_category'];?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" value="adv" >
-                          &nbsp;<?php echo $lang['cache_cls_adv'];?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="groupbuy_price" value="groupbuy_price" >
-                          &nbsp;抢购价格区间</label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="nav" value="nav" >
-                          &nbsp;<?php echo $lang['cache_cls_nav'];?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="index" value="index" >
-                          &nbsp;<?php echo $lang['cache_cls_index'];?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="table" value="table" >
-                          &nbsp;<?php echo $lang['cache_cls_table'];?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="seo" value="seo" >
-                          &nbsp;SEO</label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="express" value="express" >
-                          &nbsp;<?php echo $lang['cache_cls_express']?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="store_class" value="store_class" >
-                          &nbsp;<?php echo $lang['cache_cls_store_class']?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="store_grade" value="store_grade" >
-                          &nbsp;<?php echo $lang['cache_cls_store_grade']?></label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="store_msg_tpl" value="store_msg_tpl" >
-                          &nbsp;商家消息模板</label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="member_msg_tpl" value="member_msg_tpl" >
-                          &nbsp;用户消息模板</label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="consult_type" value="consult_type" >
-                          &nbsp;咨询类型</label>
-                      </li>
-                      <li class="left w18pre">
-                        <label>
-                          <input type="checkbox" name="cache[]" id="circle_level" value="circle_level" >
-                          &nbsp;<?php echo $lang['cache_cls_circle_level']?></label>
-                      </li>
+                          &nbsp;基础缓存</label>
+                      </li>                      
                     </ul></td>
                 </tr>
               </tbody>
