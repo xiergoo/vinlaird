@@ -1,8 +1,6 @@
 <?php
 /**
  * 生成Excel文件类
- *
- * @package    library* www.33hao.com 专业团队 提供售后服务
  */
 defined('InShopNC') or exit('Access Invalid!');
 class Excel{

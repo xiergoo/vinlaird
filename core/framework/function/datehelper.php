@@ -1,7 +1,7 @@
 <?php
 defined('InShopNC') or exit('Access Invalid!');
 
-/**  v3-b12
+/**  
  * 获得系统年份数组
  */
 function getSystemYearArr(){

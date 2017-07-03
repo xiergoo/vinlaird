@@ -11,7 +11,6 @@
  * backup_tables 需要备份的表名列表，为数组格式
  * md5 加密后缀
  * 
- * by 33hao.com 好商城V3 运营版
  */
 defined('InShopNC') or exit('Access Invalid!');
 

@@ -3,8 +3,7 @@
  * 核心文件
  *
  * 模型类
- *
- * @package    core* www.33hao.com 专业团队 提供售后服务
+
  */
 class Model{
 

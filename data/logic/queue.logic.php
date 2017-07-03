@@ -5,8 +5,7 @@
  * 方法名需要和 QueueClient::push中第一个参数一致，如：
  * QueueClient::push('editGroupbuySaleCount',$groupbuy_info);
  * public function editGroupbuySaleCount($groupbuy_info){...}
- *
- * by 33hao 好商城V3  www.33hao.com 开发
+
  */
 defined('InShopNC') or exit('Access Invalid!');
 

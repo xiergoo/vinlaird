@@ -3,11 +3,11 @@
  * 商城板块初始化文件
  *
  *
- * * by 33hao www.33hao.com 运营版 */
+ * * by   */
 
 define('BASE_PATH',str_replace('\\','/',dirname(__FILE__)));
 if (!@include(dirname(dirname(__FILE__)).'/global.php')) exit('global.php isn\'t exists!');
-if (!@include(BASE_CORE_PATH.'/comecore.php')) exit('comecore.php isn\'t exists!');
+if (!@include(BASE_CORE_PATH.'/vinlaird.php')) exit('vinlaird.php isn\'t exists!');
 define('TPL_NAME',TPL_ADMIN_NAME);
 define('ADMIN_TEMPLATES_URL',ADMIN_SITE_URL.'/templates/'.TPL_NAME);
 define('BASE_TPL_PATH',BASE_PATH.'/templates/'.TPL_NAME);

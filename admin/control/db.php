@@ -4,7 +4,7 @@
  *
  * 
  *
- *  by  33 hao.com 好商城V3
+ *  
  */
 defined('InShopNC') or exit('Access Invalid!');
 class dbControl extends SystemControl{

@@ -1,8 +1,8 @@
 <?php
 /**
- * 菜单 v3-b12
+ * 菜单 
  *
- * by 33hao 好商城V3  www.33hao.com 开发
+ *   开发
  */
 defined('InShopNC') or exit('Access Invalid!');
 /**
@@ -33,7 +33,7 @@ $arr = array(
 					array('args'=>'base,setting,setting',			'text'=>$lang['nc_web_set']),	
 					array('args'=>'email,message,setting',			'text'=>$lang['nc_message_set']),
 					array('args'=>'admin,admin,setting',			'text'=>$lang['nc_limit_manage']),
-					//v3-b12
+					//
 					array('args'=>'clear,cache,setting',			'text'=>$lang['nc_admin_clear_cache']),
 					array('args'=>'db,db,setting',			'text'=>'数据备份'),
 					array('args'=>'list,admin_log,setting',			'text'=>$lang['nc_admin_log']),

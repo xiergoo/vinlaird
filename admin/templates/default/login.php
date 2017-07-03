@@ -1,5 +1,5 @@
 <?php defined('InShopNC') or exit('Access Invalid!');?>
- <!--v3-v12-->
+ 
 <div class="login-layout">
   <div class="top">
     <h5><?php echo $lang['login_index_title_01'];?><em></em></h5>

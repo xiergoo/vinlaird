@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	//列表下拉 v3-b12
+	//列表下拉 
 	$('img[nc_type="flex"]').click(function(){
 		var status = $(this).attr('status');
 		if(status == 'open'){

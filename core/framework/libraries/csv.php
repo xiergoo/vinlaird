@@ -4,8 +4,6 @@
  *
  * 邮件操作类，目前只支持smtp服务的邮件发送
  *
- *
- * @package    library* www.33hao.com 专业团队 提供售后服务
  */
 defined('InShopNC') or exit('Access Invalid!');
 final class Csv{

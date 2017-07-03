@@ -1,4 +1,4 @@
-// JavaScript Document  v3-b12
+// JavaScript Document  
 
 
 //自定义radio样式

@@ -1,7 +1,7 @@
 <?php
 defined('InShopNC') or exit('Access Invalid!');
 /*
- * 配置文件 好商城V3
+ * 配置文件 
  */
 $options = array();
 $options['apikey'] = C('mobile_key'); //apikey

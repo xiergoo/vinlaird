@@ -1,9 +1,6 @@
 <?php
-/**  v3-b12
+/**  
  *
- *
- *
- * @package    library* www.33hao.com 专业团队 提供售后服务
  */
 class sendStoreMsg {
     private $code = '';

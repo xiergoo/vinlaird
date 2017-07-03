@@ -9,7 +9,7 @@
 
 define('BASE_PATH',str_replace('\\','/',dirname(__FILE__)));
 if (!@include('../../../../global.php')) exit('global.php isn\'t exists!');
-if (!@include(BASE_CORE_PATH.'/comecore.php')) exit('comecore.php isn\'t exists!');
+if (!@include(BASE_CORE_PATH.'/vinlaird.php')) exit('vinlaird.php isn\'t exists!');
 //文件保存目录路径
 $save_path = '../../../upload/shop/editor/';
 //文件保存目录URL

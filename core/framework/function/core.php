@@ -1,10 +1,7 @@
 <?php
 /**
- * 公共方法  v3-b12
- *
- * 公共方法
- *
- * by 33hao.com 好商城V3 运营版
+ * 公共方法  
+
  */
 
 
@@ -971,7 +968,7 @@ function getMemberAvatarForID($id){
 	}
 }
 /**
- * 成员头像 v3-b12-1
+ * 成员头像 -1
   * @param string $member_id
  * @return string
  */

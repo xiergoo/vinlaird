@@ -4,7 +4,7 @@ session_start();
 
 //包含配置信息
 //$data = rkcache("setting", true);
-$data = require(BASE_DATA_PATH.DS.'cache'.DS.'setting.php'); // by 33hao.com
+$data = require(BASE_DATA_PATH.DS.'cache'.DS.'setting.php'); 
 //判读站外分析是否开启
 if($data['share_isuse'] != 1 || $data['share_sinaweibo_isuse'] != 1){
 	echo "<script>alert('系统未开启该功能');</script>";

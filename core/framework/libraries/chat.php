@@ -1,8 +1,8 @@
 <?php
 /**
- * chat  v3-b12
+ * chat  
  *
- *by 33hao www.33hao.com 开发修正
+ *by  开发修正
  */
 defined('InShopNC') or exit('Access Invalid!');
 

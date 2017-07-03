@@ -14,7 +14,7 @@ function getViewportWidth() {
 }
 
 /**
- * Gets the real scroll top  v3-b12
+ * Gets the real scroll top  
  */
 function getScrollTop() {
 	if (self.pageYOffset) // all except Explorer

@@ -1,6 +1,6 @@
 <?php
 /**
- * apc 缓存  v3-b12
+ * apc 缓存  
  * 
  */
 defined('Soshop') or exit('Access Invalid!');

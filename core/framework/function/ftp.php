@@ -1,10 +1,7 @@
 <?php
 /**
  * 远程操作常用函数
- *
- * 
- *
- * 好商城V3 www.33hao.com 专业团队 提供售后服务
+
  */
 
 defined('InShopNC') or exit('Access Invalid!');

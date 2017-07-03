@@ -1,10 +1,10 @@
 <?php
 /**
- * 商品图片统一调用函数  v3-b12
+ * 商品图片统一调用函数  
  *
  *
  *
- * @package    function* www.33hao.com 专业团队 提供售后服务
+ * @package    function* 
  */
 
 defined('InShopNC') or exit('Access Invalid!');
@@ -90,7 +90,7 @@ function goodsQRCode($goods_info) {
 }
 
 /**
- * 商品二维码 v3-b12
+ * 商品二维码 
  * @param array $goods_info
  * @return string
  */

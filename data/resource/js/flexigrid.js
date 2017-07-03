@@ -1,5 +1,5 @@
 (function($){
-	// v3-b12
+	// 
 	$.addFlex = function(t,p)
 	{
 

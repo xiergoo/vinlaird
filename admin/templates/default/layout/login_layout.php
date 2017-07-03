@@ -1,5 +1,5 @@
 <?php defined('InShopNC') or exit('Access Invalid!');?>
- <!--v3-v12--->
+ <!----->
 <!doctype html>
 <html>
 <head>

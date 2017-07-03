@@ -1,7 +1,7 @@
 <?php
 defined('InShopNC') or exit('Access Invalid!');
 /**
- * 页面文字  v3-b12
+ * 页面文字  
  */
 $lang['nc_admincp']				= '管理中心';
 $lang['nc_loca']				= '您的位置';
@@ -53,12 +53,12 @@ $lang['nc_goods']				= '商品';
 $lang['nc_class_manage']		= '分类管理';
 $lang['nc_brand_manage']		= '品牌管理';
 $lang['nc_goods_manage']		= '商品管理';
-//v3-v12
+//
 $lang['nc_channel_log']			= '频道管理'; 
 $lang['nc_prompts_title']= '提示相关设置操作时应注意的要点'; 
 $lang['nc_prompts_span']= '收起提示'; 
 $lang['nc_prompts']		= '操作提示'; 
-//v3-v12
+//
 $lang['nc_type_manage']			= '类型管理';
 $lang['nc_spec_manage']			= '规格管理';
 $lang['nc_album_manage']		= '图片空间';

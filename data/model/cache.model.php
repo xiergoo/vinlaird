@@ -1,11 +1,8 @@
 <?php
 /**
- * 缓存操作 v3-b12 
+ * 缓存操作  
  *
  *
- *
- *
- * by 33hao 好商城V3  www.33hao.com 开发
  */
 defined('InShopNC') or exit('Access Invalid!');
 class cacheModel extends Model {

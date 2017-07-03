@@ -1,5 +1,4 @@
 <?php defined('InShopNC') or exit('Access Invalid!');?>
-<!--好商城V3-B12 33 HAO . C OM -->
 <div class="page">
   <div class="fixed-bar">
     <div class="item-title">
@@ -75,7 +74,7 @@
         </tr>
         <tr class="noborder">
           <td class="vatop rowform"><input type="text" value="<?php echo $output['list_setting']['mobile_signature'];?>" name="mobile_signature" id="mobile_signature" class="txt"></td>
-          <td class="vatop tips"><label class="field_notice">如： 好商城</label></td>
+          <td class="vatop tips"><label class="field_notice">如： </label></td>
         </tr>
         
         <tr>

@@ -1,6 +1,6 @@
 <?php
 /**
- * 验证码 v3-b12
+ * 验证码 
  ***/
 
 defined('InShopNC') or exit('Access Invalid!');

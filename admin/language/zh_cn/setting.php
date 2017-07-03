@@ -1,7 +1,7 @@
 <?php
 defined('InShopNC') or exit('Access Invalid!');
 /**
- * 设置 语言包 v3-b12
+ * 设置 语言包 
  */
 $lang['flea_isuse']		   = '开启闲置';
 $lang['flea_isuse_notice'] = '开启闲置市场，会员可以通过发布自己的闲置商品';
@@ -143,7 +143,7 @@ $lang['icp_number_notice']                  = '前台页面底部可以显示 IC
 $lang['site_phone']                         = '平台客服联系电话';
 $lang['site_phone_notice']                  = '商家中心右下侧显示，方便商家遇到问题时咨询，多个请用半角逗号 "," 隔开';
 $lang['site_bank_account']                  = '平台汇款账号';
-$lang['site_bank_account_notice']           = '用半角逗号","分隔项目，用半角冒号":"分隔标题和内容，例："银行:中国银行,币种:人民币,账号:xxxxxxxxxxx,姓名:33hao,开户行:中国银行XX分行"';
+$lang['site_bank_account_notice']           = '用半角逗号","分隔项目，用半角冒号":"分隔标题和内容，例："银行:中国银行,币种:人民币,账号:xxxxxxxxxxx,姓名:,开户行:中国银行XX分行"';
 $lang['site_email']                         = '电子邮件';
 $lang['site_email_notice']                  = '商家中心右下侧显示，方便商家遇到问题时咨询';
 $lang['site_state']                         = '站点状态';
@@ -162,11 +162,11 @@ $lang['set_smtp_server_address'] = '设置 SMTP 服务器的地址，如 smtp.16
 $lang['smtp_port']               = 'SMTP 端口';
 $lang['set_smtp_port']           = '设置 SMTP 服务器的端口，默认为 25';
 $lang['sender_mail_address']     = '发信人邮件地址';
-$lang['if_smtp_authentication']  = '使用SMTP协议发送的邮件地址，如 33hao@163.com';
+$lang['if_smtp_authentication']  = '使用SMTP协议发送的邮件地址，如 @163.com';
 $lang['smtp_user_name']          = 'SMTP 身份验证用户名';
-$lang['smtp_user_name_tip']      = '如 33hao@163.com';
+$lang['smtp_user_name_tip']      = '如 @163.com';
 $lang['smtp_user_pwd']           = 'SMTP 身份验证密码';
-$lang['smtp_user_pwd_tip']       = '33hao@163.com邮件的密码，如 123456';
+$lang['smtp_user_pwd_tip']       = '@163.com邮件的密码，如 123456';
 $lang['test_mail_address']       = '测试接收的邮件地址';
 $lang['test']                    = '测试';
 $lang['open_checkcode']          = '使用验证码';

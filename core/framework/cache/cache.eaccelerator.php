@@ -1,6 +1,6 @@
 <?php
 /**
- * eAccelerator 缓存  v3-b12
+ * eAccelerator 缓存  
  * 
  */
 defined('Soshop') or exit('Access Invalid!');

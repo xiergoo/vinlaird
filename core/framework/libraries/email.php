@@ -4,8 +4,6 @@
  *
  * 邮件操作类，目前只支持smtp服务的邮件发送
  *
- *
- * @package    library* www.33hao.com 专业团队 提供售后服务
  */
 defined('InShopNC') or exit('Access Invalid!');
 final class Email{
@@ -242,7 +240,7 @@ final class Email{
 		}
 		$header = "From: $from{$this->email_delimiter}";
 		$header .= "X-Priority: 3{$this->email_delimiter}";
-		$header .= "X-Mailer: 33hao {$this->email_delimiter}";
+		$header .= "X-Mailer:  {$this->email_delimiter}";
 		$header .= "MIME-Version: 1.0{$this->email_delimiter}";
 		$header .= "Content-type: text/html; ";
 		$header .= "charset=".CHARSET."{$this->email_delimiter}";

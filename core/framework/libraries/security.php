@@ -7,7 +7,6 @@
  * 输出：直接在模板上调用getToken
  * 验证：在验证位置调用checkToken
  *
- * @package    library* www.33hao.com 专业团队 提供售后服务
  */
 defined('InShopNC') or exit('Access Invalid!');
 

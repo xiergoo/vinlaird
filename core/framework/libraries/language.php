@@ -4,8 +4,6 @@
  *
  * 语言调用类，为静态使用
  *
- *
- * @package    library* www.33hao.com 专业团队 提供售后服务
  */
 defined('InShopNC') or exit('Access Invalid!');
 final class Language{

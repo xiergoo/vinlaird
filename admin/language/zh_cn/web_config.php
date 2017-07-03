@@ -42,7 +42,7 @@ $lang['web_config_edit_help2']			= '左侧的“推荐分类”没有个数限�
 $lang['web_config_edit_help3']			= '中部的“商品推荐模块”由于页面宽度只能加4个，商品数为8个；右侧的品牌最多为12个(已选择的可以拖动进行排序，单击选中，双击删除)。';
 $lang['web_config_edit_html']			= '板块内容设置';
 $lang['web_config_picture_tit']			= '标题图片';
-//v3-v12
+//
 $lang['web_config_web_channel']			= '频道列表'; 
 $lang['web_config_floor_list']			= '模块列表'; 
 $lang['web_config_edit_category']			= '推荐分类';
@@ -65,7 +65,7 @@ $lang['web_config_upload_url_tips']			= '输入点击该图片后所要跳转的
 $lang['web_config_category_title']			= '添加推荐分类';
 $lang['web_config_category_note']			= '从分类下拉菜单中选择该板块要推荐的分类，选择父级分类将包含字分类。';
 $lang['web_config_category_tips']			= '小提示：双击分类名称可删除不想显示的分类';
-//首页楼层横幅 v3-b12
+//首页楼层横幅 
     $lang['web_config_picture_banner']                        = '横幅图片';
     $lang['web_config_banner_tit']                                = '广告语';
     $lang['web_config_upload_banner']                        = '横幅图片上传';

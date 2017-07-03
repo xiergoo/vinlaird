@@ -6,7 +6,7 @@ error_reporting(0);
 
 //包含配置信息
 //$data = rkcache("setting", true);
-$data = require(BASE_DATA_PATH.DS.'cache'.DS.'setting.php'); // by 33hao.com
+$data = require(BASE_DATA_PATH.DS.'cache'.DS.'setting.php'); 
 
 //判读站外分析是否开启
 if($data['share_isuse'] != 1 || $data['share_qqweibo_isuse'] != 1){

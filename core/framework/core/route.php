@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由  v3-b12
+ * 路由  
  *
  */
 defined('InShopNC') or exit('Access Invalid!');
