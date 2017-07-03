@@ -4,6 +4,7 @@
   <div class="fixed-bar">
     <div class="item-title">
       <h3><?php echo $lang['web_set'];?></h3>
+      <?php echo $output['top_link'];?>
     </div>
   </div>
   <div class="fixed-empty"></div>

@@ -146,7 +146,11 @@ class Model{
             }
             return $this->where($where)->get_field($args[1]);
         }else{
-            $error = 'Model Error:  Function '.$method.' is not exists!';
+            $model_name = get_called_class();
+            if($model_name && $model_name!='Model'){
+                $model_name = 'Model '.$model_name;
+            }
+            $error = 'Model Error:'.$model_name.' Function '.$method.' is not exists!';
             throw_exception($error);
             return;
         }
