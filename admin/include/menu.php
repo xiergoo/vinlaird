@@ -20,6 +20,9 @@ $arr = array(
             2 => array(
                 'args' 	=> 'goods',
 				'text' 	=> $lang['nc_goods']),
+            3 => array(
+                'args' 	=> 'saler',
+				'text' 	=> $lang['nc_saler']),
 		),
 		'left' =>array(
 			0 => array(
@@ -47,6 +50,13 @@ $arr = array(
 				'text' => $lang['nc_goods'],
 				'list' => array(
 					array('args'=>'goods,goods,goods',						'text'=>$lang['nc_goods_manage']),
+				)
+			),
+            3 => array(
+				'nav' => 'saler',
+				'text' => $lang['nc_saler'],
+				'list' => array(
+					array('args'=>'saler,saler,saler',						'text'=>$lang['nc_saler_manage']),
 				)
 			),
 		),

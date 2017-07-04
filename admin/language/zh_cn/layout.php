@@ -183,7 +183,8 @@ $lang['nc_circle_memberlevel']		= '成员头衔设置';
 $lang['nc_circle_advmanage']		= '圈子首页广告';
 $lang['nc_circle_cache']			= '更新圈子缓存';
 $lang['nc_circle_informnamage']		= '圈子举报管理';
-
+$lang['nc_saler']='销售商';
+$lang['nc_saler_manage']='销售商';
 /**
  * 页面中的常用文字
  */
