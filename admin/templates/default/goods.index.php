@@ -7,6 +7,7 @@
   <div class="fixed-bar">
     <div class="item-title">
       <h3><?php echo $lang['goods_index_goods'];?></h3>
+      <?php echo $output['top_link'];?>
     </div>
   </div>
   <div class="fixed-empty"></div>
@@ -20,56 +21,45 @@
       </tr>
       <tr>
         <td><ul>
-            <li><?php echo $lang['goods_index_help1'];?></li>
-            <li><?php echo $lang['goods_index_help2'];?></li>
+            <li><?php //echo $lang['goods_index_help1'];?></li>
+            <li><?php //echo $lang['goods_index_help2'];?></li>
           </ul></td>
       </tr>
     </tbody>
   </table>
-  <form method='post' id="form_goods" action="<?php echo urlAdmin('goods', 'goods_del');?>">
+  <form method='post' id="form_goods">
     <input type="hidden" name="form_submit" value="ok" />
     <table class="table tb-type2">
       <thead>
         <tr class="thead">
-          <th class="w24"></th>
-          <th class="w24"></th>
-          <th class="w60 align-center">商品编号</th>
-          <th colspan="2"><?php echo $lang['goods_index_name'];?></th>
+          <th class="w24">商品编号</th>
+          <th class="w108">商品名称</th>
+          <th class="w72 align-center">成本价格(元)</th>
           <th class="w72 align-center">市场价格(元)</th>
-          <th class="w72 align-center">库存</th>
-          <th class="w72 align-center">可售状态</th>
-          <th class="w72 align-center">订货状态</th>
-          <th class="w108 align-center"><?php echo $lang['nc_handle'];?> </th>
+          <th class="w36 align-center">库存</th>
+          <th class="w60 align-center">可售状态</th>
+          <th class="w60 align-center">订货状态</th>
+          <th class="w60 align-center">生产状态</th>
+          <th class="w60 align-center">累计销量</th>
+          <th class="w36 align-center">排序</th>
+          <th class="w72 align-center"><?php echo $lang['nc_handle'];?> </th>
         </tr>
       </thead>
       <tbody>
         <?php if (!empty($output['goods_list']) && is_array($output['goods_list'])) { ?>
         <?php foreach ($output['goods_list'] as $k => $v) {?>
         <tr class="hover edit">
-          <td><input type="checkbox" name="id[]" value="<?php echo $v['goods_commonid'];?>" class="checkitem"></td>
-          <td><i class="icon-plus-sign" style="cursor: pointer;" nctype="ajaxGoodsList" data-comminid="<?php echo $v['goods_commonid'];?>" title="点击展开查看此商品全部规格；规格值过多时请横向拖动区域内的滚动条进行浏览。"></i></td>
-          <td class="align-center"><?php echo $v['goods_commonid'];?></td>
-          <td class="w60 picture"><div class="size-56x56"><span class="thumb size-56x56"><i></i><img src="<?php echo thumb($v, 60);?>" onload="javascript:DrawImage(this,56,56);"/></span></div></td>
-          <td>
-          <dl class="goods-info"><dt class="goods-name"><?php echo $v['goods_name'];?></dt>
-          <dd class="goods-type">
-              <?php if ($v['is_virtual'] ==1) {?><span class="virtual" title="虚拟兑换商品">虚拟</span><?php }?>
-              <?php if ($v['is_fcode'] ==1) {?><span class="fcode" title="F码优先购买商品">F码</span><?php }?>
-              <?php if ($v['is_presell'] ==1) {?><span class="presell" title="预先发售商品">预售</span><?php }?>
-              <?php if ($v['is_appoint'] ==1) {?><span class="appoint" title="预约销售提示商品">预约</span><?php }?>
-              <i class="icon-tablet <?php if ($v['mobile_body'] != '') {?>open<?php }?>" title="手机端商品详情"></i>
-            </dd>
-            <dd class="goods-store"><?php echo $output['ownShopIds'][$v['store_id']] ? '平台' : '三方'; ?>店铺：<?php echo $v['store_name'];?></dd></dl>
-            </td>
-          <td>
-            <p><?php echo $v['gc_name'];?></p>
-            <p class="goods-brand">品牌：<?php echo $v['brand_name'];?></p>
-            </td>
-          <td class="align-center"><?php echo $v['goods_price']?></td>
-          <td class="align-center"><?php echo $output['storage_array'][$v['goods_commonid']]['sum']?></td>
-          <td class="align-center"><?php echo $output['state'][$v['goods_state']];?></td>
-          <td class="align-center"><?php echo $output['verify'][$v['goods_verify']];?></td>
-          <td class="align-center"><a href="<?php echo urlShop('goods', 'index', array('goods_id' => $output['storage_array'][$v['goods_commonid']]['goods_id']));?>" target="_blank"><?php echo $lang['nc_view'];?></a>&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="goods_lockup(<?php echo $v['goods_commonid'];?>);">违规下架</a></td>
+          <td class="align-center"><?php echo $v['goods_id'];?></td>
+          <td><?php echo $v['goods_name'];?></td>
+          <td class="align-center"><?php echo $v['goods_buy_price']?></td>
+          <td class="align-center"><?php echo $v['goods_market_price']?></td>
+          <td class="align-center"><?php echo $v['goods_stock']?></td>
+          <td class="align-center"><?php echo ($v['can_order']?'':'不') ?>可下单</td>
+          <td class="align-center"><?php echo ($v['can_saler_order']?'':'不') ?>可订货</td>
+          <td class="align-center"><?php echo ($v['can_factory_order']?'':'不') ?>可生产</td>
+          <td class="align-center"><?php echo $v['sale_count'] ?></td>
+          <td class="align-center"><?php echo $v['goods_sort'] ?></td>
+          <td class="align-center"><a href="<?php echo urlAdmin('goods', 'edit', array('goods_id' => $v['goods_id']));?>"><?php echo $lang['nc_edit'];?></a></td>
         </tr>
         <tr style="display:none;">
           <td colspan="20"><div class="ncsc-goods-sku ps-container"></div></td>
@@ -81,14 +71,6 @@
         </tr>
         <?php } ?>
       </tbody>
-      <tfoot>
-        <tr class="tfoot">
-          <td><input type="checkbox" class="checkall" id="checkallBottom"></td>
-          <td colspan="16"><label for="checkallBottom"><?php echo $lang['nc_select_all']; ?></label>
-            &nbsp;&nbsp;<a href="JavaScript:void(0);" class="btn" nctype="lockup_batch"><span>违规下架</span></a>
-            <div class="pagination"> <?php echo $output['page'];?> </div></td>
-        </tr>
-      </tfoot>
     </table>
   </form>
 </div>

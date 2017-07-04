@@ -47,7 +47,6 @@ $arr = array(
 				'text' => $lang['nc_goods'],
 				'list' => array(
 					array('args'=>'goods,goods,goods',						'text'=>$lang['nc_goods_manage']),
-					array('args'=>'add,goods,goods',						'text'=>'新增商品'),
 				)
 			),
 		),

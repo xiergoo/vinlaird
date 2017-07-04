@@ -3,7 +3,8 @@
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
-            <h3><?php if($output['goods_info']['goods_id']>0){ echo '编辑商品'; }else{ echo '新增商品'; } ?></h3>
+            <h3><?php echo $lang['goods_index_goods'];?></h3>
+            <?php echo $output['top_link'];?>
         </div>
     </div>
     <div class="fixed-empty"></div>
