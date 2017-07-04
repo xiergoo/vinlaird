@@ -17,6 +17,9 @@ $arr = array(
 			1 => array(
 				'args' 	=> 'setting',
 				'text' 	=> $lang['nc_config']),
+            2 => array(
+                'args' 	=> 'goods',
+				'text' 	=> $lang['nc_goods']),
 		),
 		'left' =>array(
 			0 => array(
@@ -30,13 +33,21 @@ $arr = array(
 				'nav' => 'setting',
 				'text' => $lang['nc_config'],
 				'list' => array(
-					array('args'=>'base,setting,setting',			'text'=>$lang['nc_web_set']),	
-					array('args'=>'email,message,setting',			'text'=>$lang['nc_message_set']),
+                    //array('args'=>'base,setting,setting',			'text'=>$lang['nc_web_set']),	
+                    //array('args'=>'email,message,setting',			'text'=>$lang['nc_message_set']),
 					array('args'=>'admin,admin,setting',			'text'=>$lang['nc_limit_manage']),
 					//
 					array('args'=>'clear,cache,setting',			'text'=>$lang['nc_admin_clear_cache']),
 					array('args'=>'db,db,setting',			'text'=>'数据备份'),
 					array('args'=>'list,admin_log,setting',			'text'=>$lang['nc_admin_log']),
+				)
+			),
+            2 => array(
+				'nav' => 'goods',
+				'text' => $lang['nc_goods'],
+				'list' => array(
+					array('args'=>'goods,goods,goods',						'text'=>$lang['nc_goods_manage']),
+					array('args'=>'add,goods,goods',						'text'=>'新增商品'),
 				)
 			),
 		),

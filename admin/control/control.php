@@ -101,7 +101,7 @@ class SystemControl{
 		}
 
 		//以下几项不需要验证
-		$tmp = array('index','dashboard','login','common','cms_base');
+		$tmp = array('index','dashboard','login','common',);
 		if (in_array($act,$tmp)) return true;
 		if (in_array($act,$permission) || in_array("$act.$op",$permission)){
 			return true;
@@ -311,4 +311,5 @@ class SystemControl{
 	        $model_cron->addCron($data);
 	    }
 	}
+    
 }

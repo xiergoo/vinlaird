@@ -161,3 +161,27 @@ function http_curl_get($url, $timeout=15){ // 模拟获取内容函数
     return $result;
 }
 
+/**
+ * 过滤获取POST表单数据
+ * @param array $default_fields ['字段名1'=>'默认值1','字段名2'=>['默认值2','处理函数']]
+ * @return array ['字段名1'=>'POST值1','字段名2'=>'POST值2']
+ */
+function get_from_data($rules){
+    $data=[];
+    foreach ($rules as $field=>$rule)
+    {
+        $value = trim($_POST[$field]);
+        if(is_array($rule)){
+            $fun = $rule[1];
+            if($fun && function_exists($fun)){
+                $value = $value?$value:$fun($rule[0]);
+            }else{
+                $value = $value?$value:$rule[0];
+            }
+        }else{
+            $value = $value?$value:$rule;
+        }
+        $data[$field] = $value;
+    }
+    return $data;
+}
