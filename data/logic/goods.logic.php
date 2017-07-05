@@ -2,6 +2,7 @@
 defined('InShopNC') or exit('Access Invalid!');
 
 class goodsLogic {
+        
     public function save_form_data($goods_id=0){
         $field = ['goods_name'=>'','goods_market_price'=>[0,'intval'],'goods_buy_price'=>[0,'intval'],'goods_stock'=>[0,'intval'],'stock_warning'=>[0,'intval'],'goods_sort'=>[0,'intval'],'can_order'=>[0,'intval'],'can_saler_order'=>[0,'intval'],'can_factory_order'=>[0,'intval']];
         $data = get_from_data($field);

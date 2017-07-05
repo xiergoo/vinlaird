@@ -23,6 +23,9 @@ $arr = array(
             3 => array(
                 'args' 	=> 'saler',
 				'text' 	=> $lang['nc_saler']),
+            4 => array(
+                'args' 	=> 'factory',
+				'text' 	=> $lang['nc_factory']),
 		),
 		'left' =>array(
 			0 => array(
@@ -57,6 +60,13 @@ $arr = array(
 				'text' => $lang['nc_saler'],
 				'list' => array(
 					array('args'=>'saler,saler,saler',						'text'=>$lang['nc_saler_manage']),
+				)
+			),
+			4 => array(
+				'nav' => 'factory',
+				'text' => $lang['nc_config'],
+				'list' => array(
+					array('args'=>'factory,factory,factory',			'text'=>$lang['nc_factory_manage']),
 				)
 			),
 		),

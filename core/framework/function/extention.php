@@ -170,7 +170,10 @@ function get_from_data($rules){
     $data=[];
     foreach ($rules as $field=>$rule)
     {
-        $value = trim($_POST[$field]);
+        $value = $_POST[$field];
+        if(is_string($value)){
+            $value= trim($value);
+        }
         if(is_array($rule)){
             $fun = $rule[1];
             if($fun && function_exists($fun)){
