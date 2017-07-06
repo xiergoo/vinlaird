@@ -47,7 +47,7 @@
           <td><?php echo $v['factory_name'];?></td>
           <td class="align-center"><?php echo $v['factory_status']?></td>
           <td class="align-center"><?php echo $v['factory_sort'] ?></td>
-          <td class="align-center"><a href="<?php echo urlAdmin('factory', 'edit', array('factory_id' => $v['factory_id']));?>"><?php echo $lang['nc_edit'];?></a></td>
+          <td class="align-center"><a href="<?php echo urlAdmin('factory', 'edit', array('factory_id' => $v['factory_id']));?>"><?php echo $lang['nc_edit'];?></a>&nbsp;|&nbsp;<a href="<?php echo urlAdmin('factory', 'order', array('factory_id' => $v['factory_id']));?>">生产订单</a></td>
         </tr>
         <tr style="display:none;">
           <td colspan="20"><div class="ncsc-factory-sku ps-container"></div></td>
