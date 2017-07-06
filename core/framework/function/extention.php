@@ -162,6 +162,28 @@ function http_curl_get($url, $timeout=15){ // 模拟获取内容函数
 }
 
 /**
+ * 输出json
+ * @param mixed $code 错误代码
+ * @param mixed $message 消息
+ * @param mixed $data 数据
+ */
+function output_json($code, $message='', $data=''){
+    $data = array (
+			'code' => $code,
+			'message' => $message,
+			'data' => $data 
+	);
+	header ( 'Content-Type:application/json; charset=utf-8' );
+    if (!empty($_GET['callback'])) {
+        echo $_GET['callback'] . '(' . json_encode($data, JSON_UNESCAPED_UNICODE) . ')';
+    } else {
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
+    exit;
+}
+
+
+/**
  * 过滤获取POST表单数据
  * @param array $default_fields ['字段名1'=>'默认值1','字段名2'=>['默认值2','处理函数']]
  * @return array ['字段名1'=>'POST值1','字段名2'=>'POST值2']
