@@ -10,6 +10,7 @@
     <div class="fixed-empty"></div>
     <form id="factory" name="factoryForm" method="post" action="<?php echo $output['action'] ?>">
         <?php Security::getToken(); ?>
+        <?php $readonly=' '; $disabled=''; if($output['view']){ $readonly=' readonly '; $disabled=' disabled=disabled '; } ?>
         <input type="hidden" name="form_submit" value="ok" />
         <table class="table tb-type2">
             <tbody>
@@ -19,10 +20,10 @@
                 </tr>
                 <tr class="noborder">
                     <td class="vatop rowform">
-                        <select name="factory_id" id="factory_id">
+                        <select name="factory_id" id="factory_id" <?php echo $disabled ?> >
                             <option>请选择</option>
                             <?php foreach ($output['factory_list'] as $factory) { ?>
-                            <option value="<?php echo $factory['factory_id'] ?>"><?php echo $factory['factory_name'] ?></option>
+                            <option value="<?php echo $factory['factory_id'] ?>" <?php if($factory['factory_id']==$output['factory_id']){ echo 'selected'; } ?> ><?php echo $factory['factory_name'] ?></option>
                             <?php } ?>
                         </select>
                     </td>
@@ -34,50 +35,84 @@
                 </tr>
                 <tr class="noborder">
                     <td class="vatop rowform">
-                        <select name="goods_id" id="goods_id">
-                            <option>请先选择工厂</option>
+                        <select name="goods_id" id="goods_id" <?php echo $disabled ?>>
+                            <option>请选择</option>
+                            <?php foreach ($output['goods_list'] as $goods) { ?>
+                            <option value="<?php echo $goods['goods_id'] ?>" <?php if($goods['goods_id']==$output['fo_info']['goods_id']){ echo 'selected'; } ?> ><?php echo $goods['goods_name'] ?></option>
+                            <?php } ?>
                         </select>
                     </td>
-                    <td class="vatop tips">请选择商品</td>
+                    <td class="vatop tips">请先选择工厂，再选择商品</td>
                 </tr>
-                <tr class="noborder">
+                <tr>
                     <td colspan="2" class="required">
                         <label class="validation" for="goods_num">单位成本价:</label></td>
                 </tr>
                 <tr class="noborder">
                     <td class="vatop rowform">
-                        <input type="text" value="" id="cost_price" readonly class="txt">
-                        <input type="hidden" value="" name="cost_price" id="cost_price1" class="txt"></td>
+                        <input type="text" value="<?php echo $output['fo_info']['cost_price']; ?>" id="cost_price" readonly class="txt">
+                        <input type="hidden" value="<?php echo $output['fo_info']['cost_price']; ?>" name="cost_price" id="cost_price1" class="txt"></td>
                     <td class="vatop tips">单位成本价，选择商品后，自动填充</td>
                 </tr>
-                <tr class="noborder">
+                <tr>
                     <td colspan="2" class="required">
                         <label class="validation" for="goods_num">数量:</label></td>
                 </tr>
                 <tr class="noborder">
                     <td class="vatop rowform">
-                        <input type="text" value="" name="goods_num" id="goods_num" class="txt" onkeyup="numonly(this)"></td>
+                        <input type="text" value="<?php echo $output['fo_info']['goods_num']; ?>" name="goods_num" id="goods_num" class="txt" onkeyup="numonly(this)" <?php echo $readonly ?>></td>
                     <td class="vatop tips">请填写数量</td>
                 </tr>
-                <tr class="noborder">
+                <tr>
                     <td colspan="2" class="required">
                         <label class="validation" for="pay_amount">应付金额:</label></td>
                 </tr>
                 <tr class="noborder">
                     <td class="vatop rowform">
-                        <input type="text" value="" id="pay_amount" readonly class="txt">
-                        <input type="hidden" value="" name="pay_amount" id="pay_amount1" class="txt"></td>
+                        <input type="text" value="<?php echo $output['fo_info']['pay_amount']; ?>" id="pay_amount" readonly class="txt">
+                        <input type="hidden" value="<?php echo $output['fo_info']['pay_amount']; ?>" name="pay_amount" id="pay_amount1" class="txt"></td>
                     <td class="vatop tips">订单应付金额，选择工厂和商品后，自动填充</td>
                 </tr>
+                <?php if($output['view']){ ?>
+                <tr>
+                    <td colspan="2">
+                        <label><b>订单状态:&nbsp;</b><?php echo $output['fo_info']['fo_status_str'] ?></label>
+                        <br />
+                        <br />
+                        <label>
+                            <b>相关信息:&nbsp;</b>
+                            <?php if($output['fo_info']['fo_status']==0){
+                                      echo '采购申请时间：'.date('Y-m-d H:i:s',$output['fo_info']['create_time']).' 申请人ID：'.$output['fo_info']['create_admin_id'].'<br>取消时间：'.date('Y-m-d H:i:s',$output['fo_info']['cancel_time']).' 取消操作ID：'.$output['fo_info']['cancel_admin_id'];
+                                  }elseif($output['fo_info']['fo_status']==1){
+                                      echo '采购申请时间：'.date('Y-m-d H:i:s',$output['fo_info']['create_time']).' 申请人ID：'.$output['fo_info']['create_admin_id'];
+                                  }elseif($output['fo_info']['fo_status']==2){
+                                      echo '采购申请时间：'.date('Y-m-d H:i:s',$output['fo_info']['create_time']).' 申请人ID：'.$output['fo_info']['create_admin_id'].'<br>审核时间：'.date('Y-m-d H:i:s',$output['fo_info']['check_time']).' 审核人ID：'.$output['fo_info']['create_admin_id'];
+                                  }elseif($output['fo_info']['fo_status']==3){
+                                      echo '采购申请时间：'.date('Y-m-d H:i:s',$output['fo_info']['create_time']).' 申请人ID：'.$output['fo_info']['create_admin_id'].'<br>审核时间：'.date('Y-m-d H:i:s',$output['fo_info']['check_time']).' 审核人ID：'.$output['fo_info']['create_admin_id'].'<br>入库时间：'.date('Y-m-d H:i:s',$output['fo_info']['finish_time']).' 入库人ID：'.$output['fo_info']['finish_admin_id'];
+                                  } ?></label>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label><b>支付状态:&nbsp;</b><?php if($output['fo_info']['pay_status']==1){ echo '已支付，支付时间：'.date('Y-m-d H:i:s',$output['fo_info']['pay_time']); }else{ echo '未支付'; } ?></label></td>
+                </tr>
+                <?php } ?>
             </tbody>
             <tfoot>
                 <tr class="tfoot">
-                    <td colspan="15"><a href="JavaScript:void(0);" class="btn" id="submitBtn"><span><?php echo $lang['nc_submit'];?></span></a></td>
+                    <td colspan="15">
+                        <?php if($output['view']){ ?>
+                        <a href="JavaScript:history.back();" class="btn"><span><?php echo $lang['nc_back'];?></span></a>
+                        <?php }else{ ?>
+                        <a href="JavaScript:void(0);" class="btn" id="submitBtn"><span><?php echo $lang['nc_submit'];?></span></a>
+                        <?php } ?>
+                    </td>
                 </tr>
             </tfoot>
         </table>
     </form>
-    <div id="divhide" style="display:none;" ></div>
+    <div id="divhide" style="display: none;"></div>
 </div>
 <script>
     $(document).ready(function () {
@@ -97,9 +132,9 @@
                     type: "POST",
                     url: '<?php echo urlAdmin('factory','getfgoods') ?>',
                     data: { factory_id: factory_id, formhash: '<?php echo Security::getTokenValue(); ?>' },
-                    dataType:'json',
+                    dataType: 'json',
                     success: function (result) {
-                        if (result.code>0) {
+                        if (result.code > 0) {
                             alert(result.message);
                             $("#goods_id").html('<option>请选择</option>');
                         } else {
@@ -136,7 +171,7 @@
             var num = $("#goods_num").val();
             var price = $("#cost_price").val();
             if (num > 0 && price > 0) {
-                pay_amount(num * price);
+                pay_amount((num * price).toFixed(2));
             } else {
                 pay_amount('');
             }

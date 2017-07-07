@@ -67,6 +67,7 @@ $arr = array(
 				'text' => $lang['nc_config'],
 				'list' => array(
 					array('args'=>'factory,factory,factory',			'text'=>$lang['nc_factory_manage']),
+					array('args'=>'factory_order,factory_order,factory',			'text'=>$lang['nc_factory_order']),
 				)
 			),
 		),

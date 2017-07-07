@@ -182,6 +182,21 @@ function output_json($code, $message='', $data=''){
     exit;
 }
 
+/**
+ * 使用二位数组的指定元素值作为一维数组健
+ * @param array $array
+ * @param string $value_key
+ * @return []
+ */
+function array_value_to_key($array, $value_key){
+    $return = [];
+    if (is_array($array)){
+        foreach ($array as $val){
+            $return[$val[$value_key]] = $val;
+        }
+    }
+    return $return;
+}
 
 /**
  * 过滤获取POST表单数据

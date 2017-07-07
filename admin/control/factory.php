@@ -53,53 +53,5 @@ class factoryControl extends SystemControl{
             Tpl::output('goods_list',$goods_list);
             Tpl::showpage('factory.save');
         }
-    }
-    
-    public function listOp(){
-        $factory_order_list = Model('factory_order')->order('fo_id desc')->page(20)->select();
-    }
-    
-    public function orderOp(){
-        if(chksubmit(true)){
-            
-        }else{
-            $factory_id = intval($_GET['factory_id']);
-            if($factory_id>0){
-                $factory_info = Model('factory')->where(['factory_id'=>$factory_id])->find();
-                if($factory_info['factory_id']<=0){
-                    showMessage('无效的工厂ID','','','error');
-                }
-                if($factory_info['factory_status']!=1){
-                    showMessage('该工厂未启用，请先弃用后再下定单','','','error');
-                }
-                Tpl::output('factory_id',$factory_id);
-            }            
-            $factory_list = Model('factory')->order('factory_sort desc,factory_id desc')->limit(100)->select();            
-            Tpl::output('top_link',$this->sublink(array_merge($this->links,[array('url'=>'act=factory&op=order','lang'=>'nc_factory_order'),]),'order'));
-            Tpl::output('factory_list', $factory_list); 
-            Tpl::showpage('factory.order');
-        }
-    }
-    
-    public function getfgoodsOp(){
-        if(Security::checkToken()){
-            $factory_id = intval($_POST['factory_id']);
-            if($factory_id>0){                
-                $factory_info = Model('factory')->where(['factory_id'=>$factory_id])->find();
-                if($factory_info['factory_id']<=0){
-                    output_json(1,'无效的工厂id');
-                }
-                $goods_list = [];
-                $goods_ids = explode(',',$factory_info['factory_goods']);
-                if($goods_ids){
-                    $goods_list = Model('goods')->where(['goods_id'=>['in',$goods_ids],'can_factory_order'=>1])->order('goods_sort desc,goods_id desc')->limit(100)->select();
-                }
-                output_json(0,'',$goods_list);
-            }else{
-                output_json(1,'缺少必要参数');
-            }
-        }else{
-            output_json(1,'页面已过期，请刷新页面后重试');
-        }
-    }
+    }    
 }

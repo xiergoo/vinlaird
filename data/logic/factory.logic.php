@@ -17,5 +17,5 @@ class factoryLogic {
             $result = Model('factory')->insert($data);
         }
         return $result;
-    }
+    }    
 }

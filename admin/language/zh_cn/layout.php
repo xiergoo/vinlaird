@@ -188,6 +188,7 @@ $lang['nc_saler_manage']='销售商管理';
 $lang['nc_factory']='工厂';
 $lang['nc_factory_manage']='工厂管理';
 $lang['nc_factory_order']='工厂订单';
+$lang['nc_factory_order_list']='工厂订单列表';
 /**
  * 页面中的常用文字
  */
