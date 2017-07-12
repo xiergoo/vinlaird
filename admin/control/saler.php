@@ -41,7 +41,7 @@ class salerControl extends SystemControl{
         }
     }
     private function save($saler_id=0){
-        if(chksubmit(true)){            
+        if(chksubmit(true)){
             $result = Logic('saler')->save_form_data($this->admin_info['id'], $saler_id);
             showMessage(($saler_id>0?'编辑':'新增').($result?'成功':'失败'),urlAdmin('saler','saler'));
         }else{
@@ -56,4 +56,7 @@ class salerControl extends SystemControl{
         }
     }
     
+    public function orderOp(){
+        $result = Logic('saler')->list_order();
+    }
 }

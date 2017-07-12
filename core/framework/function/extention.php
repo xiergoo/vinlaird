@@ -7,7 +7,8 @@ defined('InShopNC') or exit('Access Invalid!');
  */
 function is_mobile($mobile)
 {
-	$exp = "/^13[0-9]{1}[0-9]{8}$|14[0-9]{1}[0-9]{8}$|17[0-9]{1}[0-9]{8}$|15[012356789]{1}[0-9]{8}$|18[0-9]{9}$|14[57]{1}[0-9]{8}$/";
+//	$exp = "/^13[0-9]{1}[0-9]{8}$|14[0-9]{1}[0-9]{8}$|17[0-9]{1}[0-9]{8}$|15[012356789]{1}[0-9]{8}$|18[0-9]{9}$|14[57]{1}[0-9]{8}$/";
+    $exp = "/^13\d{9}$|^14[57]{1}\d{8}$|^15[012356789]{1}\d{8}$|^17\d{9}$|^18\d{9}$/";
 	if (preg_match($exp, trim($mobile))) {
 		return true;
 	} else {
@@ -224,4 +225,14 @@ function get_from_data($rules){
         $data[$field] = $value;
     }
     return $data;
+}
+
+/**
+ * 格式化价格
+ * @param mixed $price 
+ * @param int $precision 保留几位小数，默认2位
+ * @return mixed
+ */
+function price_format($price,$precision=2){
+    return number_format(floatval($price),$precision,'.','');
 }

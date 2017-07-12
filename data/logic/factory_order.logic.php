@@ -43,4 +43,85 @@ class factory_orderLogic {
         }
         return $result;
     }
+    
+    public function cancel($fo_id,$admin_id){
+        if($fo_id>0 && $admin_id>0){
+            $model = Model('factory_order');
+            $fo_info = $model->where(['fo_id'=>$fo_id])->find();
+            if($fo_info['fo_status']==1){
+                $update['fo_status']=0;
+                $update['cancel_admin_id']=$admin_id;
+                $update['cancel_time']=TIMESTAMP;
+                $result = $model->where(['fo_id'=>$fo_id])->update($update);
+                if($result){
+                    return callback(true,'订单已取消');
+                }else{
+                    return callback(false,'操作失败');
+                }
+            }else{
+                return callback(false,'状态错误');
+            }            
+        }else{
+            return callback(false,'参数缺失');
+        }
+        
+    }
+    
+    public function checking($fo_id,$admin_id){
+        if($fo_id>0 && $admin_id>0){
+            $model = Model('factory_order');
+            $fo_info = $model->where(['fo_id'=>$fo_id])->find();
+            if($fo_info['fo_status']==1){
+                $update['fo_status']=2;
+                $update['check_admin_id']=$admin_id;
+                $update['check_time']=TIMESTAMP;
+                $result = $model->where(['fo_id'=>$fo_id])->update($update);
+                if($result){
+                    return callback(true,'审核通过');
+                }else{
+                    return callback(false,'审核失败');
+                }
+            }else{
+                return callback(false,'状态错误');
+            }            
+        }else{
+            return callback(false,'参数缺失');
+        }
+        
+    }
+    
+    public function finish($fo_id,$admin_id){
+        if($fo_id>0 && $admin_id>0){
+            $model = Model('factory_order');
+            $fo_info = $model->where(['fo_id'=>$fo_id])->find();
+            if($fo_info['fo_status']==2){
+                $update['fo_status']=3;
+                $update['finish_admin_id']=$admin_id;
+                $update['finish_time']=TIMESTAMP;
+                Model::beginTransaction();
+                $result = $model->where(['fo_id'=>$fo_id])->update($update);
+                if($result){
+                    $goods_id = $fo_info['goods_id'];
+                    $goods_num = $fo_info['goods_num'];                    
+                    $update2['goods_stock']=array('exp','goods_stock+'.$goods_num);
+                    $result = Model('goods')->where(['goods_id'=>$goods_id])->update($update2);
+                    if($result){
+                        Model::commit();
+                        return callback(true,'入库成功');
+                    }else{
+                        Model::rollback();
+                        return callback(true,'审核失败(更新库存)');
+                    }
+                }else{
+                    Model::rollback();
+                    return callback(false,'审核失败');
+                }
+            }else{
+                return callback(false,'状态错误');
+            }            
+        }else{
+            return callback(false,'参数缺失');
+        }
+        
+    }
 }

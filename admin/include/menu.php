@@ -25,7 +25,10 @@ $arr = array(
 				'text' 	=> $lang['nc_saler']),
             4 => array(
                 'args' 	=> 'factory',
-				'text' 	=> $lang['nc_factory']),
+				'text' 	=> $lang['nc_factory']),            
+            5 => array(
+                'args' 	=> 'trade',
+				'text' 	=> $lang['nc_trade']),
 		),
 		'left' =>array(
 			0 => array(
@@ -60,14 +63,22 @@ $arr = array(
 				'text' => $lang['nc_saler'],
 				'list' => array(
 					array('args'=>'saler,saler,saler',						'text'=>$lang['nc_saler_manage']),
+					array('args'=>'order,saler,saler',						'text'=>$lang['nc_saler_order']),
 				)
 			),
 			4 => array(
 				'nav' => 'factory',
-				'text' => $lang['nc_config'],
+				'text' => $lang['nc_factory'],
 				'list' => array(
 					array('args'=>'factory,factory,factory',			'text'=>$lang['nc_factory_manage']),
 					array('args'=>'factory_order,factory_order,factory',			'text'=>$lang['nc_factory_order']),
+				)
+			),
+			5 => array(
+				'nav' => 'trade',
+				'text' => $lang['nc_trade'],
+				'list' => array(
+					array('args'=>'order,order,trade',			'text'=>$lang['nc_order_manage']),
 				)
 			),
 		),
