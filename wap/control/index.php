@@ -9,6 +9,7 @@ class IndexControl extends WapControl{
     
     public function indexOp(){
         $str_today=date('Y-m-d');
+        echo $str_today;
     }
     
     public function historyOp(){

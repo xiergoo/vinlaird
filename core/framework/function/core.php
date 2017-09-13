@@ -2460,3 +2460,18 @@ function url_current(){
     $current_url=str_replace('&state=','&state1=',$current_url);
     return $current_url; 
 }
+
+function get_wechat_handler(){
+    static $wechat_handler=null;
+    if($wechat_handler===null){
+        $settings = Model('setting')->getListSetting();
+        $options=[
+            'token'=>$settings['weixin_token'],
+            'appid'=>$settings['weixin_appid'],
+            'appsecret'=>$settings['weixin_secret'],
+            'encodingaeskey'=>$settings['weixin_encodingaeskey'],            
+        ];
+        $wechat_handler = new wechatbase($options);
+    }
+    return $wechat_handler;
+}
