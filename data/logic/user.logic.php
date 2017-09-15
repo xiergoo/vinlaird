@@ -2,6 +2,20 @@
 defined('InShopNC') or exit('Access Invalid!');
 
 class userLogic {
+    const limit_login=1;
+    const limit_daka=2;
+    const limit_buy=3;
+    const limit_score_out=4;
+    //5,6,7默认允许，先占用
+    const limit_score_in=8;
+    const limit_score_rechage=9;
+    public function limits($uid,$limit){
+        $user_info = $this->getUser($uid);
+        if(!$user_info){
+            return false;
+        }
+        return substr($user_info['limits'],$limit-1,1)==1;
+    }
     
     public function addUser($user){        
         if(!$user['openid']){
@@ -20,6 +34,7 @@ class userLogic {
 			'gender' => $user['sex']==1?1:($user['sex']==2?2:0),
 			'subscribe' => intval ( $user ['subscribe'] ),
 			'subscribetime' => intval ( $user ['subscribe_time'] ),
+            'limits'=>'1111111',
 			'addtime' => TIMESTAMP
 		);
         $id = $model->insert($data);
