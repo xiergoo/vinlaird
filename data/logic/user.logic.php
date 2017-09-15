@@ -10,14 +10,14 @@ class userLogic {
     const limit_score_in=8;
     const limit_score_rechage=9;
     public function limits($uid,$limit){
-        $user_info = $this->getUser($uid);
+        $user_info = $this->get_user($uid);
         if(!$user_info){
             return false;
         }
         return substr($user_info['limits'],$limit-1,1)==1;
     }
     
-    public function addUser($user){        
+    public function add_user($user){        
         if(!$user['openid']){
             return callback(1,'无效的openid');
         }
@@ -46,7 +46,7 @@ class userLogic {
         }
     }
     
-    public function getUser($idOrOpenid,$readCache=true){
+    public function get_user($idOrOpenid,$readCache=true){
         $userInfo=null;
         if($idOrOpenid>0){
             $where['id']=$idOrOpenid;
@@ -66,4 +66,5 @@ class userLogic {
         }
         return $userInfo;
     }
+
 }

@@ -83,12 +83,11 @@ class scoreLogic {
         if($uid<1){
             return callback(1,'无效的用户id',$score);
         }
-        if(!Logic('user')->limits($uid,userLogic::limit_buy)){
-            //没有权限
-            return callback(2,'无效的操作');
+        if($score['score']==0){
+            return callback(2,'无效的积分值');
         }
-        if($score['score']>=0){
-            return callback(2,'无效的积分值');            
+        if($score['score']>0){
+            $score['score']=0-$score['score'];
         }
         if( $socre['order_id']<1){
             return callback(3,'无效的order_id');             
@@ -217,6 +216,14 @@ class scoreLogic {
             $model_score->rollback();
             return callback(false);
         }
+    }
+    
+    public function get_score($uid){
+        $socre=0;
+        if($uid>0){
+            $socre = Model('score')->where(['uid'=>$uid])->sum('score');
+        }
+        return intval($socre);
     }
     
     public function luck(){
