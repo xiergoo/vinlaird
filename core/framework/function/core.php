@@ -1739,7 +1739,7 @@ function rcache($key = null, $prefix = '', $fields = '*'){
  * @param int $period 缓存周期  单位分，0为永久缓存
  * @return bool 返回值
  */
-function wcache($key = null, $data = array(), $prefix, $period = 0){
+function wcache($key = null, $data = array(), $prefix='', $period = 0){
     if ($key===null || !C('cache_open') || !is_array($data)) return;
     $period = intval($period);
     if ($period != 0) {
@@ -2478,8 +2478,8 @@ function get_wechat_handler(){
 
 function output_json($code=0, $message='', $data=[]) {
 	$data = array (
-			'code' => $code,
-			'message' => $message,
+			'state' => $code,
+			'msg' => $message,
 			'data' => $data 
 	);
 	header ( 'Content-Type:application/json; charset=utf-8' );

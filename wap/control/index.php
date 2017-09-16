@@ -32,11 +32,27 @@ class IndexControl extends WapControl{
         $pid=intval($_POST['pid']);
         $times=intval($_POST['times']);
         $score=intval($_POST['score']);
-        $nums = trim($_POST['score'],',');
+        $nums = trim($_POST['num'],',');
         $nums = explode(',',$nums);
-        if(in_array($times,$this->times_arr)){
+        if(!in_array($times,$this->times_arr)){
+            output_json(98,'数据错误，刷新后再试');
         }
-        output_json(1,$pid,$_POST);
+        if($score!=count($nums)*$times){
+            output_json(97,'数据错误，刷新后再试',$nums);
+        }
+        $data['pid']=$pid;
+        $data['uid']=1;
+        $data['score']=$score;
+        foreach ($nums as $num)
+        {
+        	$data['items'][]=['num'=>$num,'times'=>$times];
+        }
+        $result = Logic('order')->buy($data);
+        if($result['state']===true){
+            output_json();
+        }else{
+            output_json($result['state'],$result['msg']);
+        }
     }
     
     public function historyOp(){

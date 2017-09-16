@@ -6,55 +6,74 @@ class orderLogic {
     const period_max_socre=100000;
     /**
      * Summary of buy
-     * @param array $order ['pid','uid','score','items'=>[['num','score'],['num','score']]]
+     * @param array $order ['pid','uid','score','items'=>[['num','times'],['num','times']]]
      */
     public function buy($order){
         $uid=$order['uid'];
         if($uid<1){
-            return callback(1,'ÎŞĞ§µÄÓÃ»§id',$order);
+            return callback(1,'æ— æ•ˆçš„ç”¨æˆ·id',$order);
         }
         if(!Logic('user')->limits($uid,userLogic::limit_buy)){
-            //Ã»ÓĞÈ¨ÏŞ
-            return callback(2,'ÎŞĞ§µÄ²Ù×÷');
+            //æ²¡æœ‰æƒé™
+            return callback(2,'æ— æ•ˆçš„æ“ä½œ');
         }
         $pid=$order['pid'];
         if($pid<1){
-            return callback(3,'ÎŞĞ§µÄpid',$order);
+            return callback(3,'æ— æ•ˆçš„pid',$order);
         }
-        $period_info = Logic('period')->get_the_period();
-        if(!$period_info){
-            return callback(4,'±¾ÆÚ²»´æÔÚ',$order);
+        $result = Logic('period')->get_the_period();
+        if($result['state']!==true){
+            return callback(4,'æœ¬æœŸä¸å­˜åœ¨',$order);
         }
+        $period_info=$result['data'];
         if($period_info['pstatus']!=1){
-            return callback(5,'±¾ÆÚ¹ºÂòÒÑ½áÊø',$order);        
+            return callback(5,'æœ¬æœŸè´­ä¹°å·²ç»“æŸ',$order);        
         }
         if($period_info['jtime']-TIMESTAMP<300){
-            return callback(6,'±¾ÆÚ¹ºÂòÒÑ½áÊø£¬¼´½«½ÒÏş',$order);
+            return callback(6,'æœ¬æœŸè´­ä¹°å·²ç»“æŸï¼Œå³å°†æ­æ™“',$order);
         }
         $score=$order['score'];
         if($score<self::period_min_socre){
-            return callback(7,'ÎŞĞ§µÄ»ı·ÖÊıÁ¿',$order);
+            return callback(7,'æ— æ•ˆçš„ç§¯åˆ†æ•°é‡',$order);
         }
         if($score%100!=0){
-            return callback(8,'ÎŞĞ§µÄ»ı·ÖÊıÁ¿',$order);
+            return callback(8,'æ— æ•ˆçš„ç§¯åˆ†æ•°é‡',$order);
         }
         $user_score = Logic('score')->get_score($uid);
         if($user_score<$score){
-            return callback(9,'»ı·Ö²»×ã',$order);
+            return callback(9,'ç§¯åˆ†ä¸è¶³',$order);
         }
         $item_sum_score=0;
         foreach ($order['items'] as $item)
         {
-        	$item_sum_score+=$item['score'];
+        	$item_sum_score+=$item['times'];
         }
         if($item_sum_score!=$score){
-            return callback(10,'»ı·ÖÊıÁ¿ÓĞÎó',$order);
+            return callback(10,'ç§¯åˆ†æ•°é‡æœ‰è¯¯',$order);
         }
         $data=[];
         $model_order = Model('order');
         $model_order->beginTransaction();
         foreach ($order['items'] as $item)
-        {            $data['uid']=$uid;            $data['pid']=$pid;            $data['num']=$item['num'];            $data['score']=$item['score'];            $data['is_right']=0;            $data['stime']=0;            $data['ctime']=TIMESTAMP;            $order_id = $model_order->insert($data);            if($order_id){                $result = Logic('score')->buy(['uid'=>$uid,'score'=>$item['score'],'order_id'=>$order_id]);                if($result['state']!==true){                    $model_order->rollback();                    return $result;                }            }else{                $model_order->rollback();                return callback(false,'¶©µ¥²åÈëÊ§°Ü',$data);            }
+        {
+            $data['uid']=$uid;
+            $data['pid']=$pid;
+            $data['num']=$item['num'];
+            $data['score']=$item['times'];
+            $data['is_right']=0;
+            $data['stime']=0;
+            $data['ctime']=TIMESTAMP;
+            $order_id = $model_order->insert($data);
+            if($order_id){
+                $result = Logic('score')->buy(['uid'=>$uid,'score'=>$item['times'],'order_id'=>$order_id]);
+                if($result['state']!==true){
+                    $model_order->rollback();
+                    return $result;
+                }
+            }else{
+                $model_order->rollback();
+                return callback(false,'è®¢å•æ’å…¥å¤±è´¥',$data);
+            }
         }
         $model_order->commit();
         return callback(true);

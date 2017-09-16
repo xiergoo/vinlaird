@@ -44,6 +44,13 @@
             <button class="weui-btn weui-btn_primary weui-btn_disabled btn_submit">请选号码</button>
         </div>
     </div>
+    <div id="toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i id="toast_icon" class="weui-icon-success weui-icon_toast"></i>
+            <p id="toast_msg" class="weui-toast__content">已完成</p>
+        </div>
+    </div>
 </body>
 <script src="/static/js/jquery-3.2.1.min.js"></script>
 <script>
@@ -78,18 +85,39 @@
             if (btn.hasClass('weui-btn_disabled')) {
                 return false;
             }
-            alert(num + '|' + times + '|' + score);
             $.ajax({
                 type: 'POST',
                 url: '<?php echo url('index','commit') ?>',
                 data: { 'pid': '<?php echo $peroid['id']; ?>', 'formhash': '<?php echo Security::getTokenValue(); ?>', 'score': score, 'times': times, 'num': num },
                 dataType: 'json',
                 success: function (result) {
-
+                    if (result.state > 0) {
+                        toast_msg(false, result.msg);
+                    } else {
+                        toast_msg(true);
+                    }
                 }
             });
         })
     })
+
+    function toast_msg(success,msg) {
+        var $toast = $('#toast');
+        if (success) {
+            $("#toast_icon").attr('class','weui-icon-success-no-circle weui-icon_toast');
+            $("#toast_msg").html('下单成功');
+        } else {
+            $("#toast_icon").attr('class', 'weui-icon-warn weui-icon_toast');
+            $("#toast_msg").html(msg);
+        }
+        if ($toast.css('display') != 'none') return;
+
+        $toast.fadeIn(100);
+        setTimeout(function () {
+            $toast.fadeOut(100);
+        }, 2000);
+    }
+
     function cancel_selected(obj) {
         var btn = $(obj);
         var btn_num = $("#btn_num_" + btn.html());

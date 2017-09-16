@@ -75,10 +75,10 @@ class scoreLogic {
     
     /**
      * Summary of buy
-     * @param array $socre ['uid','score','order_id']
+     * @param array $score ['uid','score','order_id']
      * @return mixed
      */
-    public function buy($socre){
+    public function buy($score){
         $uid=$score['uid'];
         if($uid<1){
             return callback(1,'无效的用户id',$score);
@@ -89,12 +89,12 @@ class scoreLogic {
         if($score['score']>0){
             $score['score']=0-$score['score'];
         }
-        if( $socre['order_id']<1){
+        if( $score['order_id']<1){
             return callback(3,'无效的order_id');             
         }
         $data['uid']=$uid;
         $data['type']=self::score_type_buy;
-        $data['params']=$socre['order_id'];
+        $data['params']=$score['order_id'];
         $data['score']=$score['score'];
         $data['mark']='下单';
         $data['ctime']=TIMESTAMP;
@@ -165,19 +165,19 @@ class scoreLogic {
         if($score['v_code']<100000){
             return callback(2,'无效兑换码');        
         }
-        $socre_exc_info = Model('score_exc')->where(['v_code'=>$score['v_code']])->order('id desc')->find();
-        if($socre_exc_info['id']<1){
+        $score_exc_info = Model('score_exc')->where(['v_code'=>$score['v_code']])->order('id desc')->find();
+        if($score_exc_info['id']<1){
             return callback(2,'无效兑换码');
         }
-        if($socre_exc_info['ctime']+600<=TIMESTAMP){
+        if($score_exc_info['ctime']+600<=TIMESTAMP){
             return callback(2,'无效兑换码已过期，请重新生成');
         }
-        if($socre_exc_info['rec_uid']>0){
+        if($score_exc_info['rec_uid']>0){
             return callback(2,'兑换码已使用');
         }
         $result=true;
         $model_score = Model('score');
-        $score_info = $model_score->where(['type'=>self::score_type_in,'params'=>$socre_exc_info['id']])->find();
+        $score_info = $model_score->where(['type'=>self::score_type_in,'params'=>$score_exc_info['id']])->find();
         $model_score->beginTransaction();
         if($score_info['id']>0){
             if($score_info['uid']!=$uid){
@@ -187,19 +187,19 @@ class scoreLogic {
             $data=[];
             $data['uid']=$uid;
             $data['type']=self::score_type_in;
-            $data['params']=$socre_exc_info['id'];
+            $data['params']=$score_exc_info['id'];
             $data['score']=$score['score'];
             $data['mark']='转入';
             $data['ctime']=TIMESTAMP;
             $result=$model_score->insert($data);
         }
         if($result){
-            $score_info = $model_score->where(['uid'=>$socre_exc_info['uid'],'type'=>self::score_type_out,'params'=>$socre_exc_info['id']])->find();
+            $score_info = $model_score->where(['uid'=>$score_exc_info['uid'],'type'=>self::score_type_out,'params'=>$score_exc_info['id']])->find();
             if(!$score_info){
                 $data=[];
                 $data['uid']=$uid;
                 $data['type']=self::score_type_out;
-                $data['params']=$socre_exc_info['id'];
+                $data['params']=$score_exc_info['id'];
                 $data['score']=0-$score['score'];
                 $data['mark']='转出';
                 $data['ctime']=TIMESTAMP;
@@ -207,7 +207,7 @@ class scoreLogic {
             }
         }
         if($result){
-            $result = Model('score_exc')->where(['id'=>$socre_exc_info['id']])->update(['rec_uid'=>$uid,'v_code'=>'','exctime'=>TIMESTAMP]);
+            $result = Model('score_exc')->where(['id'=>$score_exc_info['id']])->update(['rec_uid'=>$uid,'v_code'=>'','exctime'=>TIMESTAMP]);
         }
         if($result){
             $model_score->commit();
@@ -219,11 +219,11 @@ class scoreLogic {
     }
     
     public function get_score($uid){
-        $socre=0;
+        $score=0;
         if($uid>0){
-            $socre = Model('score')->where(['uid'=>$uid])->sum('score');
+            $score = Model('score')->where(['uid'=>$uid])->sum('score');
         }
-        return intval($socre);
+        return intval($score);
     }
     
     public function list_score($uid,$p){
