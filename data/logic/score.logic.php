@@ -125,12 +125,12 @@ class scoreLogic {
             return callback(2,'只能是100的整数倍');            
         }
         $model_score_exc = Model('score_exc');
-        $v_code=mt_rand(121213,999999);
+        $v_code=mt_rand(1212,9999);
         $where['v_code']=$v_code;
         $where['rec_uid']=0;
         $where['ctime']=['egt'=>TIMESTAMP-600];
         while($model_score_exc->where($where)->find()){
-            $v_code=mt_rand(121213,999999);
+            $v_code=mt_rand(1212,9999);
             $where['v_code']=$v_code;
         }
         $data['uid']=$uid;
@@ -224,6 +224,10 @@ class scoreLogic {
             $socre = Model('score')->where(['uid'=>$uid])->sum('score');
         }
         return intval($socre);
+    }
+    
+    public function list_score($uid,$p){
+        return Model('score')->where(['uid'=>$uid])->order('id desc')->page($p)->select();
     }
     
     public function luck(){

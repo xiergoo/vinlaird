@@ -59,17 +59,21 @@ class orderLogic {
         $model_order->commit();
         return callback(true);
     }
-    
-    
-    
-    public function list_user_order($uid){
-    
+        
+    public function list_user_order($uid,$p=1,$is_right=0){
+        $where['uid']=$uid;
+        if($is_right){
+            $where['is_right']=1;
+        }
+        return Model('order')->where($where)->order('pid desc')->page($p)->select();
     }
     
-    public function list_lucker($pid){
-    }
-    
-    public function list_period_order($pid){
+    public function list_period_order($pid,$is_right=0){
+        $where['pid']=$pid;
+        if($is_right){
+            $where['is_right']=1;
+        }
+        return Model('order')->where($where)->page($p)->select();
     
     }
 }

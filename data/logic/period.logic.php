@@ -3,6 +3,7 @@ defined('InShopNC') or exit('Access Invalid!');
 
 class periodLogic {
     public function get_the_period(){
+        $result=true;
         $week=date('w');
         $start_time=strtotime('today');
         if($week==6){
@@ -15,7 +16,7 @@ class periodLogic {
         $period_info = $model_period->where(['jtime'=>['between',$start_time,$end_time]])->find();
         if($period_info['id']<1){
             $pno=$model_period->field('max(pno) pno')->find();
-            $data['pno']=$pno?$pno['pno']+1:'100';
+            $data['pno']=$pno['pno']>=100?$pno['pno']+1:'100';//从100期开始
             $data['pstatus']=1;
             $data['dpnum']=0;
             $data['jnum']=0;
