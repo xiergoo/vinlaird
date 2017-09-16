@@ -60,11 +60,11 @@
             if (btn.attr('data-hide') == 1) {
                 return false;
             }
-            btn.attr('data-hide', 1);
             if ($("#span_selected").children().length >= 5) {
-                alert('最多5个');
+                toast_msg(false, '一次最多选择5个号码');
                 return false;
             }
+            btn.attr('data-hide', 1);
             btn.addClass('weui-btn_plain-disabled');
             $("#span_selected").append('<button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default" onclick="cancel_selected(this)">' + btn.html() + '</button>');
             calc_socre();
