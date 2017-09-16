@@ -2475,3 +2475,13 @@ function get_wechat_handler(){
     }
     return $wechat_handler;
 }
+
+function output_json($code=0, $message='', $data=[]) {
+	$data = array (
+			'code' => $code,
+			'message' => $message,
+			'data' => $data 
+	);
+	header ( 'Content-Type:application/json; charset=utf-8' );
+	exit ( json_encode ( $data, JSON_UNESCAPED_UNICODE ) );
+}

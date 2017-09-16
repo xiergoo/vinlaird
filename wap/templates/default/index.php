@@ -12,25 +12,28 @@
     <meta content="email=no" name="format-detection">
     <link href="/static/css/weui.min.css" rel="stylesheet" />
 </head>
-    <?php $peroid = $output['period'] ?>
+<?php $peroid = $output['period'] ?>
 <body>
-    <div class="container" id="container"><!--F43530 E64340 CE3C39-->
+    <div class="container" id="container">
+        <!--F43530 E64340 CE3C39-->
         <div style="background-color: #F43530; padding: 2px 0px 2px 15px; font-size: 23px">
-            <b>第<?php echo $peroid['pno']; ?>期</b><span style="font-size:18px">（<?php echo date('m月d日H',$peroid['jtime']); ?>点开）</span>
+            <b>第<?php echo $peroid['pno']; ?>期</b><span style="font-size: 18px">（<?php echo date('m月d日H',$peroid['jtime']); ?>点开）</span>
         </div>
         <hr style="margin: 1px 0px 10px 0px" />
-        <div style="padding-left: 10px"><?php for($i=0;$i<50;$i++){ ?><button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default btn_num" id="btn_num_<?php echo sprintf('%02d',$i); ?>" data-num="<?php echo sprintf('%02d',$i); ?>"><?php echo sprintf('%02d',$i); ?></button><?php } ?></div>
+        <div style="padding-left: 10px"><?php for($i=0;$i<50;$i++){ ?><button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default btn_num" id="btn_num_<?php echo sprintf('%02d',$i); ?>"><?php echo sprintf('%02d',$i); ?></button><?php } ?></div>
         <hr style="margin: 13px 0px 13px 0px" />
         <div>
             <label style="margin: 0px 10px 0px 10px">已选</label><span id="span_selected"></span>
         </div>
         <hr style="margin: 13px 0px 1px 0px" />
         <div style="padding-left: 13px;">
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary btn_score_times" >100</button>
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary btn_score_times weui-btn_plain-disabled" >1000</button>
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary btn_score_times" >2000</button>
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary btn_score_times" >5000</button>
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary btn_score_times" >10000</button>
+            <?php foreach ($output['times'] as $index=>$times)
+                  {
+            ?>
+            <button class="weui-btn weui-btn_mini weui-btn_plain-primary btn_score_times<?php if ($index==1){ echo ' weui-btn_plain-disabled'; } ?>"><?php echo $times; ?></button>
+            <?php
+                  }
+            ?>
         </div>
         <hr style="margin: 13px 0px 13px 0px" />
         <div style="padding-left: 13px;">
@@ -38,7 +41,7 @@
         </div>
         <hr style="margin: 13px 0px 13px 0px" />
         <div>
-            <button class="weui-btn weui-btn_primary weui-btn_disabled btn_submit">确定</button>
+            <button class="weui-btn weui-btn_primary weui-btn_disabled btn_submit">请选号码</button>
         </div>
     </div>
 </body>
@@ -56,7 +59,7 @@
                 return false;
             }
             btn.addClass('weui-btn_plain-disabled');
-            $("#span_selected").append('<button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default" onclick="cancel_selected(this)" data-num="' + btn.attr('data-num') + '">' + btn.attr('data-num') + '</button>');
+            $("#span_selected").append('<button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default" onclick="cancel_selected(this)">' + btn.html() + '</button>');
             calc_socre();
         })
 
@@ -69,23 +72,48 @@
             times = parseInt($(this).text());
             calc_socre();
         })
+
+        $(".btn_submit").click(function () {
+            var btn = $(this);
+            if (btn.hasClass('weui-btn_disabled')) {
+                return false;
+            }
+            alert(num + '|' + times + '|' + score);
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo url('index','commit') ?>',
+                data: { 'pid': '<?php echo $peroid['id']; ?>', 'formhash': '<?php echo Security::getTokenValue(); ?>', 'score': score, 'times': times, 'num': num },
+                dataType: 'json',
+                success: function (result) {
+
+                }
+            });
+        })
     })
     function cancel_selected(obj) {
         var btn = $(obj);
-        var btn_num = $("#btn_num_" + btn.attr('data-num'));
+        var btn_num = $("#btn_num_" + btn.html());
         btn_num.attr('data-hide', 0);
         btn_num.removeClass('weui-btn_plain-disabled');
         btn.remove();
         calc_socre();
     }
-    var times = 1000;
+    var score = 0;
+    var times = parseInt('<?php echo intval($output['times'][1]); ?>');
+    var num = '';
     function calc_socre() {
-        var score = $("#span_selected").children().length * times;
+        num = '';
+        score = $("#span_selected").children().length * times;
+        $("#span_selected").children().each(function () {
+            num += $(this).text() + ',';
+        });
         $("#span_socre").html(score);
         if (score > 0) {
             $(".btn_submit").removeClass('weui-btn_disabled');
+            $(".btn_submit").html('确定');
         } else {
             $(".btn_submit").addClass('weui-btn_disabled');
+            $(".btn_submit").html('请选号码');
         }
     }
     calc_socre();

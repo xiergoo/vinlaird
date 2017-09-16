@@ -34,7 +34,7 @@ class Security{
 	 */
 	public static function checkToken(){
 		$data = decrypt($_POST['formhash'],md5(MD5_KEY));
-		return $data && (TIMESTAMP - $data < 5400);
+		return $data && (TIMESTAMP - $data < 1800);
 	}
 
 	/**
