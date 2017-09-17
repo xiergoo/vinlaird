@@ -13,6 +13,8 @@ class UserControl extends WapControl{
     }
     
     public function indexOp(){
-        
+        $user_info = Logic('user')->get_user($this->uid);
+        Tpl::output('user',$user_info);
+        Tpl::display('user.index');        
     }    
 }

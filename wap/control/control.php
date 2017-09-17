@@ -54,6 +54,7 @@ class WapControl{
                 die;
             }
         }
+        $_SESSION['member_id']=$this->uid;
 	}
 
 	protected final function getUser(){
@@ -76,7 +77,7 @@ class WapControl{
     
 	protected final function setUserId($userId){
         if($userId>0){
-            setNcCookie('u_key',encrypt(serialize($userId),md5(MD5_KEY)),7200,'',null);        
+            setNcCookie('u_key',encrypt(serialize($userId),md5(MD5_KEY)),7200,'',null);
         }
 	}
     
