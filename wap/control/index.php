@@ -6,7 +6,6 @@ defined('InShopNC') or exit('Access Invalid!');
 class IndexControl extends WapControl{
 
     private $times_arr=[100,1000,2000,5000,10000];
-    public function __construct(){}
     
     public function indexOp(){
         $result = Logic('period')->get_the_period();
@@ -41,7 +40,7 @@ class IndexControl extends WapControl{
             output_json(97,'数据错误，刷新后再试',$nums);
         }
         $data['pid']=$pid;
-        $data['uid']=1;
+        $data['uid']=$this->uid;
         $data['score']=$score;
         foreach ($nums as $num)
         {

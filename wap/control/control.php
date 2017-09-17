@@ -8,8 +8,10 @@ class WapControl{
     protected $uid = 0;
 	public function __construct(){
 		if(!in_weixin()){
-            //只能在微信中打开
-            // die;
+            if(!C('debug')){
+                //只能在微信中打开
+                die;
+            }
         }
         $user = $this->getUser();
         if(!$user){
@@ -46,7 +48,11 @@ class WapControl{
             $this->uid=$user['uid'];
             $this->setUserId($this->uid);
         }else{
-            die;
+            if(C('debug')){
+                $this->uid=1;
+            }else{
+                die;
+            }
         }
 	}
 

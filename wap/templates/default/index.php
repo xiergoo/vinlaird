@@ -16,8 +16,8 @@
 <body>
     <div class="container" id="container">
         <!--F43530 E64340 CE3C39-->
-        <div style="background-color: #F43530; padding: 2px 0px 2px 15px; font-size: 23px">
-            <b>第<?php echo $peroid['pno']; ?>期</b><span style="font-size: 18px">（<?php echo date('m月d日H',$peroid['jtime']); ?>点开）</span>
+        <div style="background-color: #F43530; padding: 10px 0px 10px 18px; font-size: 23px">
+            <b>第<?php echo $peroid['pno']; ?>期进行中</b><span style="font-size: 18px">（<?php echo date('m月d日H',$peroid['jtime']); ?>点开）</span>
         </div>
         <hr style="margin: 1px 0px 10px 0px" />
         <div style="padding-left: 10px"><?php for($i=0;$i<50;$i++){ ?><button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default btn_num" id="btn_num_<?php echo sprintf('%02d',$i); ?>"><?php echo sprintf('%02d',$i); ?></button><?php } ?></div>
@@ -95,6 +95,7 @@
                         toast_msg(false, result.msg);
                     } else {
                         toast_msg(true);
+                        set_default();
                     }
                 }
             });
@@ -117,6 +118,15 @@
             $toast.fadeOut(100);
         }, 2000);
     }
+    function set_default() {
+        $(".btn_num").attr('data-hide', 0);
+        $(".btn_num").removeClass('weui-btn_plain-disabled');
+        $("#span_selected").html('');
+        $(".btn_score_times").removeClass('weui-btn_plain-disabled');
+        $(".btn_score_times:eq(1)").addClass('weui-btn_plain-disabled');
+        times = default_times;
+        calc_socre();
+    }
 
     function cancel_selected(obj) {
         var btn = $(obj);
@@ -128,6 +138,7 @@
     }
     var score = 0;
     var times = parseInt('<?php echo intval($output['times'][1]); ?>');
+    var default_times = times;
     var num = '';
     function calc_socre() {
         num = '';

@@ -13,7 +13,7 @@ class periodLogic {
         }
         $end_time=$start_time+86399; 
         $model_period = Model('period');       
-        $period_info = $model_period->where(['jtime'=>['between',$start_time,$end_time]])->find();
+        $period_info = $model_period->where(['jtime'=>['between',[$start_time,$end_time]]])->find();
         if($period_info['id']<1){
             $pno=$model_period->field('max(pno) pno')->find();
             $data['pno']=$pno['pno']>=100?$pno['pno']+1:'100';//从100期开始
