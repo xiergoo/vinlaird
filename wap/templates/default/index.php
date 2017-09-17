@@ -14,7 +14,7 @@
 </head>
 <?php $peroid = $output['period'] ?>
 <body>
-    <div class="container" id="container">
+    <div>
         <!--F43530 E64340 CE3C39-->
         <div style="background-color: #F43530; padding: 10px 0px 10px 18px; font-size: 23px">
             <b>第<?php echo $peroid['pno']; ?>期进行中</b><span style="font-size: 18px">（<?php echo date('m月d日H',$peroid['jtime']); ?>点开）</span>

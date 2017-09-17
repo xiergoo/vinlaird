@@ -55,6 +55,8 @@ class IndexControl extends WapControl{
     }
     
     public function historyOp(){
-    
+        $list = Logic('period')->list_period();
+        Tpl::output('list',$list);
+        Tpl::display('history');
     }
 }
