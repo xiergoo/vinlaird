@@ -226,8 +226,8 @@ class scoreLogic {
         return intval($score);
     }
     
-    public function list_score($uid,$p){
-        return Model('score')->where(['uid'=>$uid])->order('id desc')->page($p)->select();
+    public function list_score($uid){
+        return Model('score')->where(['uid'=>$uid])->order('id desc')->page(20)->select();
     }
     
     public function luck(){

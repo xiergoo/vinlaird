@@ -24,3 +24,5 @@ define('ATTACH_PATH','attach');
 define('TPL_ADMIN_NAME', 'default');
 
 define('DEFAULT_CONNECT_SMS_TIME', 60);//倒计时时间
+
+define('IS_AJAX',       ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')) ? true : false);

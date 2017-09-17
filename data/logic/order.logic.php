@@ -79,12 +79,12 @@ class orderLogic {
         return callback(true);
     }
         
-    public function list_user_order($uid,$p=1,$is_right=0){
+    public function list_user_order($uid,$is_right=0){
         $where['uid']=$uid;
         if($is_right){
             $where['is_right']=1;
         }
-        return Model('order')->where($where)->order('pid desc')->page($p)->select();
+        return Model('order')->where($where)->order('pid desc')->page(20)->select();
     }
     
     public function list_period_order($pid,$is_right=0){

@@ -122,7 +122,7 @@
 
         <div class="weui-cells mt5">
             <div class="weui-cell">
-                <a class="weui-cell weui-cell_access" href="javascript:;" style="width: 100%">
+                <a class="weui-cell weui-cell_access" href="?act=user&op=score" style="width: 100%">
                     <div class="weui-cell__bd">
                         <p>积分明细</p>
                     </div>

@@ -24,7 +24,7 @@
                 <div style="padding-left: 8px"><?php for($i=0;$i<50;$i++){ ?><button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default btn_num" id="btn_num_<?php echo sprintf('%02d',$i); ?>"><?php echo sprintf('%02d',$i); ?></button><?php } ?></div>
                 <hr style="margin: 8px 0px 8px 0px" />
                 <div>
-                    <label style="margin: 0px 8px 0px 8px">已选</label><span id="span_selected"></span>
+                    <label style="margin: 0px 10px 0px 13px">已选</label><span id="span_selected"></span>
                 </div>
                 <hr style="margin: 8px 0px 1px 0px" />
                 <div style="padding-left: 13px;">

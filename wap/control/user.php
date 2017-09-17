@@ -18,5 +18,16 @@ class UserControl extends WapControl{
         Tpl::output('user',$user_info);
         Tpl::output('score',$score);
         Tpl::display('user.index');        
-    }    
+    } 
+    
+    public function scoreOp(){
+        $list = Logic('score')->list_score($this->uid);
+        if(IS_AJAX){
+            output_json(0,'',$list);
+        }
+        $page=pagecmd('obj');
+        Tpl::output('page_total',$page->getTotalPage());
+        Tpl::output('list',$list);
+        Tpl::display('user.score'); 
+    }
 }
