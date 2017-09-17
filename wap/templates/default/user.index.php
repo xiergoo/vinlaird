@@ -11,7 +11,6 @@
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
     <link href="/static/css/weui.min.css" rel="stylesheet" />
-<!--        <link href="/static/css/jquery-weui.css" rel="stylesheet" />-->
     <link href="/static/css/style.css" rel="stylesheet" />
     <style>
         html, body {
@@ -89,82 +88,79 @@
                     头像
                 </div>
                 <div class="">
-                    <img class="tx" src="/static/head/dh.jpg" alt="">
+                    <img class="tx" src="<?php echo $user['headimgurl'] ?>" alt="">
                 </div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     ID
                 </div>
-                <div class="weui-cell__price">12345</div>
-            </div>
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    姓名
-                </div>
-                <div class="weui-cell__price">陈小姐</div>
+                <div class="weui-cell__price"><?php echo $user['id'] ?></div>
             </div>
             <div class="weui-cell ">
                 <div class="weui-cell__bd">
                     昵称
                 </div>
-                <div class="weui-cell__price">Miss Chen</div>
+                <div class="weui-cell__price"><?php echo $user['nickname'] ?></div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     积分
                 </div>
-                <div class="weui-cell__price">1000000000</div>
+                <div class="weui-cell__price"><?php echo $output['score'] ?></div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     手机号码
                 </div>
-                <div class="weui-cell__price">13728936556</div>
+                <div class="weui-cell__price"><?php if(is_mobile($user['mobile'])){ echo substr_replace($user['mobile'],'****',3,4); } else { ?>
+                    <input class="weui-input" type="tel" placeholder="输入后自动保存，不能修改">
+                    <?php } ?>
+                </div>
             </div>
         </div>
 
         <div class="weui-cells mt5">
             <div class="weui-cell">
-                <a class="weui-cell weui-cell_access" href="javascript:;" style="width:100%">
-                    <div class="weui-cell__bd" >
-                        <p >积分明细</p>
+                <a class="weui-cell weui-cell_access" href="javascript:;" style="width: 100%">
+                    <div class="weui-cell__bd">
+                        <p>积分明细</p>
                     </div>
                     <div class="weui-cell__ft">
                     </div>
                 </a>
             </div>
             <div class="weui-cell">
-                <a class="weui-cell weui-cell_access" href="javascript:;" style="width:100%">
-                    <div class="weui-cell__bd" >
-                        <p >参与记录</p>
+                <a class="weui-cell weui-cell_access" href="javascript:;" style="width: 100%">
+                    <div class="weui-cell__bd">
+                        <p>参与记录</p>
                     </div>
                     <div class="weui-cell__ft">
                     </div>
                 </a>
             </div>
             <div class="weui-cell">
-                <a class="weui-cell weui-cell_access" href="javascript:;" style="width:100%">
-                    <div class="weui-cell__bd" >
-                        <p >幸运记录</p>
+                <a class="weui-cell weui-cell_access" href="javascript:;" style="width: 100%">
+                    <div class="weui-cell__bd">
+                        <p>幸运记录</p>
                     </div>
                     <div class="weui-cell__ft">
                     </div>
                 </a>
             </div>
             <div class="weui-cell">
-                <a class="weui-cell weui-cell_access" href="javascript:;" style="width:100%">
-                    <div class="weui-cell__bd" >
-                        <p >赠送</p>
+                <a class="weui-cell weui-cell_access" href="javascript:;" style="width: 100%">
+                    <div class="weui-cell__bd">
+                        <p>赠送</p>
                     </div>
                     <div class="weui-cell__ft">
                     </div>
                 </a>
             </div>
             <div class="weui-cell">
-                <a class="weui-cell weui-cell_access" href="javascript:;" style="width:100%">
-                    <div class="weui-cell__bd" >
-                        <p >签到</p>
+                <a class="weui-cell weui-cell_access" href="javascript:;" style="width: 100%">
+                    <div class="weui-cell__bd">
+                        <p>签到</p>
                     </div>
                     <div class="weui-cell__ft">
                     </div>
@@ -172,14 +168,27 @@
             </div>
         </div>
 
+        <div class="weui-tabbar" style="position:fixed;bottom:0px;">
+            <a href="?act=index&op=index" class="weui-tabbar__item">
+                <span style="display: inline-block; position: relative;">
+                    <img src="/static/img/ico_h.png" alt="" class="weui-tabbar__icon">
+                </span>
+                <p class="weui-tabbar__label">首页</p>
+            </a>
+            <a href="?act=index&op=history" class="weui-tabbar__item">
+                <span style="display: inline-block; position: relative;">
+                    <img src="/static/img/ico_l.png" alt="" class="weui-tabbar__icon">
+                </span>
+                <p class="weui-tabbar__label">往期</p>
+            </a>
+            <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
+                <img src="/static/img/ico_u_f.png" alt="" class="weui-tabbar__icon">
+                <p class="weui-tabbar__label">我</p>
+            </a>
+        </div>
+
     </div>
 
-
-
-
-    <!--
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery-weui.min.js"></script>-->
 
 </body>
 <script src="/static/js/jquery-3.2.1.min.js"></script>

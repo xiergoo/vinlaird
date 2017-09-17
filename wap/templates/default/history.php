@@ -44,6 +44,25 @@
                   }
             ?>
         </div>
+            
+        <div class="weui-tabbar" style="position:fixed;bottom:0px;">
+            <a href="?act=index&op=index" class="weui-tabbar__item">
+                <span style="display: inline-block; position: relative;">
+                    <img src="/static/img/ico_h.png" alt="" class="weui-tabbar__icon">
+                </span>
+                <p class="weui-tabbar__label">首页</p>
+            </a>
+            <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
+                <span style="display: inline-block; position: relative;">
+                    <img src="/static/img/ico_l_f.png" alt="" class="weui-tabbar__icon">
+                </span>
+                <p class="weui-tabbar__label">往期</p>
+            </a>
+            <a href="?act=user&op=index" class="weui-tabbar__item">
+                <img src="/static/img/ico_u.png" alt="" class="weui-tabbar__icon">
+                <p class="weui-tabbar__label">我</p>
+            </a>
+        </div>
     </div>
 </body>
 </html>

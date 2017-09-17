@@ -14,43 +14,62 @@
 </head>
 <?php $peroid = $output['period'] ?>
 <body>
-    <div>
-        <!--F43530 E64340 CE3C39-->
-        <div style="background-color: #F43530; padding: 10px 0px 10px 18px; font-size: 23px">
-            <b>第<?php echo $peroid['pno']; ?>期进行中</b><span style="font-size: 18px">（<?php echo date('m月d日H',$peroid['jtime']); ?>点开）</span>
+    <div class="weui-tab">
+            <div class="weui-tab__panel">
+                <!--F43530 E64340 CE3C39-->
+                <div style="background-color: #F43530; padding: 8px 0px 8px 18px; font-size: 23px">
+                    <b>第<?php echo $peroid['pno']; ?>期进行中</b><span style="font-size: 18px">（<?php echo date('m月d日H',$peroid['jtime']); ?>点开）</span>
+                </div>
+                <hr style="margin: 0px 0px 3px 0px" />
+                <div style="padding-left: 8px"><?php for($i=0;$i<50;$i++){ ?><button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default btn_num" id="btn_num_<?php echo sprintf('%02d',$i); ?>"><?php echo sprintf('%02d',$i); ?></button><?php } ?></div>
+                <hr style="margin: 8px 0px 8px 0px" />
+                <div>
+                    <label style="margin: 0px 8px 0px 8px">已选</label><span id="span_selected"></span>
+                </div>
+                <hr style="margin: 8px 0px 1px 0px" />
+                <div style="padding-left: 13px;">
+                    <?php foreach ($output['times'] as $index=>$times)
+                          {
+                    ?>
+                    <button class="weui-btn weui-btn_mini weui-btn_plain-primary btn_score_times<?php if ($index==1){ echo ' weui-btn_plain-disabled'; } ?>"><?php echo $times; ?></button>
+                    <?php
+                          }
+                    ?>
+                </div>
+                <hr style="margin: 12px 0px 12px 0px" />
+                <div style="padding-left: 8px;">
+                    <label style="margin: 0px 20px 0px 0px">所需积分</label><span id="span_socre"></span>
+                </div>
+                <div style="margin:10px 0px 10px 0px">
+                    <button class="weui-btn weui-btn_primary weui-btn_disabled btn_submit">请选号码</button>
+                </div>
+            </div>
+            <div class="weui-tabbar" style="position:fixed;bottom:0px;">
+                <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
+                    <span style="display: inline-block; position: relative;">
+                        <img src="/static/img/ico_h_f.png" alt="" class="weui-tabbar__icon">
+                    </span>
+                    <p class="weui-tabbar__label">首页</p>
+                </a>
+                <a href="?act=index&op=history" class="weui-tabbar__item">
+                    <span style="display: inline-block; position: relative;">
+                        <img src="/static/img/ico_l.png" alt="" class="weui-tabbar__icon">
+                    </span>
+                    <p class="weui-tabbar__label">往期</p>
+                </a>
+                <a href="?act=user&op=index" class="weui-tabbar__item">
+                    <img src="/static/img/ico_u.png" alt="" class="weui-tabbar__icon">
+                    <p class="weui-tabbar__label">我</p>
+                </a>
+            </div>
+            <div id="toast" style="display: none;">
+                <div class="weui-mask_transparent"></div>
+                <div class="weui-toast">
+                    <i id="toast_icon" class="weui-icon-success weui-icon_toast"></i>
+                    <p id="toast_msg" class="weui-toast__content">已完成</p>
+                </div>
+            </div>
         </div>
-        <hr style="margin: 1px 0px 10px 0px" />
-        <div style="padding-left: 10px"><?php for($i=0;$i<50;$i++){ ?><button style="margin:3px;" class="weui-btn weui-btn_mini weui-btn_plain-default btn_num" id="btn_num_<?php echo sprintf('%02d',$i); ?>"><?php echo sprintf('%02d',$i); ?></button><?php } ?></div>
-        <hr style="margin: 13px 0px 13px 0px" />
-        <div>
-            <label style="margin: 0px 10px 0px 10px">已选</label><span id="span_selected"></span>
-        </div>
-        <hr style="margin: 13px 0px 1px 0px" />
-        <div style="padding-left: 13px;">
-            <?php foreach ($output['times'] as $index=>$times)
-                  {
-            ?>
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary btn_score_times<?php if ($index==1){ echo ' weui-btn_plain-disabled'; } ?>"><?php echo $times; ?></button>
-            <?php
-                  }
-            ?>
-        </div>
-        <hr style="margin: 13px 0px 13px 0px" />
-        <div style="padding-left: 13px;">
-            <label style="margin: 0px 20px 0px 0px">所需积分</label><span id="span_socre"></span>
-        </div>
-        <hr style="margin: 13px 0px 13px 0px" />
-        <div>
-            <button class="weui-btn weui-btn_primary weui-btn_disabled btn_submit">请选号码</button>
-        </div>
-    </div>
-    <div id="toast" style="display: none;">
-        <div class="weui-mask_transparent"></div>
-        <div class="weui-toast">
-            <i id="toast_icon" class="weui-icon-success weui-icon_toast"></i>
-            <p id="toast_msg" class="weui-toast__content">已完成</p>
-        </div>
-    </div>
 </body>
 <script src="/static/js/jquery-3.2.1.min.js"></script>
 <script>
@@ -102,10 +121,10 @@
         })
     })
 
-    function toast_msg(success,msg) {
+    function toast_msg(success, msg) {
         var $toast = $('#toast');
         if (success) {
-            $("#toast_icon").attr('class','weui-icon-success-no-circle weui-icon_toast');
+            $("#toast_icon").attr('class', 'weui-icon-success-no-circle weui-icon_toast');
             $("#toast_msg").html('下单成功');
         } else {
             $("#toast_icon").attr('class', 'weui-icon-warn weui-icon_toast');
