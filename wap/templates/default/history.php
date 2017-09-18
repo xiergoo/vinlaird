@@ -26,7 +26,7 @@
                 <div class="weui-cell__bd">
                     <p><b>上证指数/结果</b></p>
                 </div>
-                <div class="weui-cell__ft"><b>日　期</b></div>
+                <div class="weui-cell__ft"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日　期</b></div>
             </div>
             <?php foreach ($output['list'] as $li)
                   {

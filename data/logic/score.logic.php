@@ -109,7 +109,7 @@ class scoreLogic {
     
     /**
      * Summary of score_exc
-     * @param array $score ['uid','score']
+     * @param array $score ['uid','to_uid','score']
      * @return mixed
      */
     public function score_exc($score){
@@ -121,93 +121,37 @@ class scoreLogic {
             //没有权限
             return callback(2,'无效的操作');
         }
-        if($score['score']<100 || $score['score']%100>0){
-            return callback(2,'只能是100的整数倍');            
+        $to_uid = $score['to_uid'];
+        if($to_uid<1){
+            return callback(1,'无效的赠出用户id',$score);
         }
-        $model_score_exc = Model('score_exc');
-        $v_code=mt_rand(1212,9999);
-        $where['v_code']=$v_code;
-        $where['rec_uid']=0;
-        $where['ctime']=['egt'=>TIMESTAMP-600];
-        while($model_score_exc->where($where)->find()){
-            $v_code=mt_rand(1212,9999);
-            $where['v_code']=$v_code;
-        }
-        $data['uid']=$uid;
-        $data['score']=$score['score'];
-        $data['rec_uid']=0;
-        $data['v_code']=$v_code;
-        $data['exctime']=0;
-        $data['ctime']=TIMESTAMP;
-        $result = $model_score_exc->insert($data);
-        if($result){
-            $data['id']=$result;
-            return callback(true,'',$data);
-        }else{            
-            return callback(false,'',$data);
-        }
-    }
-    
-    /**
-     * Summary of score_exc_cmt
-     * @param array $score ['uid','v_code']
-     * @return mixed
-     */
-    public function score_exc_cmt($score){
-        $uid=$score['uid'];
-        if($uid<1){
-            return callback(1,'无效的用户id',$score);
-        }
-        if(!Logic('user')->limits($uid,userLogic::limit_score_in)){
+        if(!Logic('user')->limits($to_uid,userLogic::limit_score_in)){
             //没有权限
             return callback(2,'无效的操作');
         }
-        if($score['v_code']<100000){
-            return callback(2,'无效兑换码');        
+        $score['score'] = abs($score['score']);
+        if($score['score']<10000){
+            return callback(2,'至少赠送10000积分');            
         }
-        $score_exc_info = Model('score_exc')->where(['v_code'=>$score['v_code']])->order('id desc')->find();
-        if($score_exc_info['id']<1){
-            return callback(2,'无效兑换码');
-        }
-        if($score_exc_info['ctime']+600<=TIMESTAMP){
-            return callback(2,'无效兑换码已过期，请重新生成');
-        }
-        if($score_exc_info['rec_uid']>0){
-            return callback(2,'兑换码已使用');
-        }
-        $result=true;
         $model_score = Model('score');
-        $score_info = $model_score->where(['type'=>self::score_type_in,'params'=>$score_exc_info['id']])->find();
-        $model_score->beginTransaction();
-        if($score_info['id']>0){
-            if($score_info['uid']!=$uid){
-                return callback(2,'该兑换码已被其他人兑换'); 
-            }  
-        }else{
+        $model_score->beginTransaction();        
+        $data=[];
+        $data['uid']=$uid;
+        $data['type']=self::score_type_out;
+        $data['params']=$to_uid;
+        $data['score']=0-$score['score'];
+        $data['mark']='转出';
+        $data['ctime']=TIMESTAMP;
+        $result=$model_score->insert($data);
+        if($result){
             $data=[];
-            $data['uid']=$uid;
-            $data['type']=self::score_type_in;
-            $data['params']=$score_exc_info['id'];
+            $data['uid']=$to_uid;
+            $data['type']=self::score_type_out;
+            $data['params']=$uid;
             $data['score']=$score['score'];
             $data['mark']='转入';
             $data['ctime']=TIMESTAMP;
             $result=$model_score->insert($data);
-        }
-        if($result){
-            $score_info = $model_score->where(['uid'=>$score_exc_info['uid'],'type'=>self::score_type_out,'params'=>$score_exc_info['id']])->find();
-            if(!$score_info){
-                $data=[];
-                $data['uid']=$uid;
-                $data['type']=self::score_type_out;
-                $data['params']=$score_exc_info['id'];
-                $data['score']=0-$score['score'];
-                $data['mark']='转出';
-                $data['ctime']=TIMESTAMP;
-                $result=$model_score->insert($data);
-            }
-        }
-        if($result){
-            $result = Model('score_exc')->where(['id'=>$score_exc_info['id']])->update(['rec_uid'=>$uid,'v_code'=>'','exctime'=>TIMESTAMP]);
         }
         if($result){
             $model_score->commit();
