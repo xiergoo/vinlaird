@@ -36,7 +36,7 @@
                         <p>第<?php echo $li['pno']; ?>期</p>
                     </div>
                     <div class="weui-cell__bd">
-                        <p><?php if($li['jnum']<10) $li['jnum']='0'.$li['jnum']; echo ($li['dpnum']/100).'/'.$li['jnum']; ?></p>
+                        <p><?php if($li['jnum']<10) $li['jnum']='0'.$li['jnum']; if($li['dpnum']<1){$li['dpnum']=$li['jnum']='-';} echo $li['dpnum'].'/'.$li['jnum']; ?></p>
                     </div>
                     <div class="weui-cell__ft"><?php echo date('Y-m-d',$li['jtime']); ?></div>
                 </div>

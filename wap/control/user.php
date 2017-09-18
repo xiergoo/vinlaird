@@ -30,4 +30,26 @@ class UserControl extends WapControl{
         Tpl::output('list',$list);
         Tpl::display('user.score'); 
     }
+    
+    public function orderOp(){
+        $list = Logic('order')->list_user_order($this->uid);
+        if(IS_AJAX){
+            output_json(0,'',$list);
+        }
+        $page=pagecmd('obj');
+        Tpl::output('page_total',$page->getTotalPage());
+        Tpl::output('list',$list);
+        Tpl::display('user.order'); 
+    }
+    
+    public function luckOp(){
+        $list = Logic('order')->list_user_order($this->uid,1);
+        if(IS_AJAX){
+            output_json(0,'',$list);
+        }
+        $page=pagecmd('obj');
+        Tpl::output('page_total',$page->getTotalPage());
+        Tpl::output('list',$list);
+        Tpl::display('user.luck'); 
+    }
 }
