@@ -8,8 +8,12 @@ class periodControl extends SystemControl{
 		Language::read('index');
 	}
 	public function indexOp(){
-		$model_period = Model('period');
-        $list = $model_period->order('id desc')->page(20)->select();        
+        $pnum=intval($_GET['pnum']);
+        $where=[];
+        if($pnum>=100){
+            $where['pnum']=$pnum;
+        }
+        $list = Model('period')->where($where)->order('id desc')->page(20)->select();        
         $page=pagecmd('obj');
         Tpl::output('_page',$page->show());
 	}

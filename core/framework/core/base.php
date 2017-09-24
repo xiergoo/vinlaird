@@ -146,6 +146,14 @@ final class Base{
 			if (!@include_once(BASE_CORE_PATH.'/framework/db/'.strtolower(DBDRIVER).'.php')){
 				exit("Class Error: {$class}.isn't exists!");
 			}
+		}elseif (strlen($class)>5 && ucwords(substr($class,-5)) == 'Model'){
+			if (!@include_once(BASE_DATA_PATH.'/model/'.substr($class,0,-5).'.model.php')){
+				exit("Class Error: {$class}.isn't exists!");
+			}
+		}elseif (strlen($class)>5 && ucwords(substr($class,-5)) == 'Logic'){
+			if (!@include_once(BASE_DATA_PATH.'/logic/'.substr($class,0,-5).'.logic.php')){
+				exit("Class Error: {$class}.isn't exists!");
+			}
 		}else{
 			if (!@include_once(BASE_CORE_PATH.'/framework/libraries/'.$class.'.php')){
 				exit("Class Error: {$class}.isn't exists!");

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>用户信息</title>
+    <title>积分赠送</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
@@ -149,7 +149,7 @@
                 </a>
             </div>
             <div class="weui-cell">
-                <a class="weui-cell weui-cell_access" href="?act=user&op=give" style="width: 100%">
+                <a class="weui-cell weui-cell_access" href="javascript:;" style="width: 100%">
                     <div class="weui-cell__bd">
                         <p>赠送</p>
                     </div>

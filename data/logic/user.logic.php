@@ -34,6 +34,7 @@ class userLogic {
 			'gender' => $user['sex']==1?1:($user['sex']==2?2:0),
 			'subscribe' => intval ( $user ['subscribe'] ),
 			'subscribetime' => intval ( $user ['subscribe_time'] ),
+            'ivt_uid'=>intval($user['ivt_uid']),
             'limits'=>'1111111',
 			'addtime' => TIMESTAMP
 		);

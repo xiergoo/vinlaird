@@ -33,6 +33,11 @@ class UserControl extends WapControl{
     
     public function orderOp(){
         $list = Logic('order')->list_user_order($this->uid);
+        foreach ($list as &$li)
+        {
+            $pno=Model('period')->field('pno')->where(['id'=>$li['pid']])->find();
+        	$li['pno']=$pno['pno'];
+        }
         if(IS_AJAX){
             output_json(0,'',$list);
         }
@@ -44,6 +49,11 @@ class UserControl extends WapControl{
     
     public function luckOp(){
         $list = Logic('order')->list_user_order($this->uid,1);
+        foreach ($list as &$li)
+        {
+            $pno=Model('period')->field('pno')->where(['id'=>$li['pid']])->find();
+        	$li['pno']=$pno['pno'];
+        }
         if(IS_AJAX){
             output_json(0,'',$list);
         }
@@ -51,5 +61,14 @@ class UserControl extends WapControl{
         Tpl::output('page_total',$page->getTotalPage());
         Tpl::output('list',$list);
         Tpl::display('user.luck'); 
+    }
+    
+    public function giveOp(){
+        if(IS_POST){
+            if(IS_AJAX){
+            }
+            exit('');
+        }
+        Tpl::display('user.give'); 
     }
 }

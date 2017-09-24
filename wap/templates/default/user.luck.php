@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>积分明细</title>
+    <title>中奖记录</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
@@ -79,19 +79,22 @@
 </head>
 <body>
     <div>
-        <div class="head"><a class="return" href="?act=user&op=index"></a>积分明细</div>
+        <div class="head"><a class="return" href="?act=user&op=index"></a>中奖记录</div>
         <div class="weui-cells" style="margin-top: 50px">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">期号</div>
+                <div class="weui-cell__bd">号码</div>
+                <div class="weui-cell__bd">消费积分</div>
+                <div class="weui-cell__bd">中奖积分</div>
+            </div>
             <?php foreach ($output['list'] as $li)
                   {
             ?>
             <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    <p><?php echo date('Y-m-d',$li['ctime']); ?></p>
-                </div>
-                <div class="weui-cell__bd">
-                    <p><?php echo $li['score']; ?></p>
-                </div>
-                <div class="weui-cell__ft"><?php echo $li['mark']; ?></div>
+                <div class="weui-cell__bd">第<?php echo $li['pno']; ?>期</div>
+                <div class="weui-cell__bd"><?php echo $li['num']; ?></div>
+                <div class="weui-cell__bd"><?php echo $li['score']; ?></div>
+                <div class="weui-cell__bd"><?php echo $li['score']*scoreLogic::score_times; ?></div>
             </div>
             <?php
                   }
