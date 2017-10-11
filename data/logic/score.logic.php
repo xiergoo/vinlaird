@@ -131,8 +131,12 @@ class scoreLogic {
         }
         $score['score'] = abs($score['score']);
         if($score['score']<10000){
-            return callback(statecode::LOGIC_SOCRE_COUNT);            
+            return callback(statecode::LOGIC_SOCRE_COUNT);
         }
+        $has_socre = $this->get_score($uid);
+        if($has_socre<$score['score']){
+            return callback(statecode::LOGIC_SOCRE_LESS);            
+        }        
         $model_score = Model('score');
         $model_score->beginTransaction();        
         $data=[];

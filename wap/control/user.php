@@ -72,8 +72,10 @@ class UserControl extends WapControl{
                 }
                 $touid=intval($_POST['touid']);
                 if($touid<1){
-                    output_json(statecode::ERROR,'请填写有效的赠送uid');
+                    output_json(statecode::ERROR,'请填写有效的接收积分的uid');
                 }
+                $result = Logic('score')->score_exc(['uid'=>$this->uid,'to_uid'=>$touid,'score'=>intval($_POST['score'])]);
+                output_json($result['state'],$result['msg']);
             }
             exit('');
         }

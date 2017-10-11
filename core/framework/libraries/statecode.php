@@ -25,6 +25,7 @@ class statecode{
     const LOGIC_SOCRE_ORDER='8104';
     const LOGIC_SOCRE_UID2='8105';
     const LOGIC_SOCRE_COUNT='8106';
+    const LOGIC_SOCRE_LESS='8107';
     
     const LOGIC_USER_OPENID='8201';
     const LOGIC_USER_EXIST='8202';
@@ -55,6 +56,7 @@ class statecode{
             case self::LOGIC_SOCRE_ORDER: $msg='无效的订单ID'; break;
             case self::LOGIC_SOCRE_UID2: $msg='无效的赠出用户id'; break;
             case self::LOGIC_SOCRE_COUNT: $msg='至少赠送10000积分'; break;
+            case self::LOGIC_SOCRE_LESS: $msg='积分数量不足'; break;
             #endregion
             case self::LOGIC_USER_OPENID: $msg='无效的openid'; break;
             case self::LOGIC_USER_EXIST: $msg='用户已存在'; break;
