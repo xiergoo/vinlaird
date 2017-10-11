@@ -26,7 +26,7 @@ class IndexControl extends WapControl{
     
     public function commitOp(){
         if(!Security::checkToken()){
-            output_json(99,'刷新后再试');
+            output_json(statecode::TOKENERR);
         }
         $pid=intval($_POST['pid']);
         $times=intval($_POST['times']);
@@ -34,10 +34,10 @@ class IndexControl extends WapControl{
         $nums = trim($_POST['num'],',');
         $nums = explode(',',$nums);
         if(!in_array($times,$this->times_arr)){
-            output_json(98,'数据错误，刷新后再试');
+            output_json(statecode::PARAMSERR);
         }
         if($score!=count($nums)*$times){
-            output_json(97,'数据错误，刷新后再试',$nums);
+            output_json(statecode::PARAMSERR,'',$nums);
         }
         $data['pid']=$pid;
         $data['uid']=$this->uid;

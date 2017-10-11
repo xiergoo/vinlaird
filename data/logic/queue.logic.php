@@ -18,7 +18,7 @@ class queueLogic {
     public function addPoint($member_info) {
         $points_model = Model('points');
         $points_model->savePointsLog('login',array('pl_memberid'=>$member_info['member_id'],'pl_membername'=>$member_info['member_name']),true);
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
     /**
      * 添加会员经验值
@@ -27,7 +27,7 @@ class queueLogic {
     public function addExppoint($member_info) {
         $exppoints_model = Model('exppoints');
         $exppoints_model->saveExppointsLog('login',array('exp_memberid'=>$member_info['member_id'],'exp_membername'=>$member_info['member_name']),true);
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -42,9 +42,9 @@ class queueLogic {
         $data['buy_quantity'] = array('exp','buy_quantity+'.$groupbuy_info['quantity']);
         $update = $model_groupbuy->editGroupbuy($data,array('groupbuy_id'=>$groupbuy_info['groupbuy_id']));
         if (!$update) {
-            return callback(false,'更新抢购信息失败groupbuy_id:'.$groupbuy_info['groupbuy_id']);
+            return callback(statecode::ERROR,'更新抢购信息失败groupbuy_id:'.$groupbuy_info['groupbuy_id']);
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -67,10 +67,10 @@ class queueLogic {
                 $param['voucher_url'] = urlShop('member_voucher', 'index');
                 $send->send($param);
             } else {
-                return callback(false,'更新代金券状态失败vcode:'.$voucher_info['voucher_code']);
+                return callback(statecode::ERROR,'更新代金券状态失败vcode:'.$voucher_info['voucher_code']);
             }
         }
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -86,9 +86,9 @@ class queueLogic {
             $result = $model_goods->editGoodsById($data, $goods_id);
         }
         if (!$result) {
-            return callback(false,'变更商品库存与销量失败');
+            return callback(statecode::ERROR,'变更商品库存与销量失败');
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -105,9 +105,9 @@ class queueLogic {
             $result = $model_goods->editGoodsById($data, $goods_id);
         }
         if (!$result) {
-            return callback(false,'变更商品库存与销量失败');
+            return callback(statecode::ERROR,'变更商品库存与销量失败');
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -118,9 +118,9 @@ class queueLogic {
     public function updateGoodsFCode($fc_id) {
         $update = Model('goods_fcode')->editGoodsFCode(array('fc_state' => 1),array('fc_id' => $fc_id));
         if (!$update) {
-            return callback(false,'更新F码使用状态失败fc_id:'.$fc_id);
+            return callback(statecode::ERROR,'更新F码使用状态失败fc_id:'.$fc_id);
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -129,12 +129,12 @@ class queueLogic {
      * @param unknown $cart
      */
     public function delCart($cart) {
-        if (!is_array($cart['cart_ids']) || empty($cart['buyer_id'])) return callback(true);
+        if (!is_array($cart['cart_ids']) || empty($cart['buyer_id'])) return callback(statecode::SUCCESS);
         $del = Model('cart')->delCart('db',array('buyer_id'=>$cart['buyer_id'],'cart_id'=>array('in',$cart['cart_ids'])));
         if (!$del) {
-            return callback(false,'删除购物车数据失败');
+            return callback(statecode::ERROR,'删除购物车数据失败');
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -147,9 +147,9 @@ class queueLogic {
     public function updateGoodsPromotionPriceByGoodsId($goods_id) {
         $update = Model('goods')->editGoodsPromotionPrice(array('goods_id' => array('in', $goods_id)));
         if (!$update) {
-            return callback(false,'根据商品ID更新促销价格失败');
+            return callback(statecode::ERROR,'根据商品ID更新促销价格失败');
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -162,9 +162,9 @@ class queueLogic {
     public function updateGoodsPromotionPriceByGoodsCommonId($goods_commonid) {
         $update = Model('goods')->editGoodsPromotionPrice(array('goods_commonid' => array('in', $goods_commonid)));
         if (!$update) {
-            return callback(false,'根据商品公共id更新促销价格失败');
+            return callback(statecode::ERROR,'根据商品公共id更新促销价格失败');
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -176,7 +176,7 @@ class queueLogic {
         $send->set('code', $param['code']);
         $send->set('store_id', $param['store_id']);
         $send->send($param['param']);
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -189,7 +189,7 @@ class queueLogic {
         if (!empty($param['number']['mobile'])) $send->set('mobile', $param['number']['mobile']);
         if (!empty($param['number']['email'])) $send->set('email', $param['number']['email']);
         $send->send($param['param']);
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -207,10 +207,10 @@ class queueLogic {
             $insert = array_values($insert);
             $insert = Model('goods_fcode')->addGoodsFCodeAll($insert);
             if (!$insert) {
-                return callback(false,'生成商品F码失败goods_commonid:'.$param['goods_commonid']);
+                return callback(statecode::ERROR,'生成商品F码失败goods_commonid:'.$param['goods_commonid']);
             }
         }
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -218,7 +218,7 @@ class queueLogic {
      */
     public function createGoodsQRCode($param) {
         if (empty($param['goodsid_array'])) {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
 
         // 生成商品二维码
@@ -231,7 +231,7 @@ class queueLogic {
             $PhpQRCode->set('pngTempName', $goods_id . '.png');
             $PhpQRCode->init();
         }
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -246,7 +246,7 @@ class queueLogic {
         Model('p_bundling')->delBundlingGoods(array('goods_id' => array('in', $param['goodsid_array'])));
         // 更新促销价格
         Model('goods')->editGoods(array('goods_promotion_price' => array('exp', 'goods_price'), 'goods_promotion_type' => 0), array('goods_commonid' => $param['goods_commonid']));
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -255,14 +255,14 @@ class queueLogic {
      * @return boolean
      */
     public function delOrderCountCache($order_info){
-        if (empty($order_info)) return callback(true);
+        if (empty($order_info)) return callback(statecode::SUCCESS);
         $model_order = Model('order');
         if ($order_info['order_id']) {
             $order_info = $model_order->getOrderInfo(array('order_id'=>$order_info['order_id']),array(),'buyer_id,store_id');
         }
         $model_order->delOrderCountCache('buyer',$order_info['buyer_id']);
         $model_order->delOrderCountCache('store',$order_info['store_id']);
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -271,14 +271,14 @@ class queueLogic {
      * @return boolean
      */
     public function sendVrCode($param) {
-        if (empty($param) && !is_array($param)) return callback(true);
+        if (empty($param) && !is_array($param)) return callback(statecode::SUCCESS);
         $condition = array();
         $condition['order_id'] = $param['order_id'];
         $condition['buyer_id'] = $param['buyer_id'];
         $condition['vr_state'] = 0;
         $condition['refund_lock'] = 0;
         $code_list = Model('vr_order')->getOrderCodeList($condition,'vr_code,vr_indate');
-        if (empty($code_list)) return callback(true);
+        if (empty($code_list)) return callback(statecode::SUCCESS);
 
         $content = '';
         foreach ($code_list as $v) {
@@ -293,9 +293,9 @@ class queueLogic {
         $sms = new Sms();
         $result = $sms->send($param["buyer_phone"],$message);
         if (!$result) {
-            return callback(false,'兑换码发送失败order_id:'.$param['order_id']);
+            return callback(statecode::ERROR,'兑换码发送失败order_id:'.$param['order_id']);
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -303,7 +303,7 @@ class queueLogic {
      * 添加订单自提表内容
      */
     public function saveDeliveryOrder($param) {
-        if (!is_array($param['order_sn_list'])) return callback(true);
+        if (!is_array($param['order_sn_list'])) return callback(statecode::SUCCESS);
         $data = array();
         $model_delivery_order = Model('delivery_order');
         foreach ($param['order_sn_list'] as $order_id => $v) {
@@ -316,10 +316,10 @@ class queueLogic {
             $data['reciver_mobphone'] = $param['mob_phone'];
             $insert = $model_delivery_order->addDeliveryOrder($data);
             if (!$insert) {
-                return callback(false,'保存自提站订单信息失败order_sn:'.$v['order_sn']);
+                return callback(statecode::ERROR,'保存自提站订单信息失败order_sn:'.$v['order_sn']);
             }
         }
-        return callback(true);
+        return callback(statecode::SUCCESS);
     }
 
     /**
@@ -335,9 +335,9 @@ class queueLogic {
         $sms = new Sms();
         $result = $sms->send($dorder_info['reciver_mobphone'],$message);
         if (!$result) {
-            return callback(false,'发送提货码短信消息失败order_id:'.$param['order_id']);
+            return callback(statecode::ERROR,'发送提货码短信消息失败order_id:'.$param['order_id']);
         } else {
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }
     }
 
@@ -356,7 +356,7 @@ class queueLogic {
     public function build_pwdvoucher($t_id){
         $t_id = intval($t_id);
         if($t_id <= 0){
-            return callback(false,'参数错误');
+            return callback(statecode::ERROR,'参数错误');
         }
         $model_voucher = Model('voucher');
         //查询代金券详情
@@ -369,7 +369,7 @@ class queueLogic {
         $t_info = $model_voucher->getVoucherTemplateInfo($where);
         $t_total = intval($t_info['voucher_t_total']);
         if($t_total <= 0){
-            return callback(false,'代金券模板信息错误');
+            return callback(statecode::ERROR,'代金券模板信息错误');
         }
         while($t_total > 0){
             $is_succ = false;
@@ -413,9 +413,9 @@ class queueLogic {
         //更新代金券模板
         if($is_succ){
             $model_voucher->editVoucherTemplate(array('voucher_t_id'=>$t_info['voucher_t_id']),array('voucher_t_isbuild'=>1));
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }else{
-            return callback(false);
+            return callback(statecode::ERROR);
         }
     }
     /**
@@ -424,7 +424,7 @@ class queueLogic {
     public function build_pwdRedpacket($t_id){
         $t_id = intval($t_id);
         if($t_id <= 0){
-            return callback(false,'参数错误');
+            return callback(statecode::ERROR,'参数错误');
         }
         $model_redpacket = Model('redpacket');
         //领取类型
@@ -441,7 +441,7 @@ class queueLogic {
         $t_info = $model_redpacket->getRptTemplateInfo($where);
         $t_total = intval($t_info['rpacket_t_total']);
         if($t_total <= 0){
-            return callback(false,'红包模板信息错误');
+            return callback(statecode::ERROR,'红包模板信息错误');
         }
         while($t_total > 0){
             $is_succ = false;
@@ -485,9 +485,9 @@ class queueLogic {
         //更新红包模板
         if($is_succ){
             $model_redpacket->editRptTemplate(array('rpacket_t_id'=>$t_info['rpacket_t_id']),array('rpacket_t_isbuild'=>1));
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }else{
-            return callback(false);
+            return callback(statecode::ERROR);
         }
     }
 }

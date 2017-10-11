@@ -2394,7 +2394,7 @@ function encryptShow($str,$start,$length) {
  * @param unknown $data
  * @return multitype:unknown
  */
-function callback($state = true, $msg = '', $data = array()) {
+function callback($state = statecode::SUCCESS, $msg = '', $data = array()) {
     return array('state' => $state, 'msg' => $msg, 'data' => $data);
 }
 

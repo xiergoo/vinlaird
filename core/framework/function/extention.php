@@ -205,10 +205,13 @@ function get_wechat_handler(){
     return $wechat_handler;
 }
 
-function output_json($code=0, $message='', $data=[]) {
+function output_json($state=statecode::SUCCESS, $msg='', $data=[]) {
+    if(!$msg){
+        $msg=statecode::msg($state);
+    }
 	$data = array (
-			'state' => $code,
-			'msg' => $message,
+			'state' => $state,
+			'msg' => $msg,
 			'data' => $data 
 	);
 	header ( 'Content-Type:application/json; charset=utf-8' );

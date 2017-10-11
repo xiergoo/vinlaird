@@ -23,7 +23,7 @@ class UserControl extends WapControl{
     public function scoreOp(){
         $list = Logic('score')->list_score($this->uid);
         if(IS_AJAX){
-            output_json(0,'',$list);
+            output_json(statecode::SUCCESS,'',$list);
         }
         $page=pagecmd('obj');
         Tpl::output('page_total',$page->getTotalPage());
@@ -39,7 +39,7 @@ class UserControl extends WapControl{
         	$li['pno']=$pno['pno'];
         }
         if(IS_AJAX){
-            output_json(0,'',$list);
+            output_json(statecode::SUCCESS,'',$list);
         }
         $page=pagecmd('obj');
         Tpl::output('page_total',$page->getTotalPage());
@@ -55,7 +55,7 @@ class UserControl extends WapControl{
         	$li['pno']=$pno['pno'];
         }
         if(IS_AJAX){
-            output_json(0,'',$list);
+            output_json(statecode::SUCCESS,'',$list);
         }
         $page=pagecmd('obj');
         Tpl::output('page_total',$page->getTotalPage());
@@ -66,6 +66,14 @@ class UserControl extends WapControl{
     public function giveOp(){
         if(IS_POST){
             if(IS_AJAX){
+                $uid=$this->uid;
+                if($uid<1){
+                    output_json(statecode::UNLOGIN);
+                }
+                $touid=intval($_POST['touid']);
+                if($touid<1){
+                    output_json(statecode::ERROR,'ÇëÌîĞ´ÓĞĞ§µÄÔùËÍuid');
+                }
             }
             exit('');
         }

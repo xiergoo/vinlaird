@@ -42,9 +42,9 @@ class periodLogic {
             }
         }
         if($result){
-            return callback(true,'',$period_info);
+            return callback(statecode::SUCCESS,'',$period_info);
         }else{
-            return callback(false,'',$period_info);
+            return callback(statecode::ERROR,'',$period_info);
         }
     }
     

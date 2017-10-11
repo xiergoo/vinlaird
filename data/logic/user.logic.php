@@ -19,13 +19,13 @@ class userLogic {
     
     public function add_user($user){        
         if(!$user['openid']){
-            return callback(1,'无效的openid');
+            return callback(statecode::LOGIC_USER_OPENID);
         }
         $model = Model('user');
         $openid=$user['openid'];
         $userInfo = $model->where(['openid'=>$data['openid']])->find();
         if($userInfo['id']>0){
-            return callback(1,'用户已存在');
+            return callback(statecode::LOGIC_USER_EXIST);
         }
         $data = array (
             'openid'=>$openid,
@@ -41,9 +41,9 @@ class userLogic {
         $id = $model->insert($data);
         if($id>0){
             $data['id']=$id;
-            return callback(true,'',$data);
+            return callback(statecode::SUCCESS,'',$data);
         }else{
-            return callback(false,'',$data);
+            return callback(statecode::ERROR,'',$data);
         }
     }
     

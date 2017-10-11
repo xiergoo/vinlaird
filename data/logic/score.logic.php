@@ -20,11 +20,11 @@ class scoreLogic {
     public function daka($score){
         $uid=$score['uid'];
         if($uid<1){
-            return callback(1,'无效的用户id',$score);
+            return callback(statecode::LOGIC_SOCRE_UID,'',$score);
         }
         if(!Logic('user')->limits($uid,userLogic::limit_daka)){
             //没有权限
-            return callback(2,'无效的操作');
+            return callback(statecode::LOGIC_SOCRE_LIMIT);
         }
         $data['uid']=$uid;
         $data['type']=self::score_type_daka;
@@ -35,9 +35,9 @@ class scoreLogic {
         $result = Model('score')->insert($data);        
         if($result){
             $data['id']=$result;
-            return callback(true,'',$data);
+            return callback(statecode::SUCCESS,'',$data);
         }else{            
-            return callback(false,'',$data);
+            return callback(statecode::ERROR,'签到失败',$data);
         }
     }
     
@@ -49,14 +49,14 @@ class scoreLogic {
     public function recharge($score){
         $uid=$score['uid'];
         if($uid<1){
-            return callback(1,'无效的用户id',$score);
+            return callback(statecode::LOGIC_SOCRE_UID,'',$score);
         }
         if(!Logic('user')->limits($uid,userLogic::limit_score_rechage)){
             //没有权限
-            return callback(2,'无效的操作');
+            return callback(statecode::LOGIC_SOCRE_LIMIT);
         }
         if($score['score']<1){
-            return callback(2,'无效的积分值');            
+            return callback(statecode::LOGIC_SOCRE_VALUE);            
         }  
         $data['uid']=$uid;
         $data['type']=self::score_type_recharge;
@@ -67,9 +67,9 @@ class scoreLogic {
         $result = Model('score')->insert($data);        
         if($result){
             $data['id']=$result;
-            return callback(true,'',$data);
+            return callback(statecode::SUCCESS,'',$data);
         }else{            
-            return callback(false,'',$data);
+            return callback(statecode::ERROR,'',$data);
         }
     }
     
@@ -81,16 +81,16 @@ class scoreLogic {
     public function buy($score){
         $uid=$score['uid'];
         if($uid<1){
-            return callback(1,'无效的用户id',$score);
+            return callback(statecode::LOGIC_SOCRE_UID,'',$score);
         }
         if($score['score']==0){
-            return callback(2,'无效的积分值');
+            return callback(statecode::LOGIC_SOCRE_VALUE);
         }
         if($score['score']>0){
             $score['score']=0-$score['score'];
         }
         if( $score['order_id']<1){
-            return callback(3,'无效的order_id');             
+            return callback(statecode::LOGIC_SOCRE_ORDER);             
         }
         $data['uid']=$uid;
         $data['type']=self::score_type_buy;
@@ -101,9 +101,9 @@ class scoreLogic {
         $result = Model('score')->insert($data);
         if($result){
             $data['id']=$result;
-            return callback(true,'',$data);
+            return callback(statecode::SUCCESS,'',$data);
         }else{            
-            return callback(false,'',$data);
+            return callback(statecode::ERROR,'下单失败',$data);
         }
     }
     
@@ -115,23 +115,23 @@ class scoreLogic {
     public function score_exc($score){
         $uid=$score['uid'];
         if($uid<1){
-            return callback(1,'无效的用户id',$score);
+            return callback(statecode::LOGIC_SOCRE_UID,'',$score);
         }
         if(!Logic('user')->limits($uid,userLogic::limit_score_out)){
             //没有权限
-            return callback(2,'无效的操作');
+            return callback(statecode::LOGIC_SOCRE_LIMIT);
         }
         $to_uid = $score['to_uid'];
         if($to_uid<1){
-            return callback(1,'无效的赠出用户id',$score);
+            return callback(statecode::LOGIC_SOCRE_UID2,'',$score);
         }
         if(!Logic('user')->limits($to_uid,userLogic::limit_score_in)){
             //没有权限
-            return callback(2,'无效的操作');
+            return callback(statecode::LOGIC_SOCRE_LIMIT);
         }
         $score['score'] = abs($score['score']);
         if($score['score']<10000){
-            return callback(2,'至少赠送10000积分');            
+            return callback(statecode::LOGIC_SOCRE_COUNT);            
         }
         $model_score = Model('score');
         $model_score->beginTransaction();        
@@ -155,10 +155,10 @@ class scoreLogic {
         }
         if($result){
             $model_score->commit();
-            return callback(true);
+            return callback(statecode::SUCCESS);
         }else{
             $model_score->rollback();
-            return callback(false);
+            return callback(statecode::ERROR);
         }
     }
     
