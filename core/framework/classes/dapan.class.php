@@ -2,7 +2,7 @@
 /**
  */
 defined('InShopNC') or exit('Access Invalid!');
-Class dapan{
+Class dapanClass{
 	public static function value(){
         try
         {

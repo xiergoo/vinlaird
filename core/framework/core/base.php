@@ -136,7 +136,9 @@ final class Base{
 		$class = strtolower($class);
 		if (ucwords(substr($class,-5)) == 'Class' ){
 			if (!@include_once(BASE_PATH.'/framework/libraries/'.substr($class,0,-5).'.class.php')){
-				exit("Class Error: {$class}.isn't exists!");
+				if (!@include_once(BASE_CORE_PATH.'/framework/classes/'.substr($class,0,-5).'.class.php')){
+                    exit("Class Error: {$class}.isn't exists!");
+                }
 			}
 		}elseif (ucwords(substr($class,0,5)) == 'Cache' && $class != 'cache'){
 			if (!@include_once(BASE_CORE_PATH.'/framework/cache/'.substr($class,0,5).'.'.substr($class,5).'.php')){

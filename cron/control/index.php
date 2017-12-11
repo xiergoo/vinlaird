@@ -20,7 +20,7 @@ class indexControl{
     
     public function get_dpresultOp(){        
         $period_info = Model('period')->where(['pstatus'=>1,'jtime'=>['eq',mktime(15,0,0)]])->find();
-        $data['dpnum']=dapan::value();
+        $data['dpnum']=dapanClass::value();
         if($data['dpnum']>1000){
             $data['jnum']=$data['dpnum']*100%50;
             $data['pstatus']=2;
