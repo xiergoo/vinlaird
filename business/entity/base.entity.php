@@ -82,5 +82,17 @@ Class baseEntity{
         }
         return false;
     }
+    
+    public function getTable(){
+        return $this->table;
+    }
+    
+    public function getPk(){
+        return $this->pk;
+    }
+    
+    public function getFields(){
+        return $this->fields;
+    }
 }
 ?>

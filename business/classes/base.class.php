@@ -63,6 +63,23 @@ Class baseClass{
         }
     }
     
+    public function lists($where=[],$order='',$page_size=20){
+        $entity = $this->getEntity();
+        $table = $entity->getTable();
+        if(!$order){
+            $order=$entity->getPk().' desc';
+        }
+        $map=[];
+        foreach ($entity->getFields() as $field){
+            if(isset($where[$field]) && $where[$field]){
+                $map[$field]=$where[$field];
+            }
+        }
+        $result = Model($table)->where($map)->order($order)->page($page_size)->select();
+        echo Model($table)->_sql();
+        return $result;
+    }
+    
     /**
      * 此缓存只存单条数据
      * @param mixed $subkey 
