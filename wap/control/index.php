@@ -8,6 +8,22 @@ class IndexControl extends WapControl{
     private $times_arr=[100,1000,2000,5000,10000];
     
     public function indexOp(){
+        $typeData = ['name'=>'test1111111','enable'=>1,'times'=>5.6,'mark'=>'this is a test']; 
+        $entity = new typeEntity();
+        $entity->id=1;
+        dump($entity->get());
+        $entity->id=2;
+        dump($entity->get());
+        die;
+        
+        $te = new periodEntity(2);
+        dump($te->get());die;
+        
+        $p = typeClass::I();
+        dump($p->getTypeInfo(1));
+        
+        die;
+        
         $result = Logic('period')->get_the_period();
         if($result['state']!==true){
             echo '<h1>您访问的页面不存在！</h1>';

@@ -2,7 +2,16 @@
 /**
  */
 defined('InShopNC') or exit('Access Invalid!');
-Class typeClass{
+Class typeClass{    
+    private function __construct(){}    
+    private static $i=null;
+    public static function I(){
+        if(self::$i===null){
+            self::$i=new self;
+        }
+        return self::$i;
+    }
+    
     public function getTypeInfo($id,$cache=true){
         $typeInfo=null;
         if($id>0){
@@ -10,7 +19,8 @@ Class typeClass{
                 $typeInfo=$this->cache($id);
             }
             if(!$typeInfo){
-                $typeInfo=Model('type')->find($id);
+                $typeEntity=new typeEntity($id);
+                $typeInfo=$typeEntity->toArr();
                 if($typeInfo){
                     $this->cache($id,$typeInfo);
                 }
