@@ -11,27 +11,22 @@ Class baseEntity{
         if(!$this->table){
             exit("Table Name Error");
         }
+        if(!$this->fields || !is_array($this->fields) ){
+            exit("Fields Error");
+        }
         $this->id=intval($id);
     }   
     
     public function get(){
         $data=false;
         if($this->id>0){
-            if(!$this->fields){
-                $field='*';
-            }elseif($this->fields){
-                $field=join(',',$this->fields);
-            }
-            $data = Model($this->table)->field($field)->find($this->id);
+            $data = Model($this->table)->field(join(',',$this->fields))->find($this->id);
         }
         return $data;
     }
     
     public function getWhere($where){
         $data=false;
-        if(!$this->fields || !is_array($this->fields) ){
-            exit("Fields Error");
-        }
         $map=false;
         foreach ($this->fields as $field)
         {
@@ -46,9 +41,6 @@ Class baseEntity{
     }
     
     public function add($data){
-        if(!$this->fields || !is_array($this->fields) ){
-            exit("Fields Error");
-        }
         $insertData=[];
         foreach ($this->fields as $field)
         {
@@ -65,9 +57,6 @@ Class baseEntity{
     }
     
     public function update($data){
-        if(!$this->fields || !is_array($this->fields) ){
-            exit("Fields Error");
-        }
         $updateData=[];
         foreach ($this->fields as $field)
         {
