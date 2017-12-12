@@ -27,6 +27,24 @@ Class baseEntity{
         return $data;
     }
     
+    public function getWhere($where){
+        $data=false;
+        if(!$this->fields || !is_array($this->fields) ){
+            exit("Fields Error");
+        }
+        $map=false;
+        foreach ($this->fields as $field)
+        {
+        	if(isset($where[$field]) && $where[$field]){
+                $map[$field]=$where[$field];
+            }
+        }
+        if($map){
+            $data = Model($this->table)->field(join(',',$this->fields))->where($map)->find();
+        }
+        return $data;
+    }
+    
     public function add($data){
         if(!$this->fields || !is_array($this->fields) ){
             exit("Fields Error");

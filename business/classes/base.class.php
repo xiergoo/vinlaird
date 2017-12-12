@@ -42,19 +42,44 @@ Class baseClass{
         }
     }
     
-    protected function cache($id,$value=''){
+    public function getWhere($where,$cache=true){
         $data=null;
-        if($id>0){
-            $class = get_called_class();
-            $key=$class.$id;
-            if($value===''){
-                $data=rcache($key);
-            }elseif($value===null){
-                dcache($key);
-            }else{
-                wcache($key,$value,'',864000);
-            }            
+        if($where){
+            $key = md5(join('',$where));
+            if($cache){
+                $data=$this->cache($key);
+            }
+            if(!$data){
+                if(!method_exists($this,'getEntity')){
+                    exit(get_called_class().' method getEntity not defined');
+                }
+                $entity=$this->getEntity();
+                $data=$entity->getWhere($where);
+                if($data){
+                    $this->cache($key,$data);
+                }
+            }
+            return $data;
         }
+    }
+    
+    /**
+     * 此缓存只存单条数据
+     * @param mixed $subkey 
+     * @param mixed $value 
+     * @return mixed
+     */
+    protected function cache($subkey,$value=''){
+        $data=null;
+        $class = get_called_class();
+        $key=$class.$subkey;
+        if($value===''){
+            $data=rcache($key);
+        }elseif($value===null){
+            dcache($key);
+        }else{
+            wcache($key,$value,'',864000);
+        } 
         return $data;
     }
 }
