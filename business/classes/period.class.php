@@ -2,9 +2,9 @@
 /**
  */
 defined('InShopNC') or exit('Access Invalid!');
-Class typeClass extends baseClass{    
+Class periodClass extends baseClass{
     public function getEntity(){
-        return baseClass::E('typeEntity');
+        return baseClass::E('periodEntity');
     }
 }
 ?>
