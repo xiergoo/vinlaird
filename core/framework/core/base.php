@@ -135,7 +135,7 @@ final class Base{
 	public static function autoload($class){
 		$class = strtolower($class);
 		if (ucwords(substr($class,-5)) == 'Class' ){
-			if (!@include_once(BASE_PATH.'/framework/libraries/'.substr($class,0,-5).'.class.php')){
+			if (!@include_once(BASE_BUSI_PATH.'/classes/'.substr($class,0,-5).'.class.php')){
 				if (!@include_once(BASE_CORE_PATH.'/framework/classes/'.substr($class,0,-5).'.class.php')){
                     exit("Class Error: {$class}.isn't exists!");
                 }
@@ -153,8 +153,10 @@ final class Base{
 				exit("Class Error: {$class}.isn't exists!");
 			}
 		}elseif (strlen($class)>5 && ucwords(substr($class,-5)) == 'Logic'){
-			if (!@include_once(BASE_DATA_PATH.'/logic/'.substr($class,0,-5).'.logic.php')){
-				exit("Class Error: {$class}.isn't exists!");
+			if (!@include_once(BASE_BUSI_PATH.'/logic/'.substr($class,0,-5).'.logic.php')){
+				if (!@include_once(BASE_DATA_PATH.'/logic/'.substr($class,0,-5).'.logic.php')){
+                    exit("Class Error: {$class}.isn't exists!");
+                }
 			}
 		}else{
 			if (!@include_once(BASE_CORE_PATH.'/framework/libraries/'.$class.'.php')){

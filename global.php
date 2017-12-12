@@ -10,6 +10,7 @@ if(Environmental=='.dev'){
 define('BASE_ROOT_PATH',str_replace('\\','/',dirname(__FILE__)));
 
 define('BASE_CORE_PATH',BASE_ROOT_PATH.'/core');
+define('BASE_BUSI_PATH',BASE_ROOT_PATH.'/business');
 define('BASE_DATA_PATH',BASE_ROOT_PATH.'/data');
 define('DS','/');
 define('InShopNC',true);
