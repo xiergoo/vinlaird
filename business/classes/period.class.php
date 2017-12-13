@@ -8,7 +8,7 @@ Class periodClass extends baseClass{
     }
     
     public function lists(){
-        $where['jtime']=['between',[dapanClass::beforeTime(),dapanClass::afterTime()]];
+        $where['jtime']=['between',[dapanClass::beforeTime()+1,dapanClass::afterTime()]];
         $where['pstatus']=1;
         return parent::lists($where);
     }
