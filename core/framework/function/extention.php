@@ -207,7 +207,7 @@ function get_wechat_handler(){
 
 function output_json($state=statecode::SUCCESS, $msg='', $data=[]) {
     if(!$msg){
-        $msg=statecode::msg($state);
+        $msg=statecodeClass::msg($state);
     }
 	$data = array (
 			'state' => $state,
@@ -216,4 +216,9 @@ function output_json($state=statecode::SUCCESS, $msg='', $data=[]) {
 	);
 	header ( 'Content-Type:application/json; charset=utf-8' );
 	exit ( json_encode ( $data, JSON_UNESCAPED_UNICODE ) );
+}
+
+function user_headimgurl($headimgurl){
+    //todo:
+    return $headimgurl;
 }

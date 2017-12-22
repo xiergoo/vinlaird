@@ -5,6 +5,12 @@
 defined('InShopNC') or exit('Access Invalid!');
 class WapControl{
 
+    /**
+     * Summary of $classUser
+     * @var userClass
+     */
+    protected $classUser;
+    
     protected $uid = 0;
 	public function __construct(){
 		if(!in_weixin()){
@@ -13,7 +19,8 @@ class WapControl{
                 die;
             }
         }
-        $user = $this->getUser();
+        $this->init();
+        $user = $this->classUser->getLoginUser();
         if(!$user){
             $wechat_handler = get_wechat_handler();
             $token_info = $wechat_handler->getOauthAccessToken();
@@ -21,12 +28,12 @@ class WapControl{
                 $token=$token_info['access_token'];
                 $openid=$token_info['openid'];
                 //通过openid 获取db 用户
-                $user=Logic('user')->getUser($openid);                
+                $user=$this->classUser->find(['openid'=>$openid]);                
                 if(!$user){                    
                     $wechat_user = $wechat_handler->getOauthUserinfo($token_info['access_token'],$token_info['openid']);
                     $wechat_user['ivt_id']=intval(base64_decode($_GET['ivt_id']));
                     //注册
-                    $result = Logic('user')->addUser($wechat_user);
+                    $result = $this->classUser->addUser($wechat_user);
                     if($result['state']===true){
                         $user=$result['data'];
                     }
@@ -46,7 +53,7 @@ class WapControl{
         }
         if($user['id']>0){
             $this->uid=$user['uid'];
-            $this->setUserId($this->uid);
+            $this->classUser->setLoginUser($this->uid);
         }else{
             if(C('debug')){
                 $this->uid=1;
@@ -57,29 +64,9 @@ class WapControl{
         $_SESSION['member_id']=$this->uid;
 	}
 
-	protected final function getUser(){
-		$userId = unserialize(decrypt(cookie('u_key'),md5(MD5_KEY)));
-		if ($userId>0){
-			$this->setUserId($userId);
-            $user = Logic('user')->getUser($userId,true);
-            return $user;		
-		}
-        return false;
-	}
-    
-    protected final function getScore(){
-        if($this->uid>0){
-            $user = Logic('user')->getUser($this->uid,false);
-            return intval($user['score']);
-        }
-        return 0;
+    protected function init(){
+        $this->classUser=userClass::I();
     }
-    
-	protected final function setUserId($userId){
-        if($userId>0){
-            setNcCookie('u_key',encrypt(serialize($userId),md5(MD5_KEY)),7200,'',null);
-        }
-	}
     
     protected final function goLogin(){
         $this->setReferer();

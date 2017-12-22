@@ -19,7 +19,7 @@ Class periodClass extends baseClass{
         return baseClass::E('periodEntity');
     }
     
-    public function lists(){
+    public function listsing(){
         $where['jtime']=['between',[dapanClass::beforeTime()+1,dapanClass::afterTime()]];
         $where['pstatus']=self::status_online;
         return parent::lists($where);

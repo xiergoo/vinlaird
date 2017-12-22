@@ -16,7 +16,7 @@ Class orderClass extends baseClass{
         if($is_right){
             $where['is_right']=1;
         }
-        return $this->getEntity()->where($where)->order('pid desc')->page(20)->select();
+        return $this->lists($where);
     }
     
     public function listPeriodOrder($pid,$is_right=0){
@@ -24,7 +24,7 @@ Class orderClass extends baseClass{
         if($is_right){
             $where['is_right']=1;
         }
-        return $this->getEntity()->where($where)->page(20)->select();        
+        return $this->lists($where);
     }
     
 }
