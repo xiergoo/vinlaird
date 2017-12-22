@@ -28,11 +28,11 @@ Class scoreClass extends baseClass{
     public function daka($score){
         $uid=$score['uid'];
         if($uid<1){
-            return callback(statecodeClass::LOGIC_SOCRE_UID,'',$score);
+            return callback(statecodeClass::SOCRE_UID,'',$score);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_daka)){
             //没有权限
-            return callback(statecodeClass::LOGIC_SOCRE_LIMIT);
+            return callback(statecodeClass::SOCRE_LIMIT);
         }
         $data['uid']=$uid;
         $data['type']=self::type_daka;
@@ -51,14 +51,14 @@ Class scoreClass extends baseClass{
     public function recharge($score){
         $uid=$score['uid'];
         if($uid<1){
-            return callback(statecodeClass::LOGIC_SOCRE_UID,'',$score);
+            return callback(statecodeClass::SOCRE_UID,'',$score);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_score_rechage)){
             //没有权限
-            return callback(statecodeClass::LOGIC_SOCRE_LIMIT);
+            return callback(statecodeClass::SOCRE_LIMIT);
         }
         if($score['score']<1){
-            return callback(statecodeClass::LOGIC_SOCRE_VALUE);            
+            return callback(statecodeClass::SOCRE_VALUE);            
         }  
         $data['uid']=$uid;
         $data['type']=self::type_recharge;
@@ -77,27 +77,27 @@ Class scoreClass extends baseClass{
     public function scoreExc($score){
         $uid=$score['uid'];
         if($uid<1){
-            return callback(statecodeClass::LOGIC_SOCRE_UID,'',$score);
+            return callback(statecodeClass::SOCRE_UID,'',$score);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_score_out)){
             //没有权限
-            return callback(statecodeClass::LOGIC_SOCRE_LIMIT);
+            return callback(statecodeClass::SOCRE_LIMIT);
         }
         $to_uid = $score['to_uid'];
         if($to_uid<1){
-            return callback(statecodeClass::LOGIC_SOCRE_UID2,'',$score);
+            return callback(statecodeClass::SOCRE_UID2,'',$score);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_score_in)){
             //没有权限
-            return callback(statecodeClass::LOGIC_SOCRE_LIMIT);
+            return callback(statecodeClass::SOCRE_LIMIT);
         }
         $score['score'] = abs($score['score']);
         if($score['score']<10000){
-            return callback(statecodeClass::LOGIC_SOCRE_COUNT);
+            return callback(statecodeClass::SOCRE_COUNT);
         }        
         $scoreValue = $this->getScore($uid);
         if($scoreValue<$score['score']){
-            return callback(statecodeClass::LOGIC_SOCRE_LESS);            
+            return callback(statecodeClass::SOCRE_LESS);            
         }        
         $modelScore = $this->getEntity();
         $modelScore->beginTransaction();        

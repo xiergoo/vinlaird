@@ -51,42 +51,42 @@ class buyLogic {
     public function buy($order){
         $uid=$order['uid'];
         if($uid<1){
-            return callback(statecodeClass::LOGIC_ORDER_UID,'',$order);
+            return callback(statecodeClass::ORDER_UID,'',$order);
         }
         if(!$this->classUser->checkLimits($uid,userClass::limit_buy)){
             //没有权限
-            return callback(statecodeClass::LOGIC_ORDER_LIMIT);
+            return callback(statecodeClass::ORDER_LIMIT);
         }
         $pid=$order['pid'];
         if($pid<1){
-            return callback(statecodeClass::LOGIC_ORDER_PID,'',$order);
+            return callback(statecodeClass::ORDER_PID,'',$order);
         }
         $periodInfo = periodClass::I()->find($pid,false);        
         if($periodInfo['id']<1){
-            return callback(statecodeClass::LOGIC_ORDER_PNOTEXIST,'',$order);
+            return callback(statecodeClass::ORDER_PNOTEXIST,'',$order);
         }
         if($periodInfo['pstatus']!=periodClass::status_online){
-            return callback(statecodeClass::LOGIC_ORDER_POVER,'',$order);        
+            return callback(statecodeClass::ORDER_POVER,'',$order);        
         }
         if($period_info['jtime']<dapanClass::beforeTime()){
-            return callback(statecodeClass::LOGIC_ORDER_POVER2,'，未开始',$order);
+            return callback(statecodeClass::ORDER_POVER2,'，未开始',$order);
         }
         if($period_info['jtime']>=dapanClass::afterTime()){
-            return callback(statecodeClass::LOGIC_ORDER_POVER2,'，已经结束',$order);
+            return callback(statecodeClass::ORDER_POVER2,'，已经结束',$order);
         }
         if($period_info['jtime']-TIMESTAMP<periodClass::protected_time){
-            return callback(statecodeClass::LOGIC_ORDER_POVER2,'，即将揭晓',$order);
+            return callback(statecodeClass::ORDER_POVER2,'，即将揭晓',$order);
         }
         $score=$order['score'];
         if($score<periodClass::socre_min){
-            return callback(statecodeClass::LOGIC_ORDER_SCORE,'',$order);
+            return callback(statecodeClass::ORDER_SCORE,'',$order);
         }
         if($score%100!=0){
-            return callback(statecodeClass::LOGIC_ORDER_SCORE,'',$order);
+            return callback(statecodeClass::ORDER_SCORE,'',$order);
         }
         $userScore = $this->classSocre->getScore($uid);
         if($userScore<$score){
-            return callback(statecodeClass::LOGIC_ORDER_NOSCORE,'',$order);
+            return callback(statecodeClass::ORDER_NOSCORE,'',$order);
         }
         $itemSumScore=0;
         foreach ($order['items'] as $item)
@@ -94,7 +94,7 @@ class buyLogic {
         	$itemSumScore+=$item['times'];
         }
         if($itemSumScore!=$score){
-            return callback(statecodeClass::LOGIC_ORDER_SCOREERR,'',$order);
+            return callback(statecodeClass::ORDER_SCOREERR,'',$order);
         }
         $data=[];
         $modelOrder = $this->entityOrder;
@@ -117,7 +117,7 @@ class buyLogic {
                 }
             }else{
                 $modelOrder->rollback();
-                return callback(statecodeClass::LOGIC_ORDER_ORDERERR,'',$data);
+                return callback(statecodeClass::ORDER_ORDERERR,'',$data);
             }
         }
         $modelOrder->commit();
@@ -132,13 +132,13 @@ class buyLogic {
     private function changeScore($score){
         $uid=$score['uid'];
         if($uid<1){
-            return callback(statecodeClass::LOGIC_SOCRE_UID,'',$score);
+            return callback(statecodeClass::SOCRE_UID,'',$score);
         }
         if($score['score']==0){
-            return callback(statecodeClass::LOGIC_SOCRE_VALUE);
+            return callback(statecodeClass::SOCRE_VALUE);
         }
         if($score['order_id']<1){
-            return callback(statecodeClass::LOGIC_SOCRE_ORDER);
+            return callback(statecodeClass::SOCRE_ORDER);
         }
         if($score['score']>0){
             $score['score']=0-$score['score'];

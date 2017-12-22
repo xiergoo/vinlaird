@@ -13,12 +13,12 @@ Class userClass extends baseClass{
     
     public function addUser($user){
         if(!$user['openid']){
-            return callback(statecodeClass::LOGIC_USER_OPENID);
+            return callback(statecodeClass::USER_OPENID);
         }
         $openid=$user['openid'];
         $userInfo = $this->getWhere(['openid'=>$openid]);
         if($userInfo['id']>0){
-            return callback(statecodeClass::LOGIC_USER_EXIST);
+            return callback(statecodeClass::USER_EXIST);
         }
         $data = array (
             'openid'=>$openid,
