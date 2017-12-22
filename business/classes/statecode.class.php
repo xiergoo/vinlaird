@@ -1,6 +1,6 @@
 <?php
 defined('InShopNC') or exit('Access Invalid!');
-class statecode{
+class statecodeClass{
 
     const SUCCESS       = '0';
     const ERROR       = '1';

@@ -21,62 +21,55 @@ Class baseClass{
         return self::$e[$entity];
     }
     
-    public function get($id,$cache=true){
-        $data=null;
-        if($id>0){
-            if($cache){
-                $data=$this->cache($id);
-            }
-            if(!$data){
-                if(!method_exists($this,'getEntity')){
-                    exit(get_called_class().' method getEntity not defined');
-                }
-                $entity=$this->getEntity();                
-                $entity->id=$id;
-                $data=$entity->get();
-                if($data){
-                    $this->cache($id,$data);
-                }
-            }
-            return $data;
+    /**
+     * Summary of getEntity
+     * @return baseEntity
+     */
+    public function getEntity(){
+        static $entity=null;
+        if($entity===null){
+            $entity=new baseEntity();
         }
+        return $entity;
     }
     
-    public function getWhere($where,$cache=true){
+    public function find($where,$cache=true){
         $data=null;
         if($where){
-            $key = md5(join('',$where));
+            $key=md5(serialize($where));
             if($cache){
                 $data=$this->cache($key);
             }
             if(!$data){
-                if(!method_exists($this,'getEntity')){
-                    exit(get_called_class().' method getEntity not defined');
-                }
                 $entity=$this->getEntity();
-                $data=$entity->getWhere($where);
+                if(is_numeric($where)){
+                    $where=[$entity->get_pk()=>intval($where)];
+                }    
+                $data=$entity->where($where)->find();
                 if($data){
-                    $this->cache($key,$data);
+                    $this->cache($key,$data,86400);
                 }
             }
             return $data;
         }
     }
-    
+        
     public function lists($where=[],$order='',$page_size=20){
-        $entity = $this->getEntity();
-        $table = $entity->getTable();
+        $entity = $this->getEntity();        
         if(!$order){
-            $order=$entity->getPk().' desc';
+            $order=$entity->get_pk().' desc';
         }
         $map=[];
-        foreach ($entity->getFields() as $field){
-            if(isset($where[$field]) && $where[$field]){
-                $map[$field]=$where[$field];
+        if(is_array($where) && count($where)){
+            foreach ($entity->getFields() as $field){
+                if(isset($where[$field]) && $where[$field]){
+                    $map[$field]=$where[$field];
+                }
             }
+        }elseif(is_string($where)){
+            $map=$where;
         }
-        $result = Model($table)->where($map)->order($order)->page($page_size)->select();
-        echo Model($table)->_sql();
+        $result=$entity->where($map)->order($order)->page($page_size)->select();
         return $result;
     }
     
@@ -86,7 +79,7 @@ Class baseClass{
      * @param mixed $value 
      * @return mixed
      */
-    protected function cache($subkey,$value=''){
+    protected function cache($subkey,$value='',$expired=300){
         $data=null;
         $class = get_called_class();
         $key=$class.$subkey;
@@ -95,9 +88,12 @@ Class baseClass{
         }elseif($value===null){
             dcache($key);
         }else{
-            wcache($key,$value,'',864000);
+            $expired=max(1,$expired);
+            $expired=min(864000,$expired);
+            wcache($key,$value,'',$expired);
         } 
         return $data;
     }
+    
 }
 ?>

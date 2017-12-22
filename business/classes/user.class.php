@@ -2,19 +2,23 @@
 /**
  */
 defined('InShopNC') or exit('Access Invalid!');
-Class userClass extends baseClass{    
+Class userClass extends baseClass{
+    /**
+     * Summary of getEntity
+     * @return userEntity
+     */
     public function getEntity(){
         return baseClass::E('userEntity');
     }
     
     public function addUser($user){
         if(!$user['openid']){
-            return callback(statecode::LOGIC_USER_OPENID);
+            return callback(statecodeClass::LOGIC_USER_OPENID);
         }
         $openid=$user['openid'];
         $userInfo = $this->getWhere(['openid'=>$openid]);
         if($userInfo['id']>0){
-            return callback(statecode::LOGIC_USER_EXIST);
+            return callback(statecodeClass::LOGIC_USER_EXIST);
         }
         $data = array (
             'openid'=>$openid,
@@ -28,12 +32,12 @@ Class userClass extends baseClass{
 			'addtime' => TIMESTAMP
 		);
         
-        $id = $this->getEntity()->add($data);
+        $id = $this->getEntity()->insert($data);
         if($id>0){
             $data['id']=$id;
-            return callback(statecode::SUCCESS,'',$data);
+            return callback(statecodeClass::SUCCESS,'',$data);
         }else{
-            return callback(statecode::ERROR,'',$data);
+            return callback(statecodeClass::ERROR,'',$data);
         }
     }
     
@@ -41,11 +45,11 @@ Class userClass extends baseClass{
     const limit_daka=2;
     const limit_buy=3;
     const limit_score_out=4;
-    //5,6,7默认允许，先占用
-    const limit_score_in=8;
-    const limit_score_rechage=9;
+    const limit_score_in=5;
+    const limit_score_rechage=6;
+    //7、8、9保留，暂未使用
     public function checkLimits($uid,$limit=userClass::limit_login){
-        $user_info = $this->get($uid,false);
+        $user_info = $this->find($uid,false);
         if(!$user_info){
             return false;
         }
