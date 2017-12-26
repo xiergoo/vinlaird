@@ -31,10 +31,10 @@ Class scoreClass extends baseClass{
             return callback(statecodeClass::SOCRE_UID,'',$score);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_daka)){
-            //Ã»ÓĞÈ¨ÏŞ
+            //æ²¡æœ‰æƒé™
             return callback(statecodeClass::SOCRE_LIMIT);
         }        
-        return $this->changeScore($uid,self::type_daka,self::daka_score,'Ç©µ½',0);
+        return $this->changeScore($uid,self::type_daka,self::daka_score,'ç­¾åˆ°',0);
     }
     
     /**
@@ -48,13 +48,13 @@ Class scoreClass extends baseClass{
             return callback(statecodeClass::SOCRE_UID,'',$score);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_score_rechage)){
-            //Ã»ÓĞÈ¨ÏŞ
+            //æ²¡æœ‰æƒé™
             return callback(statecodeClass::SOCRE_LIMIT);
         }
         if($score['score']<1){
             return callback(statecodeClass::SOCRE_VALUE);            
         }
-        return $this->changeScore($uid,self::type_recharge,$score['score'],'³äÖµ',0);
+        return $this->changeScore($uid,self::type_recharge,$score['score'],'å……å€¼',0);
     }
     
     public function order($score){
@@ -71,7 +71,7 @@ Class scoreClass extends baseClass{
         if($score['score']>0){
             $score['score']=0-$score['score'];
         }
-        return $this->changeScore($uid,self::type_buy,intval($score['score']),'ÏÂµ¥',$score['order_id'],false);        
+        return $this->changeScore($uid,self::type_buy,intval($score['score']),'ä¸‹å•',$score['order_id'],false);        
     }
     
     private function changeScore($uid,$type,$score,$mark,$params=0,$autoTrans=true){
@@ -108,7 +108,7 @@ Class scoreClass extends baseClass{
             return callback(statecodeClass::SOCRE_UID,'',$score);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_score_out)){
-            //Ã»ÓĞÈ¨ÏŞ
+            //æ²¡æœ‰æƒé™
             return callback(statecodeClass::SOCRE_LIMIT);
         }
         $to_uid = $score['to_uid'];
@@ -116,7 +116,7 @@ Class scoreClass extends baseClass{
             return callback(statecodeClass::SOCRE_UID2,'',$score);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_score_in)){
-            //Ã»ÓĞÈ¨ÏŞ
+            //æ²¡æœ‰æƒé™
             return callback(statecodeClass::SOCRE_LIMIT);
         }
         $score['score'] = abs($score['score']);
@@ -134,7 +134,7 @@ Class scoreClass extends baseClass{
         $data['type']=self::type_out;
         $data['params']=$to_uid;
         $data['score']=0-$score['score'];
-        $data['mark']='×ª³ö';
+        $data['mark']='è½¬å‡º';
         $data['ctime']=time();
         $result=$modelScore->insert($data);
         if($result){
@@ -143,7 +143,7 @@ Class scoreClass extends baseClass{
             $data['type']=self::type_out;
             $data['params']=$uid;
             $data['score']=$score['score'];
-            $data['mark']='×ªÈë';
+            $data['mark']='è½¬å…¥';
             $data['ctime']=time();
             $result=$modelScore->insert($data);
         }
@@ -186,11 +186,11 @@ Class scoreClass extends baseClass{
     //                $data['params']=$order['id'];
     //                $has_send = $model_score->where($data)->find();
     //                if($has_send){
-    //                    //²»ÖØ¸´Ö´ĞĞ
+    //                    //ä¸é‡å¤æ‰§è¡Œ
     //                    continue;
     //                }
     //                $data['score']=$order['score']*self::score_times;
-    //                $data['mark']='ÖĞ¡¡½±';
+    //                $data['mark']='ä¸­ã€€å¥–';
     //                $data['ctime']=TIMESTAMP;
     //                $model->beginTransaction();
     //                $result = $model_score->insert($data);
