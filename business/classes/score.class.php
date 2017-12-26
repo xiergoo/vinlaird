@@ -3,13 +3,7 @@
  */
 defined('InShopNC') or exit('Access Invalid!');
 Class scoreClass extends baseClass{    
-    /**
-     * Summary of getEntity
-     * @return scoreEntity
-     */
-    public function getEntity(){
-        return baseClass::E('scoreEntity');
-    }    
+      
     const type_recharge=1;
     const type_buy=2;
     const type_daka=3;
@@ -21,6 +15,29 @@ Class scoreClass extends baseClass{
     const score_times=40;
     
     const daka_score=10;
+    
+    protected $table_name='score';
+    protected $fields=['id','uid','type','params','score','mark','ctime'];
+    
+    public function types($type=''){
+        $types = [
+            self::type_recharge=>'type_recharge',
+            self::type_buy=>'type_buy',
+            self::type_daka=>'type_daka',
+            self::type_luck=>'',
+            self::type_in=>'',
+            self::type_out=>'',
+            self::type_send=>'',
+        ];
+        if($type){
+            if(array_key_exists($type,$types)){
+                return $types[$type];
+            }
+            return '';
+        }
+        return $types;
+    }
+    
     /**
      * Summary of daka
      * @param array $score ['uid']
@@ -71,23 +88,23 @@ Class scoreClass extends baseClass{
             }elseif($amount>=500){
                 $sendAmount=$amount*0.01;
             }
-            $this->getEntity()->beginTransaction();
+            $this->beginTransaction();
             $result = $this->changeScore($uid,self::type_recharge,$amount*100,'充值',0,false);
             if($result['state']==statecodeClass::SUCCESS){
                 if($sendAmount<=0){
-                    $this->getEntity()->commit();
+                    $this->commit();
                     return $result;
                 }
                 $result = $this->changeScore($uid,self::type_send,$sendAmount*100,'充值送',intval($result['data']),false);
                 if($result['state']==statecodeClass::SUCCESS){
-                    $this->getEntity()->commit();
+                    $this->commit();
                     return $result;
                 }else{
-                    $this->getEntity()->rollback();
+                    $this->rollback();
                     return $result;
                 }
             }else{
-                $this->getEntity()->rollback();
+                $this->rollback();
                 return $result;
             }
             
@@ -114,25 +131,25 @@ Class scoreClass extends baseClass{
     }
     
     private function changeScore($uid,$type,$score,$mark,$params=0,$autoTrans=true){
-        $autoTrans && $this->getEntity()->beginTransaction();
+        $autoTrans && $this->beginTransaction();
         $data['uid']=$uid;
         $data['type']=$type;
         $data['params']=$params;
         $data['score']=$score;
         $data['mark']=$mark;
         $data['ctime']=time();
-        $scoreID = $result = $this->getEntity()->insert($data);
+        $scoreID = $result = $this->insert($data);
         if($result){
             $result = userClass::I()->exchangeSocre($uid,$score);
             if($result){
-                $autoTrans && $this->getEntity()->commit();
+                $autoTrans && $this->commit();
                 return callback(statecodeClass::SUCCESS,'',$scoreID);
             }else{
-                $autoTrans && $this->getEntity()->rollback();
+                $autoTrans && $this->rollback();
                 return callback(statecodeClass::SOCRE_CHANGE_USER_SCORE_FAIL);
             }
         }else{
-            $autoTrans && $this->getEntity()->rollback();
+            $autoTrans && $this->rollback();
             return callback(statecodeClass::SOCRE_INSERT_DETAIL_FAIL);
         }
     }
@@ -165,9 +182,8 @@ Class scoreClass extends baseClass{
         $scoreValue = $this->getScore($uid);
         if($scoreValue<$score['score']){
             return callback(statecodeClass::SOCRE_LESS);            
-        }        
-        $modelScore = $this->getEntity();
-        $modelScore->beginTransaction();        
+        }
+        $this->beginTransaction();        
         $data=[];
         $data['uid']=$uid;
         $data['type']=self::type_out;
@@ -175,7 +191,7 @@ Class scoreClass extends baseClass{
         $data['score']=0-$score['score'];
         $data['mark']='转出';
         $data['ctime']=time();
-        $result=$modelScore->insert($data);
+        $result=$this->insert($data);
         if($result){
             $data=[];
             $data['uid']=$to_uid;
@@ -184,13 +200,13 @@ Class scoreClass extends baseClass{
             $data['score']=$score['score'];
             $data['mark']='转入';
             $data['ctime']=time();
-            $result=$modelScore->insert($data);
+            $result=$this->insert($data);
         }
         if($result){
-            $modelScore->commit();
+            $this->commit();
             return callback(statecodeClass::SUCCESS);
         }else{
-            $modelScore->rollback();
+            $this->rollback();
             return callback(statecodeClass::ERROR);
         }
     }
@@ -198,21 +214,21 @@ Class scoreClass extends baseClass{
     public function getScore($uid){
         $score=0;
         if($uid>0){
-            $score = $this->getEntity()->where(['uid'=>$uid])->sum('score');
+            $score = $this->where(['uid'=>$uid])->sum('score');
         }
         return intval($score);
     }
     
     public function listScore($uid){
-        return $this->getEntity()->where(['uid'=>$uid])->order('id desc')->page(20)->select();
+        return $this->where(['uid'=>$uid])->order('id desc')->page(20)->select();
     }
     
     
     //public function sendLuckScore(){
     //    $model = Model();
-    //    $model_period = periodClass::I()->getEntity();
-    //    $model_order = orderClass::I()->getEntity();        
-    //    $model_score = scoreClass::I()->getEntity();
+    //    $model_period = periodClass::I();
+    //    $model_order = orderClass::I();        
+    //    $model_score = scoreClass::I();
     //    $list = $model_period->where(['pstatus'=>2])->select();
     //    foreach ($list as $period)
     //    {

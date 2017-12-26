@@ -23,7 +23,7 @@ class IndexControl extends WapControl{
     }
     
     
-    public function indexOp(){
+    public function indexOp(){        
         $list =$this->classPeriod->listsing();
         Tpl::output('list',$list);
     }

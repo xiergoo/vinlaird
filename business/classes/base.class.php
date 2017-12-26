@@ -2,8 +2,16 @@
 /**
  */
 defined('InShopNC') or exit('Access Invalid!');
-Class baseClass{
-    private function __construct(){}    
+Class baseClass extends Model{
+    private function __construct(){
+        if(!$this->table_name){
+            exit("Table Name Error");
+        }
+        if(!$this->fields || !is_array($this->fields) ){
+            exit("Fields Error");
+        }
+        parent::__construct($this->table);
+    }    
     private static $i=null;
     public static function I(){        
         $class = get_called_class();        
@@ -12,28 +20,8 @@ Class baseClass{
         }
         return self::$i[$class];
     }
-    
-    private static $e=null;
-    public static function E($entity){     
-        if(self::$e[$entity]===null){
-            self::$e[$entity]=new $entity;
-        }
-        return self::$e[$entity];
-    }
-    
-    /**
-     * Summary of getEntity
-     * @return baseEntity
-     */
-    public function getEntity(){
-        static $entity=null;
-        if($entity===null){
-            $entity=new baseEntity();
-        }
-        return $entity;
-    }
-    
-    public function find($where,$cache=true){
+        
+    public function getOne($where,$cache=true){
         $data=null;
         if($where){
             $key=md5(serialize($where));
@@ -41,11 +29,10 @@ Class baseClass{
                 $data=$this->cache($key);
             }
             if(!$data){
-                $entity=$this->getEntity();
                 if(is_numeric($where)){
-                    $where=[$entity->get_pk()=>intval($where)];
+                    $where=[$this->get_pk()=>intval($where)];
                 }    
-                $data=$entity->where($where)->find();
+                $data=$this->where($where)->find();
                 if($data){
                     $this->cache($key,$data,86400);
                 }
@@ -54,14 +41,13 @@ Class baseClass{
         }
     }
         
-    public function lists($where=[],$order='',$page_size=20){
-        $entity = $this->getEntity();        
+    public function lists($where=[],$order='',$page_size=20){     
         if(!$order){
-            $order=$entity->get_pk().' desc';
+            $order=$this->get_pk().' desc';
         }
         $map=[];
         if(is_array($where) && count($where)){
-            foreach ($entity->getFields() as $field){
+            foreach ($this->getFields() as $field){
                 if(isset($where[$field]) && $where[$field]){
                     $map[$field]=$where[$field];
                 }
@@ -69,7 +55,7 @@ Class baseClass{
         }elseif(is_string($where)){
             $map=$where;
         }
-        $result=$entity->where($map)->order($order)->page($page_size)->select();
+        $result=$this->where($map)->order($order)->page($page_size)->select();
         return $result;
     }
     

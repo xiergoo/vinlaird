@@ -11,13 +11,8 @@ Class periodClass extends baseClass{
     const socre_min=100;
     const socre_max=1000000;
     
-    /**
-     * Summary of getEntity
-     * @return periodEntity
-     */
-    public function getEntity(){
-        return baseClass::E('periodEntity');
-    }
+    protected $table_name='period';
+    protected $fields=['id','type_id','pno','jtime','pstatus','dpnum','jnum','inscore','outscore','ctime'];
     
     public function listsing(){
         $where['jtime']=['between',[dapanClass::beforeTime()+1,dapanClass::afterTime()]];
@@ -27,12 +22,12 @@ Class periodClass extends baseClass{
     
     public function newPeroid($typeID){
         $typeClass = typeClass::I();
-        $typeInfo = $typeClass->find($typeID,false);
+        $typeInfo = $typeClass->getOne($typeID,false);
         if($typeInfo['id'] && $typeInfo['enable']==typeClass::status_enable){
             $where['type_id']=$typeID;
             $where['jtime']=['between',[dapanClass::beforeTime()+1,dapanClass::afterTime()]];
             $where['pstatus']=1;
-            $curPeroid = $this->find($where,false);
+            $curPeroid = $this->getOne($where,false);
             if(!$curPeroid){
                 $beforePeriod = parent::lists(['type_id'=>$typeID],'pno desc',1);
                 $data['type_id']=$typeID;
@@ -44,7 +39,7 @@ Class periodClass extends baseClass{
                 $data['inscore']=0;
                 $data['outscore']=0;
                 $data['ctime']=TIMESTAMP;
-                return $this->getEntity()->insert($data);
+                return $this->insert($data);
             }            
         }
         return false;

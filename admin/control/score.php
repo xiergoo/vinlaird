@@ -23,6 +23,7 @@ class scoreControl extends SystemControl{
         }
         $list = Model('score')->where($where)->order('id desc')->page(20)->select();
         $page=pagecmd('obj');
+        Tpl::output('types',scoreClass::I()->types());
         Tpl::output('_page',$page->show());
 	}
 }

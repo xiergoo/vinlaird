@@ -158,10 +158,6 @@ final class Base{
                     exit("Class Error: {$class}.isn't exists!");
                 }
 			}
-		}elseif (strlen($class)>6 && ucwords(substr($class,-6)) == 'Entity'){
-			if (!@include_once(BASE_BUSI_PATH.'/entity/'.substr($class,0,-6).'.entity.php')){
-				exit("Class Error: {$class}.isn't exists!");
-			}
 		}else{
 			if (!@include_once(BASE_CORE_PATH.'/framework/libraries/'.$class.'.php')){
 				exit("Class Error: {$class}.isn't exists!");

@@ -3,20 +3,22 @@
  */
 defined('InShopNC') or exit('Access Invalid!');
 Class userClass extends baseClass{
-    /**
-     * Summary of getEntity
-     * @return userEntity
-     */
-    public function getEntity(){
-        return baseClass::E('userEntity');
-    }
+    const limit_login=1;
+    const limit_daka=2;
+    const limit_buy=3;
+    const limit_score_out=4;
+    const limit_score_in=5;
+    const limit_score_rechage=6;
+    //7ã€8ã€9ä¿ç•™ï¼Œæš‚æœªä½¿ç”¨
+    protected $table_name='user';
+    protected $fields=['id','openid','nickname','headimgurl','gender','subscribe','subscribetime','ivt_uid','limits','mobile','score','addtime']; 
     
     public function addUser($user){
         if(!$user['openid']){
             return callback(statecodeClass::USER_OPENID);
         }
         $openid=$user['openid'];
-        $userInfo = $this->getWhere(['openid'=>$openid]);
+        $userInfo = $this->getOne(['openid'=>$openid]);
         if($userInfo['id']>0){
             return callback(statecodeClass::USER_EXIST);
         }
@@ -32,30 +34,40 @@ Class userClass extends baseClass{
 			'addtime' => TIMESTAMP
 		);
         
-        $id = $this->getEntity()->insert($data);
+        $id = $this->insert($data);
         if($id>0){
             $data['id']=$id;
             return callback(statecodeClass::SUCCESS,'',$data);
         }else{
             return callback(statecodeClass::ERROR,'',$data);
         }
-    }
+    }    
     
-    const limit_login=1;
-    const limit_daka=2;
-    const limit_buy=3;
-    const limit_score_out=4;
-    const limit_score_in=5;
-    const limit_score_rechage=6;
-    //7¡¢8¡¢9±£Áô£¬ÔÝÎ´Ê¹ÓÃ
     public function checkLimits($userID,$limit=userClass::limit_login){
-        $userInfo = $this->find($userID,false);
+        $userInfo = $this->getOne($userID,false);
         if(!$userInfo){
             return false;
         }
         return substr($userInfo['limits'],$limit-1,1)==1;
     }
     
+    public function limits($limit=''){
+        $limits = [
+            self::limit_login=>'ç™»å½•',
+            self::limit_daka=>'æ‰“å¡',
+            self::limit_buy=>'ä¸‹å•',
+            self::limit_score_out=>'è½¬å‡º',
+            self::limit_score_in=>'è½¬å…¥',
+            self::limit_score_rechage=>'å……å€¼',
+        ];
+        if($limit){
+            if(array_key_exists($limit,$limits)){
+                return $limits[$limit];
+            }
+            return '';
+        }
+        return $limits;
+    }
     
 	public function setLoginUser($userID){
         if($userID>0){
@@ -66,7 +78,7 @@ Class userClass extends baseClass{
     public function getLoginUser(){
         $userID = unserialize(decrypt(cookie('u_key'),md5(MD5_KEY)));
 		if ($userID>0){
-            $user = $this->find($userID);
+            $user = $this->getOne($userID);
             return $user;		
 		}
         return false;
@@ -74,14 +86,14 @@ Class userClass extends baseClass{
     
     public function getScore($userID){
         if($userID>0){
-            $userInfo = $this->find($userID,false);
+            $userInfo = $this->getOne($userID,false);
             return intval($userInfo['score']);
         }
         return 0;
     }
     
     public function exchangeSocre($userID,$score){
-        return $this->getEntity()->where(['id'=>$userID])->setInc('score',$score);
+        return $this->where(['id'=>$userID])->setInc('score',$score);
     }
     
 }

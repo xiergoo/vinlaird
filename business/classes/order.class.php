@@ -3,13 +3,8 @@
  */
 defined('InShopNC') or exit('Access Invalid!');
 Class orderClass extends baseClass{
-    /**
-     * Summary of getEntity
-     * @return orderEntity
-     */
-    public function getEntity(){
-        return baseClass::E('orderEntity');
-    }
+    protected $table_name='order';
+    protected $fields=['id','uid','pid','num','score','ctime','is_right','stime'];
     
     public function listUserOrder($uid,$is_right=0){
         $where['uid']=$uid;
