@@ -81,4 +81,17 @@ class UserControl extends WapControl{
         }
         Tpl::display('user.give'); 
     }
+    
+    public function addScoreOp(){
+        $myUID=1;
+        if($this->uid==$myUID){
+            if(IS_AJAX){
+                $toUID=intval($_POST['uid']);
+                $amount=intval($_POST['amount']);
+                $result = scoreClass::I()->recharge(['uid'=>$toUID,'amount'=>$amount],true);
+                output_json($result['state'],$result['msg']);
+            }
+            Tpl::display('user.addscore');
+        }
+    }
 }

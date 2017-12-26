@@ -16,6 +16,7 @@ Class scoreClass extends baseClass{
     const type_luck=4;
     const type_in=5;
     const type_out=6;
+    const type_send=7;
     
     const score_times=40;
     
@@ -39,22 +40,60 @@ Class scoreClass extends baseClass{
     
     /**
      * Summary of recharge
-     * @param array $score ['uid','score']
+     * @param array $params ['uid','amount']
      * @return mixed
      */
-    public function recharge($score){
-        $uid=$score['uid'];
+    public function recharge($params,$send=false){
+        $uid=$params['uid'];
         if($uid<1){
-            return callback(statecodeClass::SOCRE_UID,'',$score);
+            return callback(statecodeClass::SOCRE_UID,'',$params);
         }
         if(!userClass::I()->checkLimits($uid,userClass::limit_score_rechage)){
             //没有权限
             return callback(statecodeClass::SOCRE_LIMIT);
         }
-        if($score['score']<1){
+        $amount = $params['amount'];
+        if($amount<10){
             return callback(statecodeClass::SOCRE_VALUE);            
         }
-        return $this->changeScore($uid,self::type_recharge,$score['score'],'充值',0);
+        $sendAmount=0;
+        if($send){
+            if($amount>=100000){
+                $sendAmount=$amount*0.1;
+            }elseif($amount>=50000){
+                $sendAmount=$amount*0.08;
+            }elseif($amount>=10000){
+                $sendAmount=$amount*0.05;
+            }elseif($amount>=5000){
+                $sendAmount=$amount*0.03;
+            }elseif($amount>=1000){
+                $sendAmount=$amount*0.02;
+            }elseif($amount>=500){
+                $sendAmount=$amount*0.01;
+            }
+            $this->getEntity()->beginTransaction();
+            $result = $this->changeScore($uid,self::type_recharge,$amount*100,'充值',0,false);
+            if($result['state']==statecodeClass::SUCCESS){
+                if($sendAmount<=0){
+                    $this->getEntity()->commit();
+                    return $result;
+                }
+                $result = $this->changeScore($uid,self::type_send,$sendAmount*100,'充值送',intval($result['data']),false);
+                if($result['state']==statecodeClass::SUCCESS){
+                    $this->getEntity()->commit();
+                    return $result;
+                }else{
+                    $this->getEntity()->rollback();
+                    return $result;
+                }
+            }else{
+                $this->getEntity()->rollback();
+                return $result;
+            }
+            
+        }else{
+            return $this->changeScore($uid,self::type_recharge,$amount*100,'充值',0);
+        }        
     }
     
     public function order($score){
@@ -82,12 +121,12 @@ Class scoreClass extends baseClass{
         $data['score']=$score;
         $data['mark']=$mark;
         $data['ctime']=time();
-        $result = $this->getEntity()->insert($data);
+        $scoreID = $result = $this->getEntity()->insert($data);
         if($result){
             $result = userClass::I()->exchangeSocre($uid,$score);
             if($result){
                 $autoTrans && $this->getEntity()->commit();
-                return callback(statecodeClass::SUCCESS);
+                return callback(statecodeClass::SUCCESS,'',$scoreID);
             }else{
                 $autoTrans && $this->getEntity()->rollback();
                 return callback(statecodeClass::SOCRE_CHANGE_USER_SCORE_FAIL);
