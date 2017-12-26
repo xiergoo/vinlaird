@@ -18,15 +18,14 @@ class IndexControl extends WapControl{
     private $times_arr=[100,1000,2000,5000,10000];
     
     protected function init(){
-        parent::init();
         $this->classPeriod=periodClass::I();
         $this->classOrder=orderClass::I();
     }
     
     
     public function indexOp(){
-        //listsing
-        
+        $list =$this->classPeriod->listsing();
+        Tpl::output('list',$list);
     }
     
     public function detailOp(){
@@ -41,7 +40,6 @@ class IndexControl extends WapControl{
         if($periodInfo['pstatus']==periodClass::status_offline){
             showMessage(statecodeClass::msg(statecodeClass::PERIOD_OFFLINE));
         }
-        die('ok');
         Tpl::output('times',$this->times_arr);
         Tpl::output('period',$periodInfo);        
         $str_today=date('Y-m-d');
@@ -53,15 +51,22 @@ class IndexControl extends WapControl{
             $jnum='';
             $pid = intval($_REQUEST['pid']);
             $periodInfo = $this->classPeriod->find($pid,false);
-            $is_right=$_REQUEST['type']==1?1:0;
-            $listOrder = $this->classOrder->listPeriodOrder($pid,$is_right);
-            foreach ($listOrder as &$order)
-            {
-                $userInfo=$this->classUser->find($order['uid']);
-            	$order['nickname']=$userInfo['nickname'];
-            	$order['headimgurl']=user_headimgurl($userInfo['headimgurl']);
+            $isRight=$_REQUEST['type']==1?1:0;
+            $cacheListOrderKey='indexListOrder_'.$pid.'_'.$isRight.'_'.$_REQUEST['curpage'];
+            $listOrder = rcache($cacheListOrderKey);
+            if(!$listOrder){
+                $listOrder = $this->classOrder->listPeriodOrder($pid,$isRight);
+                if($listOrder){
+                    foreach ($listOrder as &$order)
+                    {
+                        $userInfo=$this->classUser->find($order['uid']);
+                        $order['nickname']=$userInfo['nickname'];
+                        $order['headimgurl']=user_headimgurl($userInfo['headimgurl']);
+                    }
+                    wcache($cacheListOrderKey,$listOrder,'',1);
+                }
             }
-            output_json(statecodeClass::SUCCESS,'',['type'=>$is_right,'list'=>$listOrder,'pstatus'=>$periodInfo['pstatus']]);
+            output_json(statecodeClass::SUCCESS,'',['type'=>$isRight,'list'=>$listOrder,'pstatus'=>$periodInfo['pstatus']]);
         }
     }
     
@@ -88,7 +93,7 @@ class IndexControl extends WapControl{
         	$data['items'][]=['num'=>$num,'times'=>$times];
         }
         $result = buyLogic::I()->buy($data);
-        if($result['state']===true){
+        if($result['state']===statecodeClass::SUCCESS){
             output_json();
         }else{
             output_json($result['state'],$result['msg']);
