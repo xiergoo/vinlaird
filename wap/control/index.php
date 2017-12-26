@@ -50,7 +50,7 @@ class IndexControl extends WapControl{
         if(IS_AJAX){
             $jnum='';
             $pid = intval($_REQUEST['pid']);
-            $periodInfo = $this->classPeriod->find($pid,false);
+            $periodInfo = $this->classPeriod->getOne($pid,false);
             $isRight=$_REQUEST['type']==1?1:0;
             $cacheListOrderKey='indexListOrder_'.$pid.'_'.$isRight.'_'.$_REQUEST['curpage'];
             $listOrder = rcache($cacheListOrderKey);
@@ -59,7 +59,7 @@ class IndexControl extends WapControl{
                 if($listOrder){
                     foreach ($listOrder as &$order)
                     {
-                        $userInfo=$this->classUser->find($order['uid']);
+                        $userInfo=$this->classUser->getOne($order['uid']);
                         $order['nickname']=$userInfo['nickname'];
                         $order['headimgurl']=user_headimgurl($userInfo['headimgurl']);
                     }

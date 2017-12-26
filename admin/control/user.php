@@ -9,15 +9,12 @@ class userControl extends SystemControl{
      */
     private $classUser;    
 	public function __construct(){
-		//parent::__construct();
+		parent::__construct();
 		Language::read('index');
-        $this->classUser = userClass::I();
 	}
 	public function indexOp(){
-        $list = $this->classUser->lists();
-        dump($list);
+        $list = Model('user')->where($where)->order('id desc')->page(20)->select();
         $page=pagecmd('obj');
-        dump($page);
         Tpl::output('_page',$page->show());
 	}
     
