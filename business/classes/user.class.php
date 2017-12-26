@@ -28,7 +28,7 @@ Class userClass extends baseClass{
 			'subscribe' => intval ( $user ['subscribe'] ),
 			'subscribetime' => intval ( $user ['subscribe_time'] ),
             'ivt_uid'=>intval($user['ivt_uid']),
-            'limits'=>'111111111',
+            'limits'=>'111111000',
 			'addtime' => TIMESTAMP
 		);
         
@@ -67,9 +67,12 @@ Class userClass extends baseClass{
         $userID = unserialize(decrypt(cookie('u_key'),md5(MD5_KEY)));
 		if ($userID>0){
             $user = $this->find($userID);
-            return $user;		
+            if(!$this->checkLimits($userID,self::limit_login)){
+                return callback(statecodeClass::USER_LOGIN_FORBIDDEN);
+            }
+            return callback(statecodeClass::SUCCESS,'',$user);		
 		}
-        return false;
+        return callback(statecodeClass::ERROR);
     }
     
     public function getScore($userID){

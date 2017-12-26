@@ -205,7 +205,7 @@ function get_wechat_handler(){
     return $wechat_handler;
 }
 
-function output_json($state=statecode::SUCCESS, $msg='', $data=[]) {
+function output_json($state=statecodeClass::SUCCESS, $msg='', $data=[]) {
     if(!$msg){
         $msg=statecodeClass::msg($state);
     }

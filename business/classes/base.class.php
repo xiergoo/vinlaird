@@ -2,7 +2,7 @@
 /**
  */
 defined('InShopNC') or exit('Access Invalid!');
-Class baseClass{    
+Class baseClass{
     private function __construct(){}    
     private static $i=null;
     public static function I(){        

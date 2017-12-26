@@ -23,7 +23,7 @@ class UserControl extends WapControl{
     public function scoreOp(){
         $list = Logic('score')->list_score($this->uid);
         if(IS_AJAX){
-            output_json(statecode::SUCCESS,'',$list);
+            output_json(statecodeClass::SUCCESS,'',$list);
         }
         $page=pagecmd('obj');
         Tpl::output('page_total',$page->getTotalPage());
@@ -39,7 +39,7 @@ class UserControl extends WapControl{
         	$li['pno']=$pno['pno'];
         }
         if(IS_AJAX){
-            output_json(statecode::SUCCESS,'',$list);
+            output_json(statecodeClass::SUCCESS,'',$list);
         }
         $page=pagecmd('obj');
         Tpl::output('page_total',$page->getTotalPage());
@@ -55,7 +55,7 @@ class UserControl extends WapControl{
         	$li['pno']=$pno['pno'];
         }
         if(IS_AJAX){
-            output_json(statecode::SUCCESS,'',$list);
+            output_json(statecodeClass::SUCCESS,'',$list);
         }
         $page=pagecmd('obj');
         Tpl::output('page_total',$page->getTotalPage());
@@ -68,11 +68,11 @@ class UserControl extends WapControl{
             if(IS_AJAX){
                 $uid=$this->uid;
                 if($uid<1){
-                    output_json(statecode::UNLOGIN);
+                    output_json(statecodeClass::UNLOGIN);
                 }
                 $touid=intval($_POST['touid']);
                 if($touid<1){
-                    output_json(statecode::ERROR,'请填写有效的接收积分的uid');
+                    output_json(statecodeClass::ERROR,'请填写有效的接收积分的uid');
                 }
                 $result = Logic('score')->score_exc(['uid'=>$this->uid,'to_uid'=>$touid,'score'=>intval($_POST['score'])]);
                 output_json($result['state'],$result['msg']);

@@ -13,8 +13,4 @@ class userControl extends SystemControl{
         $page=pagecmd('obj');
         Tpl::output('_page',$page->show());
 	}
-    
-    public function rechargeOp(){
-        
-    }
 }

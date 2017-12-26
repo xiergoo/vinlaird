@@ -29,6 +29,7 @@ class statecodeClass{
     
     const USER_OPENID='8201';
     const USER_EXIST='8202';
+    const USER_LOGIN_FORBIDDEN='8203';
     
     const PERIOD_ID_ERROR='8301';
     const PERIOD_NOT_EXIST='8302';
