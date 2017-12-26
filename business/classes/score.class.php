@@ -220,7 +220,7 @@ Class scoreClass extends baseClass{
     }
     
     public function listScore($uid){
-        return $this->where(['uid'=>$uid])->order('id desc')->page(20)->select();
+        return $this->lists(['uid'=>$uid]);
     }
     
     

@@ -3,7 +3,7 @@
  */
 defined('InShopNC') or exit('Access Invalid!');
 Class baseClass extends Model{
-    private function __construct(){
+    public function __construct(){
         if(!$this->table_name){
             exit("Table Name Error");
         }
