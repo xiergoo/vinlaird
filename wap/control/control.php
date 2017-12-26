@@ -53,6 +53,9 @@ class WapControl{
         }
         if($user['id']>0){
             $this->uid=$user['uid'];
+            if(!$this->classUser->checkLimits($this->uid,userClass::limit_login)){
+                exit(statecodeClass::msg(statecodeClass::USER_LOGIN_FORBIDDEN));
+            }
             $this->classUser->setLoginUser($this->uid);
         }else{
             if(C('debug')){

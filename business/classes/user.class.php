@@ -67,12 +67,9 @@ Class userClass extends baseClass{
         $userID = unserialize(decrypt(cookie('u_key'),md5(MD5_KEY)));
 		if ($userID>0){
             $user = $this->find($userID);
-            if(!$this->checkLimits($userID,self::limit_login)){
-                return callback(statecodeClass::USER_LOGIN_FORBIDDEN);
-            }
-            return callback(statecodeClass::SUCCESS,'',$user);		
+            return $user;		
 		}
-        return callback(statecodeClass::ERROR);
+        return false;
     }
     
     public function getScore($userID){
