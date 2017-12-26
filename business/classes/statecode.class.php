@@ -12,8 +12,6 @@ class statecodeClass{
     const ORDER_LIMIT='8002';
     const ORDER_PID='8003';
     const ORDER_PNOTEXIST='8004';
-    const ORDER_POVER='8005';
-    const ORDER_POVER2='8006';
     const ORDER_SCORE='8007';
     const ORDER_NOSCORE='8008';
     const ORDER_SCOREERR='8009';
@@ -26,6 +24,8 @@ class statecodeClass{
     const SOCRE_UID2='8105';
     const SOCRE_COUNT='8106';
     const SOCRE_LESS='8107';
+    const SOCRE_CHANGE_USER_SCORE_FAIL='8108';
+    const SOCRE_INSERT_DETAIL_FAIL='8109';
     
     const USER_OPENID='8201';
     const USER_EXIST='8202';
@@ -34,6 +34,9 @@ class statecodeClass{
     const PERIOD_ID_ERROR='8301';
     const PERIOD_NOT_EXIST='8302';
     const PERIOD_OFFLINE='8303';
+    const PERIOD_NO_START='8304';
+    const PERIOD_FINISHED_WILL_OPEN='8305';
+    const PERIOD_FINISHED='8306';
     public static function msg($state){
         $msg='';
         switch ($state)
@@ -48,8 +51,6 @@ class statecodeClass{
             case self::ORDER_LIMIT: $msg='无效的操作'; break;
             case self::ORDER_PID: $msg='无效的pid'; break;
             case self::ORDER_PNOTEXIST: $msg='本期不存在'; break;
-            case self::ORDER_POVER: $msg='本期购买已结束'; break;
-            case self::ORDER_POVER2: $msg='本期购买已结束，即将揭晓'; break;
             case self::ORDER_SCORE: $msg='无效的积分数量'; break;
             case self::ORDER_NOSCORE: $msg='积分不足'; break;
             case self::ORDER_SCOREERR: $msg='积分数量有误'; break;
@@ -65,6 +66,10 @@ class statecodeClass{
             #endregion
             case self::USER_OPENID: $msg='无效的openid'; break;
             case self::USER_EXIST: $msg='用户已存在'; break;
+            
+            
+            case self::PERIOD_FINISHED: $msg='本期购买已结束'; break;
+            case self::PERIOD_FINISHED_WILL_OPEN: $msg='本期购买已结束，即将揭晓'; break;
 
         }
         

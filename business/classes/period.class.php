@@ -8,7 +8,7 @@ Class periodClass extends baseClass{
     const status_wait=2;
     const status_finish=3;    
     const protected_time=120;
-    const socre_min=1000;
+    const socre_min=100;
     const socre_max=1000000;
     
     /**

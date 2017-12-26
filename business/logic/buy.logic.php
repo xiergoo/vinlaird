@@ -54,28 +54,28 @@ class buyLogic {
             return callback(statecodeClass::ORDER_UID,'',$order);
         }
         if(!$this->classUser->checkLimits($uid,userClass::limit_buy)){
-            //没有权限
+            //娌℃湁鏉冮檺
             return callback(statecodeClass::ORDER_LIMIT);
         }
         $pid=$order['pid'];
         if($pid<1){
             return callback(statecodeClass::ORDER_PID,'',$order);
         }
-        $periodInfo = periodClass::I()->find($pid,false);        
+        $periodInfo = periodClass::I()->find($pid,false);     
         if($periodInfo['id']<1){
             return callback(statecodeClass::ORDER_PNOTEXIST,'',$order);
         }
         if($periodInfo['pstatus']!=periodClass::status_online){
             return callback(statecodeClass::ORDER_POVER,'',$order);        
         }
-        if($period_info['jtime']<dapanClass::beforeTime()){
-            return callback(statecodeClass::ORDER_POVER2,'，未开始',$order);
+        if($periodInfo['jtime']<dapanClass::beforeTime()){
+            return callback(statecodeClass::PERIOD_NO_START,'',$order);
         }
-        if($period_info['jtime']>=dapanClass::afterTime()){
-            return callback(statecodeClass::ORDER_POVER2,'，已经结束',$order);
+        if($periodInfo['jtime']>=dapanClass::afterTime()){
+            $result = callback(statecodeClass::PERIOD_FINISHED,'',$order);
         }
-        if($period_info['jtime']-TIMESTAMP<periodClass::protected_time){
-            return callback(statecodeClass::ORDER_POVER2,'，即将揭晓',$order);
+        if($periodInfo['jtime']-TIMESTAMP<periodClass::protected_time){
+            return callback(statecodeClass::PERIOD_FINISHED_WILL_OPEN,'',$order);
         }
         $score=$order['score'];
         if($score<periodClass::socre_min){
@@ -108,9 +108,9 @@ class buyLogic {
             $data['is_right']=0;
             $data['stime']=0;
             $data['ctime']=time();
-            $order_id = $modelOrder->insert($data);
-            if($order_id){
-                $result = $this->changeScore(['uid'=>$uid,'score'=>$item['times'],'order_id'=>$order_id]);
+            $orderID = $modelOrder->insert($data);
+            if($orderID){
+                $result = $this->classSocre->order(['uid'=>$uid,'score'=>$item['times'],'order_id'=>$orderID]);
                 if($result['state']!==statecodeClass::SUCCESS){
                     $modelOrder->rollback();
                     return $result;
@@ -122,39 +122,5 @@ class buyLogic {
         }
         $modelOrder->commit();
         return callback(statecodeClass::SUCCESS);
-    }    
-    
-    /**
-     * Summary of buy
-     * @param array $score ['uid','score','order_id']
-     * @return mixed
-     */
-    private function changeScore($score){
-        $uid=$score['uid'];
-        if($uid<1){
-            return callback(statecodeClass::SOCRE_UID,'',$score);
-        }
-        if($score['score']==0){
-            return callback(statecodeClass::SOCRE_VALUE);
-        }
-        if($score['order_id']<1){
-            return callback(statecodeClass::SOCRE_ORDER);
-        }
-        if($score['score']>0){
-            $score['score']=0-$score['score'];
-        }
-        $data['uid']=$uid;
-        $data['type']=scoreClass::type_buy;
-        $data['params']=$score['order_id'];
-        $data['score']=$score['score'];
-        $data['mark']='下单';
-        $data['ctime']=time();
-        $result = $this->entityScore->insert($data);
-        if($result){
-            $data['id']=$result;
-            return callback(statecodeClass::SUCCESS,'',$data);
-        }else{            
-            return callback(statecodeClass::ERROR,'下单失败',$data);
-        }
     }
 }

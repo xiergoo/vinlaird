@@ -75,9 +75,13 @@ Class userClass extends baseClass{
     public function getScore($userID){
         if($userID>0){
             $userInfo = $this->find($userID,false);
-            return intval($user['score']);
+            return intval($userInfo['score']);
         }
         return 0;
+    }
+    
+    public function exchangeSocre($userID,$score){
+        return $this->getEntity()->where(['id'=>$userID])->setInc('score',$score);
     }
     
 }

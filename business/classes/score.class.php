@@ -33,14 +33,8 @@ Class scoreClass extends baseClass{
         if(!userClass::I()->checkLimits($uid,userClass::limit_daka)){
             //没有权限
             return callback(statecodeClass::SOCRE_LIMIT);
-        }
-        $data['uid']=$uid;
-        $data['type']=self::type_daka;
-        $data['params']=0;
-        $data['score']=self::daka_score;
-        $data['mark']='签到';
-        $data['ctime']=time(); 
-        return $this->getEntity()->insert($data);
+        }        
+        return $this->changeScore($uid,self::type_daka,self::daka_score,'签到',0);
     }
     
     /**
@@ -59,16 +53,50 @@ Class scoreClass extends baseClass{
         }
         if($score['score']<1){
             return callback(statecodeClass::SOCRE_VALUE);            
-        }  
-        $data['uid']=$uid;
-        $data['type']=self::type_recharge;
-        $data['params']=0;
-        $data['score']=$score['score'];
-        $data['mark']='充值';
-        $data['ctime']=time();
-        return $this->getEntity()->insert($data);
+        }
+        return $this->changeScore($uid,self::type_recharge,$score['score'],'充值',0);
     }
     
+    public function order($score){
+        $uid=$score['uid'];
+        if($uid<1){
+            return callback(statecodeClass::SOCRE_UID,'',$score);
+        }
+        if($score['score']==0){
+            return callback(statecodeClass::SOCRE_VALUE);
+        }
+        if($score['order_id']<1){
+            return callback(statecodeClass::SOCRE_ORDER);
+        }        
+        if($score['score']>0){
+            $score['score']=0-$score['score'];
+        }
+        return $this->changeScore($uid,self::type_buy,intval($score['score']),'下单',$score['order_id'],false);        
+    }
+    
+    private function changeScore($uid,$type,$score,$mark,$params=0,$autoTrans=true){
+        $autoTrans && $this->getEntity()->beginTransaction();
+        $data['uid']=$uid;
+        $data['type']=$type;
+        $data['params']=$params;
+        $data['score']=$score;
+        $data['mark']=$mark;
+        $data['ctime']=time();
+        $result = $this->getEntity()->insert($data);
+        if($result){
+            $result = userClass::I()->exchangeSocre($uid,$score);
+            if($result){
+                $autoTrans && $this->getEntity()->commit();
+                return callback(statecodeClass::SUCCESS);
+            }else{
+                $autoTrans && $this->getEntity()->rollback();
+                return callback(statecodeClass::SOCRE_CHANGE_USER_SCORE_FAIL);
+            }
+        }else{
+            $autoTrans && $this->getEntity()->rollback();
+            return callback(statecodeClass::SOCRE_INSERT_DETAIL_FAIL);
+        }
+    }
     /**
      * Summary of score_exc
      * @param array $score ['uid','to_uid','score']
@@ -139,6 +167,7 @@ Class scoreClass extends baseClass{
     public function listScore($uid){
         return $this->getEntity()->where(['uid'=>$uid])->order('id desc')->page(20)->select();
     }
+    
     
     //public function sendLuckScore(){
     //    $model = Model();

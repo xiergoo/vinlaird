@@ -19,6 +19,7 @@ class WapControl{
                 die;
             }
         }
+        $this->classUser=userClass::I();
         $this->init();
         $user = $this->classUser->getLoginUser();
         if(!$user){
@@ -68,7 +69,6 @@ class WapControl{
 	}
 
     protected function init(){
-        $this->classUser=userClass::I();
     }
     
     protected final function goLogin(){
