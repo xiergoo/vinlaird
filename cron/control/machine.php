@@ -37,7 +37,7 @@ class machineControl extends BaseControl{
             $data['ctime']=TIMESTAMP;
             $result = orderClass::I()->insert($data);           
             if($result){
-                wcache($key2,TIMESTAMP+mt_rand(1000,3000),86400);
+                wcache($key2,TIMESTAMP+mt_rand(1000,3000),'',86400);
             }
         }
         catch (Exception $exception)
