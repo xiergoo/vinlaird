@@ -3,35 +3,33 @@
  ***/
 
 defined('InShopNC') or exit('Access Invalid!');
-class indexControl{
-    
-    function __construct(){
-        if(date('h')!=15){
-            die('die');
-        }
-    }
+class indexControl extends BaseControl{
     
     public function indexOp(){
-    }
-    
-    public function create_periodOp(){
-        $result = Logic('period')->get_the_period();
-    }
-    
-    public function get_dpresultOp(){        
-        $period_info = Model('period')->where(['pstatus'=>1,'jtime'=>['eq',mktime(15,0,0)]])->find();
-        $data['dpnum']=dapanClass::value();
-        if($data['dpnum']>1000){
-            $data['jnum']=$data['dpnum']*100%50;
-            $data['pstatus']=2;
-            Model('period')->where(['id'=>$period_info['id']])->update($data);
+        try
+        {
+        	$this->openPrize();
         }
+        catch (Exception $exception)
+        {
+            $this->log($exception);
+        }        
     }
     
-    public function send_prizeOp(){
-        $period_info = Model('period')->where(['pstatus'=>2,'dpnum'=>['gt',0],'jtime'=>['eq',mktime(15,0,0)]])->find();
-        if($period_info['id']){
-            Logic('score')->luck();
-        }
-    }    
+    public function openPrize(){
+        $listType = typeClass::I()->lists(['enable'=>typeClass::status_enable]);
+        foreach ($listType as $type)
+        {
+        	$periodInfo = periodClass::I()->where(['type_id'=>$type['id'],'pstatus'=>periodClass::status_online,'jtime'=>['eq',dapanClass::beforeTime()]])->find();
+            $data['dpnum']=dapanClass::value();
+            if($data['dpnum']>1000){
+                $data['jnum']=$data['dpnum']*100%$type['mod'];
+                $data['pstatus']=periodClass::status_wait;
+                $result = periodClass::I()->where(['id'=>$period_info['id']])->update($data);
+                if($result){
+                    Model('order')->where(['pid'=>$periodInfo['id'],'num'=>$data['jnum']])->update(['is_right'=>1]);
+                }
+            }
+        }        
+    }       
 }

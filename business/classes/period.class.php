@@ -18,7 +18,7 @@ Class periodClass extends baseClass{
         $typeCacheKey='listsingtype';
         $listType = $this->cache($typeCacheKey);
         if(!$listType){
-            $listType = typeClass::I()->lists(['enable'=>1]);
+            $listType = typeClass::I()->lists(['enable'=>typeClass::status_enable]);
             $this->cache($typeCacheKey,$listType);
         }
         foreach ($listType as $type)
@@ -39,7 +39,7 @@ Class periodClass extends baseClass{
         if($typeInfo['id'] && $typeInfo['enable']==typeClass::status_enable){
             $where['type_id']=$typeID;
             $where['jtime']=['between',[dapanClass::beforeTime()+1,dapanClass::afterTime()]];
-            $where['pstatus']=1;
+            $where['pstatus']=self::status_online;
             $curPeroid = $this->getOne($where,false);
             if(!$curPeroid){
                 $beforePeriod = parent::lists(['type_id'=>$typeID],'pno desc',1);
