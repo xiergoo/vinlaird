@@ -15,15 +15,15 @@ class IndexControl extends WapControl{
      */
     private $classOrder;
     
-    private $times_arr=[100,1000,2000,5000,10000];
-    
+    //private $buyScoreArr=['1'=>100,'2'=>1000,'3'=>2000,'4'=>5000,'5'=>10000,'6'=>20000,'7'=>300000];
+    private $buyScoreArr=['1'=>100,'2'=>1000,'3'=>2000,'4'=>5000,'5'=>10000];
     protected function init(){
         $this->classPeriod=periodClass::I();
         $this->classOrder=orderClass::I();
     }
     
     
-    public function indexOp(){        
+    public function indexOp(){
         $list =$this->classPeriod->listsing();
         Tpl::output('list',$list);
     }
@@ -40,7 +40,7 @@ class IndexControl extends WapControl{
         if($periodInfo['pstatus']==periodClass::status_offline){
             showMessage(statecodeClass::msg(statecodeClass::PERIOD_OFFLINE));
         }
-        Tpl::output('times',$this->times_arr);
+        Tpl::output('times',$this->buyScore());
         Tpl::output('period',$periodInfo);        
         $str_today=date('Y-m-d');
         Tpl::display('detail');
@@ -79,7 +79,7 @@ class IndexControl extends WapControl{
         $score=intval($_POST['score']);
         $nums = trim($_POST['num'],',');
         $nums = explode(',',$nums);
-        if(!in_array($times,$this->times_arr)){
+        if(!in_array($times,$this->buyScore())){
             output_json(statecodeClass::PARAMSERR);
         }
         if($score!=count($nums)*$times){
@@ -94,6 +94,8 @@ class IndexControl extends WapControl{
         }
         $result = buyLogic::I()->buy($data);
         if($result['state']===statecodeClass::SUCCESS){
+            $scoreIndex=$this->scoreIndex($times);
+            $this->buyHabit($scoreIndex);
             output_json();
         }else{
             output_json($result['state'],$result['msg']);
@@ -110,5 +112,51 @@ class IndexControl extends WapControl{
         $list = $this->classPeriod->lists($where);
         Tpl::output('list',$list);
         Tpl::display('history');
+    }
+    
+    private function buyScore(){        
+        $scoreIndex = $this->buyHabit();
+        $scoreIndex = min(count($this->buyScoreArr)-2,$scoreIndex);
+        $scoreIndex = max(3,$scoreIndex);
+        $buyScoreArr[$scoreIndex-2]=$this->buyScoreArr[$scoreIndex-2];
+        $buyScoreArr[$scoreIndex-1]=$this->buyScoreArr[$scoreIndex-1];
+        $buyScoreArr[$scoreIndex]=$this->buyScoreArr[$scoreIndex];
+        $buyScoreArr[$scoreIndex+1]=$this->buyScoreArr[$scoreIndex+1];
+        $buyScoreArr[$scoreIndex+2]=$this->buyScoreArr[$scoreIndex+2];
+        return $buyScoreArr;
+    }
+    
+    private function scoreIndex($score){
+        foreach ($this->buyScoreArr as $key=>$value)
+        {
+        	if($value==$score){
+                return $key;
+            }
+        }
+        return 0;
+    }
+    
+    private function buyHabit($scoreIndex=0){
+        $key='indexUserBuyHabit_'.$this->uid;
+        $buyHabit=rcache($key);
+        if($scoreIndex>0){
+            if(in_array($scoreIndex,array_keys($this->buyScoreArr))){
+                $buyHabit[$scoreIndex]++;
+                wcache($key,$buyHabit,'',1296000);
+            }
+        }else{
+            if(count($buyHabit)>=2){
+                arsort($buyHabit);
+                foreach ($buyHabit as $key=>$value)
+                {
+                    if($value>20){
+                        return $key;
+                    }
+                	break;
+                }
+                
+            }
+        }
+        return 0;
     }
 }
