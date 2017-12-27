@@ -42,7 +42,7 @@ Class dapanClass{
             $beforeTime=mktime(15,0,0,date('n',$time),date('j',$time)-2);
         }else{
             $h=date('H',$time);
-            if($h>15){
+            if($h>=15){
                 $beforeTime=mktime(15,0,0,date('n',$time),date('j',$time));
             }else{
                 if($week==1){
@@ -67,7 +67,7 @@ Class dapanClass{
             $afterTime=mktime(15,0,0,date('n',$time),date('j',$time)+1);
         }else{
             $h=date('H',$time);
-            if($h>15){
+            if($h>=15){
                 if($week==5){
                     $afterTime=mktime(15,0,0,date('n',$time),date('j',$time)+3);
                 }else{

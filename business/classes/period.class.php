@@ -15,6 +15,19 @@ Class periodClass extends baseClass{
     protected $fields=['id','type_id','pno','jtime','pstatus','dpnum','jnum','inscore','outscore','ctime'];
     
     public function listsing(){
+        $typeCacheKey='listsingtype';
+        $listType = $this->cache($typeCacheKey);
+        if(!$listType){
+            $listType = typeClass::I()->lists(['enable'=>1]);
+            $this->cache($typeCacheKey,$listType);
+        }
+        foreach ($listType as $type)
+        {
+        	$period = $this->getOne(['type_id'=>$type['id'],'pstatus'=>self::status_online,'jtime'=>['gt',dapanClass::beforeTime()]]);
+            if(!$period){
+                $this->newPeroid($type['id']);
+            }
+        }
         $where['jtime']=['between',[dapanClass::beforeTime()+1,dapanClass::afterTime()]];
         $where['pstatus']=self::status_online;
         return parent::lists($where);

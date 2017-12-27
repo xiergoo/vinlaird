@@ -24,7 +24,7 @@ Class baseClass extends Model{
     public function getOne($where,$cache=true){
         $data=null;
         if($where){
-            $key=md5(serialize($where));
+            $key=md5($this->table_name.serialize($where));
             if($cache){
                 $data=$this->cache($key);
             }
