@@ -28,10 +28,10 @@ class indexControl extends BaseControl{
                     $data['pstatus']=periodClass::status_wait;
                     $result = periodClass::I()->where(['id'=>$period_info['id']])->update($data);
                     if($result){
-                        Model('order')->where(['pid'=>$periodInfo['id'],'num'=>$data['jnum']])->update(['is_right'=>1]);
+                        Model('order')->where(['pid'=>$periodInfo['id'],'num'=>$data['jnum']])->update(['is_right'=>1,'prize_score'=>['exp',$type['times'].'*score']]);
                     }
                 }
             }
         }        
-    }       
+    }
 }
