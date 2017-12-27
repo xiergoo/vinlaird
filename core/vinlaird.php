@@ -52,7 +52,7 @@ $_REQUEST = !empty($_REQUEST) ? Security::getAddslashesForInput($_REQUEST,$ignor
 $_SERVER = !empty($_SERVER) ? Security::getAddSlashes($_SERVER) : array();
 
 //启用ZIP压缩
-if ($config['gzip'] == 1 && function_exists('ob_gzhandler') && $_GET['inajax'] != 1){
+if ($config['gzip'] == 1 && function_exists('ob_gzhandler') && !IS_AJAX){
 	ob_start('ob_gzhandler');
 }else {
 	ob_start();

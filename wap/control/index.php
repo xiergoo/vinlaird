@@ -22,7 +22,6 @@ class IndexControl extends WapControl{
         $this->classOrder=orderClass::I();
     }
     
-    
     public function indexOp(){
         $list =$this->classPeriod->listsing();
         Tpl::output('list',$list);
@@ -98,6 +97,7 @@ class IndexControl extends WapControl{
             $this->buyHabit($scoreIndex);
             output_json();
         }else{
+            Log::record(['data'=>$data,'result'=>$result]);
             output_json($result['state'],$result['msg']);
         }
     }
