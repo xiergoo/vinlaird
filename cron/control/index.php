@@ -13,7 +13,7 @@ class indexControl extends BaseControl{
         catch (Exception $exception)
         {
             $this->log($exception);
-        }        
+        }
     }
     
     public function openPrize(){

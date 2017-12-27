@@ -23,7 +23,7 @@ Class periodClass extends baseClass{
         }
         foreach ($listType as $type)
         {
-        	$period = $this->getOne(['type_id'=>$type['id'],'pstatus'=>self::status_online,'jtime'=>['gt',dapanClass::beforeTime()]]);
+        	$period = $this->getOne(['type_id'=>$type['id'],'jtime'=>['gt',dapanClass::beforeTime()]]);
             if(!$period){
                 $this->newPeroid($type['id']);
             }
