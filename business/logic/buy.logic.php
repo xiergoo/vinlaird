@@ -3,16 +3,6 @@ defined('InShopNC') or exit('Access Invalid!');
 
 class buyLogic {    
     /**
-     * Summary of $entityOrder
-     * @var orderEntity
-     */
-    private $entityOrder;
-    /**
-     * Summary of $entityScore
-     * @var scoreEntity
-     */
-    private $entityScore;
-    /**
      * Summary of $classOrder
      * @var orderClass
      */
@@ -28,22 +18,12 @@ class buyLogic {
      */
     private $classUser;
     
-    private function __construct(){
+    public function __construct(){
         $this->classOrder=orderClass::I();
         $this->classSocre=scoreClass::I();
         $this->classUser=userClass::I();
-        $this->entityOrder=$this->classOrder->getEntity();
-        $this->entityScore=$this->classSocre->getEntity();
     }
-    
-    public static function I(){
-        static $i=null;
-        if($i===null){
-            $i=new buyLogic();
-        }
-        return $i;
-    }
-    
+        
     /**
      * Summary of buy
      * @param array $order ['pid','uid','score','items'=>[['num','times'],['num','times']]]
@@ -61,7 +41,7 @@ class buyLogic {
         if($pid<1){
             return callback(statecodeClass::ORDER_PID,'',$order);
         }
-        $periodInfo = periodClass::I()->find($pid,false);     
+        $periodInfo = periodClass::I()->getOne($pid,false);     
         if($periodInfo['id']<1){
             return callback(statecodeClass::ORDER_PNOTEXIST,'',$order);
         }
@@ -97,8 +77,7 @@ class buyLogic {
             return callback(statecodeClass::ORDER_SCOREERR,'',$order);
         }
         $data=[];
-        $modelOrder = $this->entityOrder;
-        $modelOrder->beginTransaction();
+        $this->classOrder->beginTransaction();
         foreach ($order['items'] as $item)
         {
             $data['uid']=$uid;
@@ -108,19 +87,21 @@ class buyLogic {
             $data['is_right']=0;
             $data['stime']=0;
             $data['ctime']=time();
-            $orderID = $modelOrder->insert($data);
+            $orderID = $this->classOrder->insert($data);
             if($orderID){
                 $result = $this->classSocre->order(['uid'=>$uid,'score'=>$item['times'],'order_id'=>$orderID]);
                 if($result['state']!==statecodeClass::SUCCESS){
-                    $modelOrder->rollback();
+                    $this->classOrder->rollback();
+                    Log::record(['order'=>['uid'=>$uid,'score'=>$item['times'],'order_id'=>$orderID],'result'=>$result]);
                     return $result;
                 }
             }else{
-                $modelOrder->rollback();
+                $this->classOrder->rollback();
+                Log::record(['data'=>$data]);
                 return callback(statecodeClass::ORDER_ORDERERR,'',$data);
             }
         }
-        $modelOrder->commit();
+        $this->classOrder->commit();
         return callback(statecodeClass::SUCCESS);
     }
 }

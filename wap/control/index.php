@@ -91,7 +91,8 @@ class IndexControl extends WapControl{
         {
         	$data['items'][]=['num'=>$num,'times'=>$times];
         }
-        $result = buyLogic::I()->buy($data);
+        $buyLogic=new buyLogic();
+        $result = $buyLogic->buy($data);
         if($result['state']===statecodeClass::SUCCESS){
             $scoreIndex=$this->scoreIndex($times);
             $this->buyHabit($scoreIndex);
